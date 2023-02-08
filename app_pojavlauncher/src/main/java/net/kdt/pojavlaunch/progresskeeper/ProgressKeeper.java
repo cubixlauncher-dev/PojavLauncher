@@ -91,14 +91,10 @@ public class ProgressKeeper {
         TaskCountListener listener = new TaskCountListener() {
             @Override
             public void onUpdateTaskCount(int taskCount) {
-                Log.i("PK","Task count is "+taskCount);
-                for(String state : sProgressStates.keySet()) {
-                    Log.i("PK", state);
-                }
                 if(taskCount == 0) {
                     runnable.run();
+                    removeTaskCountListener(this);
                 }
-                removeTaskCountListener(this);
             }
         };
         addTaskCountListener(listener);

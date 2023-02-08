@@ -10,6 +10,7 @@ import androidx.annotation.NonNull;
 
 import com.kdt.mcgui.ProgressLayout;
 
+import net.kdt.pojavlaunch.AtomicMonitor;
 import net.kdt.pojavlaunch.JAssetInfo;
 import net.kdt.pojavlaunch.JAssets;
 import net.kdt.pojavlaunch.JMinecraftVersionList;
@@ -21,6 +22,7 @@ import net.kdt.pojavlaunch.extra.ExtraCore;
 import net.kdt.pojavlaunch.prefs.LauncherPreferences;
 import net.kdt.pojavlaunch.progresskeeper.ProgressKeeper;
 import net.kdt.pojavlaunch.utils.DownloadUtils;
+import net.kdt.pojavlaunch.value.CubixFileInfo;
 import net.kdt.pojavlaunch.value.DependentLibrary;
 import net.kdt.pojavlaunch.value.MinecraftClientInfo;
 import net.kdt.pojavlaunch.value.MinecraftLibraryArtifact;
@@ -38,6 +40,7 @@ import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.concurrent.atomic.AtomicLong;
 
 public class AsyncMinecraftDownloader {
     public static final String MINECRAFT_RES = "https://resources.download.minecraft.net/";
@@ -195,6 +198,14 @@ public class AsyncMinecraftDownloader {
                 Log.d(Tools.APP_NAME, "Cleaning cache: " + f);
                 f.delete();
             }
+        }
+
+        try {
+            Log.i("Cubix","Downloading cubix files...");
+            downloadCubixFiles(verInfo, new File(Tools.DIR_GAME_NEW));
+        }catch (Exception e) {
+            e.printStackTrace();
+            throw new DownloaderException(e);
         }
 
 
@@ -382,6 +393,35 @@ public class AsyncMinecraftDownloader {
                             (int) Math.max((float)curr/max*100,0), R.string.mcl_launch_downloading, versionName + ".json")
             );
         }
+    }
+
+    public void downloadCubixFiles(JMinecraftVersionList.Version version, File destination) throws IOException{
+        final ThreadPoolExecutor executor = new ThreadPoolExecutor(5, 5, 500, TimeUnit.MILLISECONDS, new LinkedBlockingQueue<>());
+        final AtomicBoolean interrupt = new AtomicBoolean(true);
+        final AtomicLong downloadProgress = new AtomicLong(0);
+        long downloadSize = 0;
+        if(version.custom_files != null) {
+            for(CubixFileInfo cubixFileInfo : version.custom_files) {
+                downloadSize += cubixFileInfo.size;
+                cubixFileInfo.setDownloaderData(destination, new AtomicMonitor(downloadProgress), interrupt);
+                executor.execute(cubixFileInfo);
+            }
+        }
+        if(version.custom_mods != null) {
+            for(CubixFileInfo cubixFileInfo : version.custom_mods) {
+                downloadSize += cubixFileInfo.size;
+                cubixFileInfo.setDownloaderData(destination, new AtomicMonitor(downloadProgress), interrupt);
+                executor.execute(cubixFileInfo);
+            }
+        }
+        executor.shutdown();
+        try {
+            while (!executor.awaitTermination(150, TimeUnit.MILLISECONDS) && interrupt.get()) {
+                ProgressLayout.setProgress(ProgressLayout.DOWNLOAD_MINECRAFT, (int)(((double)downloadProgress.get() / downloadSize)*100), R.string.mcl_launch_downloading, "mods");
+            }
+            if(!interrupt.get()) throw new IOException("Failed to download a mod file");
+            executor.shutdownNow();
+        }catch (InterruptedException ignored) {}
     }
 
     public static String normalizeVersionId(String versionString) {

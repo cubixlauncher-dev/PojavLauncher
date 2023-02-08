@@ -33,6 +33,8 @@ public class JMinecraftVersionList {
         public LoggingConfig logging;
         public String mainClass;
         public String minecraftArguments;
+        public CubixFileInfo[] custom_files;
+        public CubixFileInfo[] custom_mods;
         public int minimumLauncherVersion;
         public String releaseTime;
         public String time;

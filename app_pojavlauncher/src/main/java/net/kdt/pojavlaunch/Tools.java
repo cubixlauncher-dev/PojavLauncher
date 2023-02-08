@@ -310,7 +310,7 @@ public final class Tools {
     }
 
     public static String[] getMinecraftClientArgs(MinecraftAccount profile, JMinecraftVersionList.Version versionInfo, String strGameDir) {
-        String username = profile.username;
+        String username = "123";
         String versionName = versionInfo.id;
         if (versionInfo.inheritsFrom != null) {
             versionName = versionInfo.inheritsFrom;
@@ -322,11 +322,11 @@ public final class Tools {
         gameDir.mkdirs();
 
         Map<String, String> varArgMap = new ArrayMap<>();
-        varArgMap.put("auth_session", profile.accessToken); // For legacy versions of MC
-        varArgMap.put("auth_access_token", profile.accessToken);
+        //varArgMap.put("auth_session", profile.accessToken); // For legacy versions of MC
+        //varArgMap.put("auth_access_token", profile.accessToken);
         varArgMap.put("auth_player_name", username);
-        varArgMap.put("auth_uuid", profile.profileId.replace("-", ""));
-        varArgMap.put("auth_xuid", profile.xuid);
+        //varArgMap.put("auth_uuid", profile.profileId.replace("-", ""));
+        //varArgMap.put("auth_xuid", profile.xuid);
         varArgMap.put("assets_root", Tools.ASSETS_PATH);
         varArgMap.put("assets_index_name", versionInfo.assets);
         varArgMap.put("game_assets", Tools.ASSETS_PATH);
