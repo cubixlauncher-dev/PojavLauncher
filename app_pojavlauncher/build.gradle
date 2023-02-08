@@ -1,4 +1,4 @@
-apply plugin: 'com.android.application'
+apply plugin: 'com.android.library'
 
 static def getDate() { return new Date().format('yyyyMMdd')}
 
@@ -62,7 +62,6 @@ android {
     }
 	
     defaultConfig {
-        applicationId "net.kdt.pojavlaunch"
         minSdkVersion 21
         targetSdkVersion 33
         versionCode getDateSeconds()
@@ -72,18 +71,12 @@ android {
 
     buildTypes {
         debug {
-            applicationIdSuffix '.debug'
             minifyEnabled false
             shrinkResources false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
             signingConfig signingConfigs.customDebug
-            resValue 'string', 'storageProviderAuthorities', 'net.kdt.pojavlaunch.scoped.gamefolder.debug'
-            resValue 'string', 'shareProviderAuthority', 'net.kdt.pojavlaunch.scoped.controlfolder.debug'
-        }
-        proguard {
-            initWith debug
-            minifyEnabled true
-            shrinkResources true
+            resValue 'string', 'storageProviderAuthorities', 'net.kdt.pojavlaunch.scoped.gamefolder.debug.cubix'
+            resValue 'string', 'shareProviderAuthority', 'net.kdt.pojavlaunch.scoped.controlfolder.debug.cubix'
         }
 		
         release {
@@ -93,7 +86,8 @@ android {
 	    // defaultConfig already set
             // multiDexEnabled = true
            // debuggable = true
-            resValue 'string', 'storageProviderAuthorities', 'net.kdt.pojavlaunch.scoped.gamefolder'
+            resValue 'string', 'storageProviderAuthorities', 'net.kdt.pojavlaunch.scoped.gamefolder.с'
+            resValue 'string', 'shareProviderAuthority', 'net.kdt.pojavlaunch.scoped.controlfolder.c'
         }
         gplay {
             initWith release
@@ -111,11 +105,11 @@ android {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
     }
-    bundle {
+    /*bundle {
         language {
             enableSplit = false
         }
-    }
+    }*/
 
     buildToolsVersion '30.0.2'
 }

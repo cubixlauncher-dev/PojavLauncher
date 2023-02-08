@@ -974,37 +974,7 @@ public final class Tools {
     }
 
     public static void installMod(Activity activity, boolean customJavaArgs) {
-        if (MultiRTUtils.getExactJreName(8) == null) {
-            Toast.makeText(activity, R.string.multirt_nojava8rt, Toast.LENGTH_LONG).show();
-            return;
-        }
-
-        if(!customJavaArgs){ // Launch the intent to get the jar file
-            Intent intent = new Intent(Intent.ACTION_OPEN_DOCUMENT);
-            intent.addCategory(Intent.CATEGORY_OPENABLE);
-            String mimeType = MimeTypeMap.getSingleton().getMimeTypeFromExtension("jar");
-            if(mimeType == null) mimeType = "*/*";
-            intent.setType(mimeType);
-            activity.startActivityForResult(intent, RUN_MOD_INSTALLER);
-            return;
-        }
-
-        // install mods with custom arguments
-        final EditText editText = new EditText(activity);
-        editText.setSingleLine();
-        editText.setHint("-jar/-cp /path/to/file.jar ...");
-
-        AlertDialog.Builder builder = new AlertDialog.Builder(activity)
-                .setTitle(R.string.alerttitle_installmod)
-                .setNegativeButton(android.R.string.cancel, null)
-                .setView(editText)
-                .setPositiveButton(android.R.string.ok, (di, i) -> {
-                    Intent intent = new Intent(activity, JavaGUILauncherActivity.class);
-                    intent.putExtra("skipDetectMod", true);
-                    intent.putExtra("javaArgs", editText.getText().toString());
-                    activity.startActivity(intent);
-                });
-        builder.show();
+        throw new IllegalStateException("Removed");
     }
 
     /** Display and return a progress dialog, instructing to wait */
@@ -1020,27 +990,7 @@ public final class Tools {
 
     /** Copy the mod file, and launch the mod installer activity */
     public static void launchModInstaller(Activity activity, @NonNull Intent data){
-        final ProgressDialog alertDialog = getWaitingDialog(activity);
-
-        final Uri uri = data.getData();
-        alertDialog.setMessage(activity.getString(R.string.multirt_progress_caching));
-        sExecutorService.execute(() -> {
-            try {
-                final String name = getFileName(activity, uri);
-                final File modInstallerFile = new File(activity.getCacheDir(), name);
-                FileOutputStream fos = new FileOutputStream(modInstallerFile);
-                IOUtils.copy(activity.getContentResolver().openInputStream(uri), fos);
-                fos.close();
-                activity.runOnUiThread(() -> {
-                    alertDialog.dismiss();
-                    Intent intent = new Intent(activity, JavaGUILauncherActivity.class);
-                    intent.putExtra("modFile", modInstallerFile);
-                    activity.startActivity(intent);
-                });
-            }catch(IOException e) {
-                Tools.showError(activity, e);
-            }
-        });
+        throw new IllegalStateException("Removed");
     }
 
 

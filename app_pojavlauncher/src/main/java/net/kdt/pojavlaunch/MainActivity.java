@@ -324,7 +324,7 @@ public class MainActivity extends BaseActivity implements ControlButtonMenuListe
             Tools.LOCAL_RENDERER = LauncherPreferences.PREF_RENDERER;
         }
         Logger.getInstance().appendToLog("--------- beginning with launcher debug");
-        Logger.getInstance().appendToLog("Info: Launcher version: " + BuildConfig.VERSION_NAME);
+        Logger.getInstance().appendToLog("Info: Launcher version: " + "CUBIX-");
         if (Tools.LOCAL_RENDERER.equals("vulkan_zink")) {
             checkVulkanZinkIsSupported();
         }

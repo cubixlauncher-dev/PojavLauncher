@@ -1,0 +1,3 @@
+[submodule "cubix-ui-shim"]
+	path = cubix-ui-shim
+	url = https://github.com/cubixlauncher-dev/cubix-ui-shim

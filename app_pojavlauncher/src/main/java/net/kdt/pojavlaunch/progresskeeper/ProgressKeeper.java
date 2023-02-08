@@ -1,5 +1,7 @@
 package net.kdt.pojavlaunch.progresskeeper;
 
+import android.util.Log;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -82,12 +84,17 @@ public class ProgressKeeper {
     public static void waitUntilDone(final Runnable runnable) {
         // If we do it the other way the listener would be removed before it was added, which will cause a listener object leak
         if(getTaskCount() == 0) {
+            Log.i("PK","Task count is zero");
             runnable.run();
             return;
         }
         TaskCountListener listener = new TaskCountListener() {
             @Override
             public void onUpdateTaskCount(int taskCount) {
+                Log.i("PK","Task count is "+taskCount);
+                for(String state : sProgressStates.keySet()) {
+                    Log.i("PK", state);
+                }
                 if(taskCount == 0) {
                     runnable.run();
                 }
