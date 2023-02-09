@@ -1,4 +1,5 @@
 rootProject.name='PojavLauncher'
+include ':cubix-ui-shim:cubix-proprietary'
 include ':jre_lwjgl3glfw'
 include ':app_pojavlauncher'
 

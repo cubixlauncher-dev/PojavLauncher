@@ -111,7 +111,7 @@ public final class Tools {
     }
 
 
-    public static void launchMinecraft(final Activity activity, MinecraftAccount minecraftAccount,
+    public static void launchMinecraft(final Activity activity, CubixAccount minecraftAccount,
                                        MinecraftProfile minecraftProfile, String versionId) throws Throwable {
         ActivityManager.MemoryInfo mi = new ActivityManager.MemoryInfo();
         ((ActivityManager)activity.getSystemService(Context.ACTIVITY_SERVICE)).getMemoryInfo(mi);
@@ -309,8 +309,7 @@ public final class Tools {
         return argsFromJson;
     }
 
-    public static String[] getMinecraftClientArgs(MinecraftAccount profile, JMinecraftVersionList.Version versionInfo, String strGameDir) {
-        String username = "123";
+    public static String[] getMinecraftClientArgs(CubixAccount profile, JMinecraftVersionList.Version versionInfo, String strGameDir) {
         String versionName = versionInfo.id;
         if (versionInfo.inheritsFrom != null) {
             versionName = versionInfo.inheritsFrom;
@@ -322,10 +321,10 @@ public final class Tools {
         gameDir.mkdirs();
 
         Map<String, String> varArgMap = new ArrayMap<>();
-        //varArgMap.put("auth_session", profile.accessToken); // For legacy versions of MC
-        //varArgMap.put("auth_access_token", profile.accessToken);
-        varArgMap.put("auth_player_name", username);
-        //varArgMap.put("auth_uuid", profile.profileId.replace("-", ""));
+        varArgMap.put("auth_session", "0"); // For legacy versions of MC
+        varArgMap.put("auth_access_token", "0");
+        varArgMap.put("auth_player_name", profile.username);
+        varArgMap.put("auth_uuid", "00000000000000000000000000000000");
         //varArgMap.put("auth_xuid", profile.xuid);
         varArgMap.put("assets_root", Tools.ASSETS_PATH);
         varArgMap.put("assets_index_name", versionInfo.assets);
@@ -335,6 +334,7 @@ public final class Tools {
         varArgMap.put("user_type", userType);
         varArgMap.put("version_name", versionName);
         varArgMap.put("version_type", versionInfo.type);
+        varArgMap.put("cubix_token", profile.cubixToken);
 
         List<String> minecraftArgs = new ArrayList<String>();
         if (versionInfo.arguments != null) {
@@ -962,7 +962,7 @@ public final class Tools {
         //TODO handle custom animations
         FragmentTransaction transaction = fragmentActivity.getSupportFragmentManager().beginTransaction()
                 .setReorderingAllowed(true)
-                .replace(R.id.container_fragment, fragmentClass, bundle, fragmentTag);
+                .replace(0, fragmentClass, bundle, fragmentTag);
         if(addCurrentToBackstack) transaction.addToBackStack(null);
 
         transaction.commit();

@@ -59,8 +59,14 @@ public class TestStorageActivity extends Activity {
         //Only run them once we get a definitive green light to use storage
         AsyncAssetManager.unpackComponents(this);
         AsyncAssetManager.unpackSingleFiles(this);
-
-        Intent intent =  new Intent(this, LauncherActivity.class);
+        String bootstrapActivityClassName = getString(R.string.main_activity_class_name);
+        Class<?> activityClass = LauncherActivity.class;
+        try {
+            activityClass = Class.forName(bootstrapActivityClassName);
+        }catch (Throwable th) {
+            th.printStackTrace();
+        }
+        Intent intent =  new Intent(this, activityClass);
         startActivity(intent);
         finish();
     }

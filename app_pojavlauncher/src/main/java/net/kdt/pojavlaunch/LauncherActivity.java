@@ -22,7 +22,6 @@ import androidx.fragment.app.FragmentContainerView;
 import androidx.fragment.app.FragmentManager;
 
 import com.kdt.mcgui.ProgressLayout;
-import com.kdt.mcgui.mcAccountSpinner;
 
 import net.kdt.pojavlaunch.fragments.MainMenuFragment;
 import net.kdt.pojavlaunch.fragments.MicrosoftLoginFragment;
@@ -48,7 +47,6 @@ public class LauncherActivity extends BaseActivity {
     private final Object mLockStoragePerm = new Object();
 
 
-    private mcAccountSpinner mAccountSpinner;
     private FragmentContainerView mFragmentView;
     private ImageButton mSettingsButton, mDeleteAccountButton;
     private ProgressLayout mProgressLayout;
@@ -92,12 +90,6 @@ public class LauncherActivity extends BaseActivity {
         }
     };
 
-    /* Listener for account deletion */
-    private final View.OnClickListener mAccountDeleteButtonListener = v -> new AlertDialog.Builder(this)
-            .setMessage(R.string.warning_remove_account)
-            .setPositiveButton(android.R.string.cancel, null)
-            .setNeutralButton(R.string.global_delete, (dialog, which) -> mAccountSpinner.removeCurrentAccount())
-            .show();
 
     private final ExtraListener<Boolean> mLaunchGameListener = (key, value) -> {
         if(mProgressLayout.hasProcesses()){
@@ -117,11 +109,6 @@ public class LauncherActivity extends BaseActivity {
             return false;
         }
 
-        if(mAccountSpinner.getSelectedAccount() == null){
-            Toast.makeText(this, R.string.no_saved_accounts, Toast.LENGTH_LONG).show();
-            ExtraCore.setValue(ExtraConstants.SELECT_AUTH_METHOD, true);
-            return false;
-        }
         String normalizedVersionId = AsyncMinecraftDownloader.normalizeVersionId(prof.lastVersionId);
         JMinecraftVersionList.Version mcVersion = AsyncMinecraftDownloader.getListedVersion(normalizedVersionId);
         new AsyncMinecraftDownloader(this, mcVersion, normalizedVersionId, new AsyncMinecraftDownloader.DoneListener() {
@@ -152,14 +139,11 @@ public class LauncherActivity extends BaseActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_pojav_launcher);
         getWindow().setBackgroundDrawable(null);
-        bindViews();
         ProgressKeeper.addTaskCountListener((mProgressServiceKeeper = new ProgressServiceKeeper(this)));
         askForStoragePermission(); // Will wait here
 
         mSettingsButton.setOnClickListener(mSettingButtonListener);
-        mDeleteAccountButton.setOnClickListener(mAccountDeleteButtonListener);
         ProgressKeeper.addTaskCountListener(mProgressLayout);
         ExtraCore.addExtraListener(ExtraConstants.BACK_PREFERENCE, mBackPreferenceListener);
         ExtraCore.addExtraListener(ExtraConstants.SELECT_AUTH_METHOD, mSelectAuthMethod);
@@ -286,15 +270,6 @@ public class LauncherActivity extends BaseActivity {
                 mLockStoragePerm.notifyAll();
             }
         }
-    }
-
-    /** Stuff all the view boilerplate here */
-    private void bindViews(){
-        mFragmentView = findViewById(R.id.container_fragment);
-        mSettingsButton = findViewById(R.id.setting_button);
-        mDeleteAccountButton = findViewById(R.id.delete_account_button);
-        mAccountSpinner = findViewById(R.id.account_spinner);
-        mProgressLayout = findViewById(R.id.progress_layout);
     }
 
 

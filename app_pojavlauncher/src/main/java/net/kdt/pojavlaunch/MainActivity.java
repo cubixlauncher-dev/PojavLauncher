@@ -66,7 +66,6 @@ public class MainActivity extends BaseActivity implements ControlButtonMenuListe
     public static ControlLayout mControlLayout;
 
 
-    MinecraftAccount mProfile;
     MinecraftProfile minecraftProfile;
 
     private ArrayAdapter<String> gameActionArrayAdapter;
@@ -80,7 +79,6 @@ public class MainActivity extends BaseActivity implements ControlButtonMenuListe
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        mProfile = PojavProfile.getCurrentProfileContent(this, null);
         if(LauncherProfiles.mainProfileJson == null) LauncherProfiles.update();
         minecraftProfile = LauncherProfiles.mainProfileJson.profiles.get(LauncherPreferences.DEFAULT_PREF.getString(LauncherPreferences.PREF_KEY_CURRENT_PROFILE,""));
         MCOptionUtils.load(Tools.getGameDirPath(minecraftProfile));
@@ -341,7 +339,9 @@ public class MainActivity extends BaseActivity implements ControlButtonMenuListe
         JREUtils.redirectAndPrintJRELog();
 
         LauncherProfiles.update();
-        Tools.launchMinecraft(this, mProfile, minecraftProfile, mVersionId);
+        CubixAccount account = CubixAccount.getAccount(this);
+        if(account == null) throw new RuntimeException("Trying to run a null account");
+        Tools.launchMinecraft(this, CubixAccount.getAccount(this), minecraftProfile, mVersionId);
     }
 
     private void checkJavaArgsIsLaunchable(String jreVersion) throws Throwable {
