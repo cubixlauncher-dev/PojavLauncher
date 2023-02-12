@@ -14,6 +14,9 @@ import androidx.annotation.Nullable;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
+import com.kdt.mcgui.ProgressLayout;
+
+import net.kdt.pojavlaunch.progresskeeper.ProgressKeeper;
 import net.kdt.pojavlaunch.tasks.AsyncAssetManager;
 
 public class TestStorageActivity extends Activity {
@@ -68,6 +71,7 @@ public class TestStorageActivity extends Activity {
         }
         Intent intent =  new Intent(this, activityClass);
         startActivity(intent);
+        ProgressKeeper.submitProgress(ProgressLayout.DOWNLOAD_MINECRAFT, 50, R.string.app_short_name);
         finish();
     }
 }
