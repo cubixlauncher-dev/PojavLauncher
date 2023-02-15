@@ -71,7 +71,7 @@ public class TestStorageActivity extends Activity {
         }
         Intent intent =  new Intent(this, activityClass);
         startActivity(intent);
-        ProgressKeeper.submitProgress(ProgressLayout.DOWNLOAD_MINECRAFT, 50, R.string.app_short_name);
+        //ProgressKeeper.submitProgress(ProgressLayout.DOWNLOAD_MINECRAFT, 50, R.string.app_short_name);
         finish();
     }
 }

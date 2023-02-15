@@ -66,7 +66,7 @@ public class MainActivity extends BaseActivity implements ControlButtonMenuListe
     public static ControlLayout mControlLayout;
 
 
-    MinecraftProfile minecraftProfile;
+    ServerModpackConfig minecraftProfile;
 
     private ArrayAdapter<String> gameActionArrayAdapter;
     private AdapterView.OnItemClickListener gameActionClickListener;
@@ -79,8 +79,8 @@ public class MainActivity extends BaseActivity implements ControlButtonMenuListe
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        if(LauncherProfiles.mainProfileJson == null) LauncherProfiles.update();
-        minecraftProfile = LauncherProfiles.mainProfileJson.profiles.get(LauncherPreferences.DEFAULT_PREF.getString(LauncherPreferences.PREF_KEY_CURRENT_PROFILE,""));
+        String version = getIntent().getStringExtra(INTENT_MINECRAFT_VERSION);
+        minecraftProfile = ServerModpackConfig.load(version);
         MCOptionUtils.load(Tools.getGameDirPath(minecraftProfile));
         GameService.startService(this);
         initLayout(R.layout.activity_basemain);
@@ -131,24 +131,24 @@ public class MainActivity extends BaseActivity implements ControlButtonMenuListe
 
 
             String runtime = LauncherPreferences.PREF_DEFAULT_RUNTIME;
-            if(minecraftProfile.javaDir != null && minecraftProfile.javaDir.startsWith(Tools.LAUNCHERPROFILES_RTPREFIX)) {
-                String runtimeName = minecraftProfile.javaDir.substring(Tools.LAUNCHERPROFILES_RTPREFIX.length());
+            if(minecraftProfile.getJavaRuntime() != null) {
+                String runtimeName = minecraftProfile.getJavaRuntime();
                 if(MultiRTUtils.forceReread(runtimeName).versionString != null) {
                     runtime = runtimeName;
                 }
             }
-            if(minecraftProfile.pojavRendererName != null) {
-                Log.i("RdrDebug","__P_renderer="+minecraftProfile.pojavRendererName);
-                Tools.LOCAL_RENDERER = minecraftProfile.pojavRendererName;
+            if(minecraftProfile.getRenderer() != null) {
+                Log.i("RdrDebug","__P_renderer="+minecraftProfile.getRenderer());
+                Tools.LOCAL_RENDERER = minecraftProfile.getRenderer();
             }
 
-            setTitle("Minecraft " + minecraftProfile.lastVersionId);
+            setTitle("Minecraft " + minecraftProfile.getVersionName());
 
             MultiRTUtils.setRuntimeNamed(runtime);
             // Minecraft 1.13+
 
             String version = getIntent().getStringExtra(INTENT_MINECRAFT_VERSION);
-            version = version == null ? minecraftProfile.lastVersionId : version;
+            version = version == null ? minecraftProfile.getVersionName() : version;
 
             mVersionId = version;
             isInputStackCall = Tools.getVersionInfo(mVersionId).arguments != null;
@@ -201,9 +201,9 @@ public class MainActivity extends BaseActivity implements ControlButtonMenuListe
         try {
             // Load keys
             mControlLayout.loadLayout(
-                    minecraftProfile.controlFile == null
+                    minecraftProfile.getControlFile() == null
                             ? LauncherPreferences.PREF_DEFAULTCTRL_PATH
-                            : Tools.CTRLMAP_PATH + "/" + minecraftProfile.controlFile);
+                            : Tools.CTRLMAP_PATH + "/" + minecraftProfile.getControlFile());
         } catch(IOException e) {
             try {
                 Log.w("MainActivity", "Unable to load the control file, loading the default now", e);
@@ -338,7 +338,7 @@ public class MainActivity extends BaseActivity implements ControlButtonMenuListe
 
         JREUtils.redirectAndPrintJRELog();
 
-        LauncherProfiles.update();
+        
         CubixAccount account = CubixAccount.getAccount(this);
         if(account == null) throw new RuntimeException("Trying to run a null account");
         Tools.launchMinecraft(this, CubixAccount.getAccount(this), minecraftProfile, mVersionId);
@@ -412,9 +412,9 @@ public class MainActivity extends BaseActivity implements ControlButtonMenuListe
             MainActivity.mControlLayout.setModifiable(false);
             System.gc();
             MainActivity.mControlLayout.loadLayout(
-                    minecraftProfile.controlFile == null
+                    minecraftProfile.getControlFile() == null
                             ? LauncherPreferences.PREF_DEFAULTCTRL_PATH
-                            : Tools.CTRLMAP_PATH + "/" + minecraftProfile.controlFile);
+                            : Tools.CTRLMAP_PATH + "/" + minecraftProfile.getControlFile());
             mDrawerPullButton.setVisibility(mControlLayout.hasMenuButton() ? View.GONE : View.VISIBLE);
         } catch (IOException e) {
             Tools.showError(this,e);

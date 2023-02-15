@@ -16,6 +16,7 @@ import net.kdt.pojavlaunch.JAssets;
 import net.kdt.pojavlaunch.JMinecraftVersionList;
 import net.kdt.pojavlaunch.JRE17Util;
 import net.kdt.pojavlaunch.R;
+import net.kdt.pojavlaunch.ServerModpackConfig;
 import net.kdt.pojavlaunch.Tools;
 import net.kdt.pojavlaunch.extra.ExtraConstants;
 import net.kdt.pojavlaunch.extra.ExtraCore;
@@ -26,6 +27,7 @@ import net.kdt.pojavlaunch.value.CubixFileInfo;
 import net.kdt.pojavlaunch.value.DependentLibrary;
 import net.kdt.pojavlaunch.value.MinecraftClientInfo;
 import net.kdt.pojavlaunch.value.MinecraftLibraryArtifact;
+import net.kdt.pojavlaunch.value.SmallFileComparator;
 
 import org.apache.commons.io.IOUtils;
 
@@ -33,6 +35,8 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.util.Arrays;
+import java.util.Collection;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.LinkedBlockingQueue;
@@ -62,7 +66,7 @@ public class AsyncMinecraftDownloader {
     /* we do the throws DownloaderException thing to avoid blanket-catching Exception as a form of anti-lazy-developer protection */
     private void downloadGame(@NonNull Activity activity, JMinecraftVersionList.Version verInfo, String versionName) throws DownloaderException {
         final String downVName = "/" + versionName + "/" + versionName;
-
+        final ServerModpackConfig config = ServerModpackConfig.load(versionName);
         //Downloading libraries
         String minecraftMainJar = Tools.DIR_HOME_VERSION + downVName + ".jar";
         JAssets assets = null;
@@ -90,7 +94,7 @@ public class AsyncMinecraftDownloader {
             verInfo = Tools.getVersionInfo(versionName);
 
             // THIS one function need the activity in the case of an error
-            if(!JRE17Util.installNewJreIfNeeded(activity, verInfo)){
+            if(!JRE17Util.installNewJreIfNeeded(activity, verInfo, config)){
                 ProgressKeeper.submitProgress(ProgressLayout.DOWNLOAD_MINECRAFT, -1, -1);
                 throw new DownloaderException();
             }
@@ -202,7 +206,7 @@ public class AsyncMinecraftDownloader {
 
         try {
             Log.i("Cubix","Downloading cubix files...");
-            downloadCubixFiles(verInfo, new File(Tools.DIR_GAME_NEW));
+            downloadCubixFiles(verInfo, new File(config.getGameDirectory()));
         }catch (Exception e) {
             e.printStackTrace();
             throw new DownloaderException(e);
@@ -399,8 +403,10 @@ public class AsyncMinecraftDownloader {
         final ThreadPoolExecutor executor = new ThreadPoolExecutor(5, 5, 500, TimeUnit.MILLISECONDS, new LinkedBlockingQueue<>());
         final AtomicBoolean interrupt = new AtomicBoolean(true);
         final AtomicLong downloadProgress = new AtomicLong(0);
+        final SmallFileComparator comparator = new SmallFileComparator();
         long downloadSize = 0;
         if(version.custom_files != null) {
+            Arrays.sort(version.custom_files, comparator); //Breeze through the small files first, deal with the large ones later
             for(CubixFileInfo cubixFileInfo : version.custom_files) {
                 downloadSize += cubixFileInfo.size;
                 cubixFileInfo.setDownloaderData(destination, new AtomicMonitor(downloadProgress), interrupt);
@@ -408,6 +414,7 @@ public class AsyncMinecraftDownloader {
             }
         }
         if(version.custom_mods != null) {
+            Arrays.sort(version.custom_mods, comparator);
             for(CubixFileInfo cubixFileInfo : version.custom_mods) {
                 downloadSize += cubixFileInfo.size;
                 cubixFileInfo.setDownloaderData(destination, new AtomicMonitor(downloadProgress), interrupt);

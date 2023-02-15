@@ -31,7 +31,7 @@ public class ProfileAdapter extends BaseAdapter {
 
     public ProfileAdapter(Context context, boolean enableCreateButton) {
         ProfileIconCache.initDefault(context);
-        LauncherProfiles.update();
+        
         mProfiles = new HashMap<>(LauncherProfiles.mainProfileJson.profiles);
         if(enableCreateButton) {
             mCreateProfile = new MinecraftProfile();

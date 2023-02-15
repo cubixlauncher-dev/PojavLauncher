@@ -1,5 +1,7 @@
 package net.kdt.pojavlaunch.value;
 
+import android.util.Log;
+
 import net.kdt.pojavlaunch.Tools;
 import net.kdt.pojavlaunch.utils.DownloadUtils;
 
@@ -28,7 +30,7 @@ public class CubixFileInfo implements Runnable {
         if(path.startsWith("/")) path = "."+path; // нельзя засовывать файлы в /; ай-ай-ай предыдущему разрабу!
         destinationPath = new File(destinationPath, path);
         boolean fileInvalid = !destinationPath.exists();
-        if(check && !fileInvalid) fileInvalid = Tools.compareSHA1(destinationPath, sha1);
+        if(check && !fileInvalid) fileInvalid = !Tools.compareSHA1(destinationPath, sha1);
         if(fileInvalid) {
             try {
                 DownloadUtils.downloadFileMonitored(url, destinationPath, null, monitor);

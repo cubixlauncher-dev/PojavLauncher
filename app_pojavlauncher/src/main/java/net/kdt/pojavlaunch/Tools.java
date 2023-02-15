@@ -112,7 +112,7 @@ public final class Tools {
 
 
     public static void launchMinecraft(final Activity activity, CubixAccount minecraftAccount,
-                                       MinecraftProfile minecraftProfile, String versionId) throws Throwable {
+                                       ServerModpackConfig minecraftProfile, String versionId) throws Throwable {
         ActivityManager.MemoryInfo mi = new ActivityManager.MemoryInfo();
         ((ActivityManager)activity.getSystemService(Context.ACTIVITY_SERVICE)).getMemoryInfo(mi);
         if(LauncherPreferences.PREF_RAM_ALLOCATION > (mi.availMem/1048576L)) {
@@ -129,11 +129,11 @@ public final class Tools {
             }
         }
         JMinecraftVersionList.Version versionInfo = Tools.getVersionInfo(versionId);
-        LauncherProfiles.update();
+        
         String gamedirPath = Tools.getGameDirPath(minecraftProfile);
-
-        if(minecraftProfile.javaArgs != null && !minecraftProfile.javaArgs.isEmpty())
-            LauncherPreferences.PREF_CUSTOM_JAVA_ARGS = minecraftProfile.javaArgs;
+        String jvmArgs = minecraftProfile.getJvmArgs();
+        if(jvmArgs != null)
+            LauncherPreferences.PREF_CUSTOM_JAVA_ARGS = jvmArgs;
 
         // Pre-process specific files
         disableSplash(gamedirPath);
@@ -179,14 +179,8 @@ public final class Tools {
         JREUtils.launchJavaVM(activity, gamedirPath, javaArgList);
     }
 
-    public static String getGameDirPath(@NonNull MinecraftProfile minecraftProfile){
-        if(minecraftProfile.gameDir != null){
-            if(minecraftProfile.gameDir.startsWith(Tools.LAUNCHERPROFILES_RTPREFIX))
-                return minecraftProfile.gameDir.replace(Tools.LAUNCHERPROFILES_RTPREFIX,Tools.DIR_GAME_HOME+"/");
-            else
-                return Tools.DIR_GAME_HOME + '/' + minecraftProfile.gameDir;
-        }
-        return Tools.DIR_GAME_NEW;
+    public static String getGameDirPath(@NonNull ServerModpackConfig minecraftProfile){
+        return minecraftProfile.getGameDirectory();
     }
 
     public static void buildNotificationChannel(Context context){

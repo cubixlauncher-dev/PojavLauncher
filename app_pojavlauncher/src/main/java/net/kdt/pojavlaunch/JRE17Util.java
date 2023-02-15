@@ -53,17 +53,13 @@ public class JRE17Util {
     }
 
     /** @return true if everything is good, false otherwise.  */
-    public static boolean installNewJreIfNeeded(Activity activity, JMinecraftVersionList.Version versionInfo) {
+    public static boolean installNewJreIfNeeded(Activity activity, JMinecraftVersionList.Version versionInfo, ServerModpackConfig config) {
         //Now we have the reliable information to check if our runtime settings are good enough
         if (versionInfo.javaVersion == null || versionInfo.javaVersion.component.equalsIgnoreCase("jre-legacy"))
             return true;
-
-        LauncherProfiles.update();
-        MinecraftProfile minecraftProfile = LauncherProfiles.mainProfileJson.profiles.get(LauncherPreferences.DEFAULT_PREF.getString(LauncherPreferences.PREF_KEY_CURRENT_PROFILE, ""));
-
         String selectedRuntime = null;
-        if (minecraftProfile.javaDir != null && minecraftProfile.javaDir.startsWith(Tools.LAUNCHERPROFILES_RTPREFIX))
-            selectedRuntime = minecraftProfile.javaDir.substring(Tools.LAUNCHERPROFILES_RTPREFIX.length());
+        if (config.getJavaRuntime() != null)
+            selectedRuntime = config.getJavaRuntime();
 
         Runtime runtime = selectedRuntime != null ? MultiRTUtils.read(selectedRuntime) : MultiRTUtils.read(LauncherPreferences.PREF_DEFAULT_RUNTIME);
         if (runtime.javaVersion >= versionInfo.javaVersion.majorVersion) return true;
@@ -73,16 +69,16 @@ public class JRE17Util {
             if (JRE17Util.isInternalNewJRE(appropriateRuntime)) {
                 JRE17Util.checkInternalNewJre(activity.getAssets());
             }
-            minecraftProfile.javaDir = Tools.LAUNCHERPROFILES_RTPREFIX + appropriateRuntime;
-            LauncherProfiles.update();
+            config.setJavaRuntime(appropriateRuntime);
+            
         } else {
             if (versionInfo.javaVersion.majorVersion <= 17) { // there's a chance we have an internal one for this case
                 if (!JRE17Util.checkInternalNewJre(activity.getAssets())){
                     showRuntimeFail(activity, versionInfo);
                     return false;
                 } else {
-                    minecraftProfile.javaDir = Tools.LAUNCHERPROFILES_RTPREFIX + JRE17Util.NEW_JRE_NAME;
-                    LauncherProfiles.update();
+                    config.setJavaRuntime(JRE17Util.NEW_JRE_NAME);
+                    
                 }
             } else {
                 showRuntimeFail(activity, versionInfo);
