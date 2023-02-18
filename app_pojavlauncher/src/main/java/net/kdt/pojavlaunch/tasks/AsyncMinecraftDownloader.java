@@ -104,6 +104,7 @@ public class AsyncMinecraftDownloader {
                     assets = downloadIndex(verInfo, new File(Tools.ASSETS_PATH, "indexes/" + verInfo.assets + ".json"));
             } catch (IOException e) {
                 Log.e("AsyncMcDownloader", e.toString(), e);
+                ProgressKeeper.submitProgress(ProgressLayout.DOWNLOAD_MINECRAFT, -1, -1);
                 throw new DownloaderException(e);
             }
 
@@ -209,6 +210,7 @@ public class AsyncMinecraftDownloader {
             downloadCubixFiles(verInfo, new File(config.getGameDirectory()));
         }catch (Exception e) {
             e.printStackTrace();
+            ProgressKeeper.submitProgress(ProgressLayout.DOWNLOAD_MINECRAFT, -1, -1);
             throw new DownloaderException(e);
         }
 
