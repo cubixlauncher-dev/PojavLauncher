@@ -7,8 +7,6 @@
     app:key=""
     >
 
-    <net.kdt.pojavlaunch.prefs.BackButtonPreference/>
-
     <PreferenceCategory
         android:title="Categories"
         >
