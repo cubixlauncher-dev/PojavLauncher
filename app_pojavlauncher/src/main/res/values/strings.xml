@@ -271,7 +271,7 @@
     <string name="preference_control_offset_title">Control side offsets</string>
     <string name="preference_control_offset_description">Set a custom offset to each side of the screen</string>
     <string name="preference_mouse_start_title">Start with virtual mouse on</string>
-    <string name="preference_mouse_start_description">Using this option will get you judged by Mathias-Boulay</string>
+    <string name="preference_mouse_start_description">Virtual Mouse appears at startup when this option is on</string>
     <string name="preference_video_title">Video and renderer</string>
     <string name="preference_video_description">Resolution, scaling type, and renderer</string>
     <string name="preference_control_title">Control customization</string>
@@ -284,10 +284,20 @@
     <string name="preference_experimental_description">Use things there with consideration, no support.</string>
     <string name="preference_sustained_performance_title">Enable sustained performance mode</string>
     <string name="preference_sustained_performance_description">Limit thermal throttling by limiting peak performance</string>
+    <string name="preference_force_vsync_title">Force enable vsync</string>
+    <string name="preference_force_vsync_description">Limit thermal throttling by limiting peak performance</string>
     <string name="preference_force_english_title">Force language to english</string>
     <string name="preference_force_english_description">Allows you to see original strings, as intended by developers. Requires a restart</string>
     <string name="preference_edit_controls_title">Edit custom controls</string>
     <string name="preference_edit_controls_summary">Tweak the control scheme to fit your needs</string>
+
+    <string name="preference_category_gyro_controls">Gyro controls</string>
+    <string name="preference_category_virtual_mouse">Virtual mouse</string>
+
+    <string name="preference_gyro_invert_x_axis">Invert X axis</string>
+    <string name="preference_gyro_invert_y_axis">Invert Y axis</string>
+    <string name="preference_gyro_invert_x_axis_description">Invert the horizontal axis</string>
+    <string name="preference_gyro_invert_y_axis_description">Invert the vertical axis</string>
 
     <string name="preference_back_title">Back to the last screen</string>
     <string name="gles_hack_title">GL4ES Shrink hack</string>
@@ -339,4 +349,5 @@
     <string name="preference_gyro_sample_rate_title">Gyroscope sampling rate</string>
     <string name="preference_gyro_sample_rate_description">If you have performance issues with the gyroscope controls, increase this</string>
     <string name="main_activity_class_name">git.artdeell.cubix.proprietary.MainActivity</string>
+    <string name="microsoft_login_retry_later">Too many requests, please try again later.</string>
 </resources>
