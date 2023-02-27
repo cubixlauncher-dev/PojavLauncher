@@ -1,5 +1,7 @@
 package net.kdt.pojavlaunch.prefs.screens;
 
+import static net.kdt.pojavlaunch.Architecture.is32BitsDevice;
+import static net.kdt.pojavlaunch.Tools.getTotalDeviceMemory;
 import static net.kdt.pojavlaunch.prefs.LauncherPreferences.PREF_NOTCH_SIZE;
 
 import android.content.SharedPreferences;
@@ -20,6 +22,7 @@ import net.kdt.pojavlaunch.prefs.LauncherPreferences;
 public class LauncherPreferenceVideoFragment extends LauncherPreferenceFragment {
     @Override
     public void onCreatePreferences(Bundle b, String str) {
+        int ramAllocation = LauncherPreferences.PREF_RAM_ALLOCATION;
         addPreferencesFromResource(R.xml.pref_video);
 
         //Disable notch checking behavior on android 8.1 and below.
@@ -37,6 +40,20 @@ public class LauncherPreferenceVideoFragment extends LauncherPreferenceFragment 
         // Sustained performance is only available since Nougat
         SwitchPreference sustainedPerfSwitch = findPreference("sustainedPerformance");
         sustainedPerfSwitch.setVisible(Build.VERSION.SDK_INT >= Build.VERSION_CODES.N);
+
+        int maxRAM;
+        int deviceRam = getTotalDeviceMemory(getContext());
+
+        CustomSeekBarPreference seek7 = findPreference("allocation");
+        seek7.setMin(256);
+
+        if(is32BitsDevice() || deviceRam < 2048) maxRAM = Math.min(1000, deviceRam);
+        else maxRAM = deviceRam - (deviceRam < 3064 ? 800 : 1024); //To have a minimum for the device to breathe
+
+        seek7.setMax(maxRAM);
+        seek7.setValue(ramAllocation);
+        seek7.setSuffix(" MB");
+
         computeVisibility();
     }
 

@@ -1,16 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app2="http://schemas.android.com/apk/res-auto">
+    <net.kdt.pojavlaunch.prefs.CustomSeekBarPreference
+        android:key="allocation"
 
+        android:summary="@string/mcl_memory_allocation_subtitle"
+        android:title="@string/mcl_memory_allocation"
+        app2:showSeekBarValue="true"
+        app2:seekBarIncrement="10"
+        app2:selectable="false"/>
     <PreferenceCategory android:title="Video settings" >
-        <androidx.preference.ListPreference
-            android:title="@string/mcl_setting_category_renderer"
-            android:key="renderer"
-            android:defaultValue="opengles2"
-            android:entries="@array/renderer"
-            android:entryValues="@array/renderer_values"
-            android:icon="@drawable/ic_setting_engine"
-            app2:useSimpleSummaryProvider="true"/>
+
 
         <androidx.preference.SwitchPreferenceCompat
             android:defaultValue="false"
