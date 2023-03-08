@@ -10,10 +10,6 @@ import android.content.*;
 import android.graphics.Rect;
 import android.os.Build;
 import android.util.Log;
-import android.view.WindowInsets;
-import android.view.WindowMetrics;
-
-import androidx.core.view.WindowInsetsCompat;
 
 import net.kdt.pojavlaunch.*;
 import net.kdt.pojavlaunch.multirt.MultiRTUtils;
@@ -40,27 +36,26 @@ public class LauncherPreferences {
     public static String PREF_VERSION_REPOS = "https://piston-meta.mojang.com/mc/game/version_manifest_v2.json";
     public static boolean PREF_CHECK_LIBRARY_SHA = true;
     public static boolean PREF_DISABLE_GESTURES = false;
+    public static boolean PREF_DISABLE_SWAP_HAND = false;
     public static float PREF_MOUSESPEED = 1f;
     public static int PREF_RAM_ALLOCATION;
     public static String PREF_DEFAULT_RUNTIME;
-    public static int PREF_CONTROL_TOP_OFFSET = 0;
-    public static int PREF_CONTROL_RIGHT_OFFSET = 0;
-    public static int PREF_CONTROL_BOTTOM_OFFSET = 0;
-    public static int PREF_CONTROL_LEFT_OFFSET = 0;
     public static boolean PREF_SUSTAINED_PERFORMANCE = false;
     public static boolean PREF_VIRTUAL_MOUSE_START = false;
     public static boolean PREF_ARC_CAPES = false;
     public static boolean PREF_USE_ALTERNATE_SURFACE = true;
     public static boolean PREF_JAVA_SANDBOX = true;
     public static int PREF_SCALE_FACTOR = 100;
-    public static boolean PREF_ENALBE_GYRO = false;
-    public static float PREF_GYRO_SENSITIVITY = 100;
+    public static boolean PREF_ENABLE_GYRO = false;
+    public static float PREF_GYRO_SENSITIVITY = 1f;
     public static int PREF_GYRO_SAMPLE_RATE = 16;
 
     public static boolean PREF_GYRO_INVERT_X = false;
 
     public static boolean PREF_GYRO_INVERT_Y = false;
     public static boolean PREF_FORCE_VSYNC = false;
+
+    public static boolean PREF_BUTTON_ALL_CAPS = true;
 
 
     public static void loadPreferences(Context ctx) {
@@ -83,24 +78,22 @@ public class LauncherPreferences {
         PREF_FORCE_ENGLISH = DEFAULT_PREF.getBoolean("force_english", false);
         PREF_CHECK_LIBRARY_SHA = DEFAULT_PREF.getBoolean("checkLibraries",true);
         PREF_DISABLE_GESTURES = DEFAULT_PREF.getBoolean("disableGestures",false);
+        PREF_DISABLE_SWAP_HAND = DEFAULT_PREF.getBoolean("disableDoubleTap", false);
         PREF_RAM_ALLOCATION = DEFAULT_PREF.getInt("allocation", findBestRAMAllocation(ctx));
         PREF_CUSTOM_JAVA_ARGS = DEFAULT_PREF.getString("javaArgs", "");
-        PREF_CONTROL_TOP_OFFSET = DEFAULT_PREF.getInt("controlTopOffset", 0);
-        PREF_CONTROL_RIGHT_OFFSET = DEFAULT_PREF.getInt("controlRightOffset", 0);
-        PREF_CONTROL_BOTTOM_OFFSET = DEFAULT_PREF.getInt("controlBottomOffset", 0);
-        PREF_CONTROL_LEFT_OFFSET = DEFAULT_PREF.getInt("controlLeftOffset", 0);
         PREF_SUSTAINED_PERFORMANCE = DEFAULT_PREF.getBoolean("sustainedPerformance", false);
         PREF_VIRTUAL_MOUSE_START = DEFAULT_PREF.getBoolean("mouse_start", false);
         PREF_ARC_CAPES = DEFAULT_PREF.getBoolean("arc_capes",false);
         PREF_USE_ALTERNATE_SURFACE = DEFAULT_PREF.getBoolean("alternate_surface", false);
         PREF_JAVA_SANDBOX = DEFAULT_PREF.getBoolean("java_sandbox", true);
         PREF_SCALE_FACTOR = DEFAULT_PREF.getInt("resolutionRatio", 100);
-        PREF_ENALBE_GYRO = DEFAULT_PREF.getBoolean("enableGyro", false);
+        PREF_ENABLE_GYRO = DEFAULT_PREF.getBoolean("enableGyro", false);
         PREF_GYRO_SENSITIVITY = ((float)DEFAULT_PREF.getInt("gyroSensitivity", 100))/100f;
         PREF_GYRO_SAMPLE_RATE = DEFAULT_PREF.getInt("gyroSampleRate", 16);
         PREF_GYRO_INVERT_X = DEFAULT_PREF.getBoolean("gyroInvertX", false);
         PREF_GYRO_INVERT_Y = DEFAULT_PREF.getBoolean("gyroInvertY", false);
         PREF_FORCE_VSYNC = DEFAULT_PREF.getBoolean("force_vsync", false);
+        PREF_BUTTON_ALL_CAPS = DEFAULT_PREF.getBoolean("buttonAllCaps", true);
 
 /*
         if (PREF_CUSTOM_JAVA_ARGS.isEmpty()) {
