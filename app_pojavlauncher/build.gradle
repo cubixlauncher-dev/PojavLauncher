@@ -75,8 +75,14 @@ android {
             shrinkResources false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
             signingConfig signingConfigs.customDebug
-            resValue 'string', 'storageProviderAuthorities', 'net.kdt.pojavlaunch.scoped.gamefolder.debug.cubix'
-            resValue 'string', 'shareProviderAuthority', 'net.kdt.pojavlaunch.scoped.controlfolder.debug.cubix'
+            resValue 'string', 'application_package', 'net.kdt.pojavlaunch.debug'
+            resValue 'string', 'storageProviderAuthorities', 'net.kdt.pojavlaunch.scoped.gamefolder.debug'
+            resValue 'string', 'shareProviderAuthority', 'net.kdt.pojavlaunch.scoped.controlfolder.debug'
+        }
+        proguard {
+            initWith debug
+            minifyEnabled true
+            shrinkResources true
         }
 		
         release {
@@ -86,8 +92,8 @@ android {
 	    // defaultConfig already set
             // multiDexEnabled = true
            // debuggable = true
-            resValue 'string', 'storageProviderAuthorities', 'net.kdt.pojavlaunch.scoped.gamefolder.с'
-            resValue 'string', 'shareProviderAuthority', 'net.kdt.pojavlaunch.scoped.controlfolder.c'
+            resValue 'string', 'storageProviderAuthorities', 'net.kdt.pojavlaunch.scoped.gamefolder'
+            resValue 'string', 'application_package', 'net.kdt.pojavlaunch'
         }
         gplay {
             initWith release

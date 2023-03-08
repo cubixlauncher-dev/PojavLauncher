@@ -7,7 +7,6 @@ import android.hardware.SensorManager;
 import android.os.Bundle;
 
 import androidx.preference.PreferenceCategory;
-import androidx.preference.SwitchPreference;
 
 import net.kdt.pojavlaunch.R;
 import net.kdt.pojavlaunch.prefs.CustomSeekBarPreference;
@@ -74,10 +73,10 @@ public class LauncherPreferenceControlFragment extends LauncherPreferenceFragmen
 
     private void computeVisibility(){
         findPreference("timeLongPressTrigger").setVisible(!LauncherPreferences.PREF_DISABLE_GESTURES);
-        findPreference("gyroSensitivity").setVisible(LauncherPreferences.PREF_ENALBE_GYRO);
-        findPreference("gyroSampleRate").setVisible(LauncherPreferences.PREF_ENALBE_GYRO);
-        findPreference("gyroInvertX").setVisible(LauncherPreferences.PREF_ENALBE_GYRO);
-        findPreference("gyroInvertY").setVisible(LauncherPreferences.PREF_ENALBE_GYRO);
+        findPreference("gyroSensitivity").setVisible(LauncherPreferences.PREF_ENABLE_GYRO);
+        findPreference("gyroSampleRate").setVisible(LauncherPreferences.PREF_ENABLE_GYRO);
+        findPreference("gyroInvertX").setVisible(LauncherPreferences.PREF_ENABLE_GYRO);
+        findPreference("gyroInvertY").setVisible(LauncherPreferences.PREF_ENABLE_GYRO);
     }
 
 }

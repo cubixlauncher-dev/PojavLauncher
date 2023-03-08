@@ -67,7 +67,11 @@ public class ImportControlActivity extends Activity {
         if(!mHasIntentChanged) return;
         mIsFileVerified = false;
         getUriData();
-        mEditText.setText(getNameFromURI(mUriData));
+        if(mUriData == null) {
+            finishAndRemoveTask();
+            return;
+        }
+        mEditText.setText(trimFileName(Tools.getFileName(this, mUriData)));
         mHasIntentChanged = false;
 
         //Import and verify thread
@@ -187,17 +191,6 @@ public class ImportControlActivity extends Activity {
             e.printStackTrace();
             return false;
         }
-    }
-
-    public String getNameFromURI(Uri uri) {
-        Cursor c = getContentResolver().query(uri, null, null, null, null);
-        if(c == null) return uri.getLastPathSegment(); // idk myself but it happens on asus file manager
-        c.moveToFirst();
-        int columnIndex = c.getColumnIndex(OpenableColumns.DISPLAY_NAME);
-        if(columnIndex == -1) return uri.getLastPathSegment();
-        String fileName = c.getString(columnIndex);
-        c.close();
-        return trimFileName(fileName);
     }
 
 }

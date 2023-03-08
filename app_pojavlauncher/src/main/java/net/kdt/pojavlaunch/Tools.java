@@ -86,6 +86,26 @@ public final class Tools {
     public static final String LIBNAME_OPTIFINE = "optifine:OptiFine";
     public static final int RUN_MOD_INSTALLER = 2050;
 
+
+    private static File getPojavStorageRoot(Context ctx) {
+        if(SDK_INT >= 29) {
+            return ctx.getExternalFilesDir(null);
+        }else{
+            return new File(Environment.getExternalStorageDirectory(),"games/PojavLauncher");
+        }
+    }
+
+    /**
+     * Checks if the Pojav's storage root is accessible and read-writable
+     * @param context context to get the storage root if it's not set yet
+     * @return true if storage is fine, false if storage is not accessible
+     */
+    public static boolean checkStorageRoot(Context context) {
+        File externalFilesDir = DIR_GAME_HOME  == null ? Tools.getPojavStorageRoot(context) : new File(DIR_GAME_HOME);
+        //externalFilesDir == null when the storage is not mounted if it was obtained with the context call
+        return externalFilesDir != null && Environment.getExternalStorageState(externalFilesDir).equals(Environment.MEDIA_MOUNTED);
+    }
+
     /**
      * Since some constant requires the use of the Context object
      * You can call this function to initialize them.
@@ -94,11 +114,7 @@ public final class Tools {
     public static void initContextConstants(Context ctx){
         DIR_DATA = ctx.getFilesDir().getParent();
         MULTIRT_HOME = DIR_DATA+"/runtimes";
-        if(SDK_INT >= 29) {
-            DIR_GAME_HOME = ctx.getExternalFilesDir(null).getAbsolutePath();
-        }else{
-            DIR_GAME_HOME = new File(Environment.getExternalStorageDirectory(),"games/PojavLauncher").getAbsolutePath();
-        }
+        DIR_GAME_HOME = getPojavStorageRoot(ctx).getAbsolutePath();
         DIR_GAME_NEW = DIR_GAME_HOME + "/.minecraft";
         DIR_HOME_VERSION = DIR_GAME_NEW + "/versions";
         DIR_HOME_LIBRARY = DIR_GAME_NEW + "/libraries";
@@ -148,19 +164,6 @@ public final class Tools {
         List<String> javaArgList = new ArrayList<String>();
 
         getCacioJavaArgs(javaArgList, JREUtils.jreReleaseList.get("JAVA_VERSION").startsWith("1.8.0"));
-
-/*
-        int mcReleaseDate = Integer.parseInt(versionInfo.releaseTime.substring(0, 10).replace("-", ""));
-        // 13w17a: 20130425
-        // 13w18a: 20130502
-        if (mcReleaseDate < 20130502 && versionInfo.minimumLauncherVersion < 9){
-            ctx.appendlnToLog("AWT-enabled version detected! ("+mcReleaseDate+")");
-            getCacioJavaArgs(javaArgList,false);
-        }else{
-            getCacioJavaArgs(javaArgList,false); // true
-            ctx.appendlnToLog("Headless version detected! ("+mcReleaseDate+")");
-        }
-*/
 
         if (versionInfo.logging != null) {
             String configFile = Tools.DIR_DATA + "/security/" + versionInfo.logging.client.file.id.replace("client", "log4j-rce-patch");
@@ -353,17 +356,6 @@ public final class Tools {
                 }
             }
         }
-        /*
-        minecraftArgs.add("--width");
-        minecraftArgs.add(Integer.toString(CallbackBridge.windowWidth));
-        minecraftArgs.add("--height");
-        minecraftArgs.add(Integer.toString(CallbackBridge.windowHeight));
-
-        minecraftArgs.add("--fullscreenWidth");
-        minecraftArgs.add(Integer.toString(CallbackBridge.windowWidth));
-        minecraftArgs.add("--fullscreenHeight");
-        minecraftArgs.add(Integer.toString(CallbackBridge.windowHeight));
-        */
 
         String[] argsFromJson = JSONUtils.insertJSONValueList(
                 splitAndFilterEmpty(
@@ -432,26 +424,6 @@ public final class Tools {
         StringBuilder libStr = new StringBuilder(); //versnDir + "/" + version + "/" + version + ".jar:";
 
         String[] classpath = generateLibClasspath(info);
-
-        // Debug: LWJGL 3 override
-        // File lwjgl2Folder = new File(Tools.MAIN_PATH, "lwjgl2");
-
-        /*
-         File lwjgl3Folder = new File(Tools.MAIN_PATH, "lwjgl3");
-         if (lwjgl3Folder.exists()) {
-         for (File file: lwjgl3Folder.listFiles()) {
-         if (file.getName().endsWith(".jar")) {
-         libStr.append(file.getAbsolutePath() + ":");
-         }
-         }
-         } else if (lwjgl2Folder.exists()) {
-         for (File file: lwjgl2Folder.listFiles()) {
-         if (file.getName().endsWith(".jar")) {
-         libStr.append(file.getAbsolutePath() + ":");
-         }
-         }
-         }
-         */
 
         if (isClientFirst) {
             libStr.append(getPatchedFile(actualname));
@@ -545,7 +517,11 @@ public final class Tools {
         }
         File destinationFile = new File(output, outputName);
         if(!destinationFile.exists() || overwrite){
-            IOUtils.copy(ctx.getAssets().open(fileName), new FileOutputStream(destinationFile));
+            try(InputStream inputStream = ctx.getAssets().open(fileName)) {
+                try (OutputStream outputStream = new FileOutputStream(destinationFile)){
+                    IOUtils.copy(inputStream, outputStream);
+                }
+            }
         }
     }
 
@@ -789,87 +765,23 @@ public final class Tools {
         }
     }
 
-    public static String convertStream(InputStream inputStream) throws IOException {
-        return convertStream(inputStream, Charset.forName("UTF-8"));
-    }
-
-    public static String convertStream(InputStream inputStream, Charset charset) throws IOException {
-        StringBuilder out = new StringBuilder();
-        int len;
-        byte[] buf = new byte[512];
-        while((len = inputStream.read(buf))!=-1) {
-            out.append(new String(buf, 0, len, charset));
-        }
-        return out.toString();
-    }
-
-    public static File lastFileModified(String dir) {
-        File fl = new File(dir);
-
-        File[] files = fl.listFiles(File::isFile);
-        if(files == null) {
-            return null;
-            // The patch was a bit wrong...
-            // So, this may be null, why? Because this folder may not exist yet
-            // Or it may not have any files...
-            // Doesn't matter. We must check for that in the crash fragment.
-        }
-        long lastMod = Long.MIN_VALUE;
-        File choice = null;
-        for (File file : files) {
-            if (file.lastModified() > lastMod) {
-                choice = file;
-                lastMod = file.lastModified();
-            }
-        }
-        return choice;
-    }
-
-
     public static String read(InputStream is) throws IOException {
-        StringBuilder out = new StringBuilder();
-        int len;
-        byte[] buf = new byte[512];
-        while((len = is.read(buf))!=-1) {
-            out.append(new String(buf, 0, len));
-        }
-        return out.toString();
+        String readResult = IOUtils.toString(is, StandardCharsets.UTF_8);
+        is.close();
+        return readResult;
     }
 
     public static String read(String path) throws IOException {
         return read(new FileInputStream(path));
     }
 
-    public static void write(String path, byte[] content) throws IOException
-    {
-        File outPath = new File(path);
-        outPath.getParentFile().mkdirs();
-        outPath.createNewFile();
-
-        BufferedOutputStream fos = new BufferedOutputStream(new FileOutputStream(path));
-        fos.write(content, 0, content.length);
-        fos.close();
-    }
-
     public static void write(String path, String content) throws IOException {
-        write(path, content.getBytes());
-    }
-
-    public static byte[] loadFromAssetToByte(Context ctx, String inFile) {
-        byte[] buffer = null;
-
-        try {
-            InputStream stream = ctx.getAssets().open(inFile);
-
-            int size = stream.available();
-            buffer = new byte[size];
-            stream.read(buffer);
-            stream.close();
-        } catch (IOException e) {
-            // Handle exceptions here
-            e.printStackTrace();
+        File file = new File(path);
+        File parent = file.getParentFile();
+        if(!parent.exists()) parent.mkdirs();
+        try(FileOutputStream outStream = new FileOutputStream(file)) {
+            IOUtils.write(content, outStream);
         }
-        return buffer;
     }
 
     public static void downloadFile(String urlInput, String nameOutput) throws IOException {
@@ -931,22 +843,14 @@ public final class Tools {
     }
 
     public static String getFileName(Context ctx, Uri uri) {
-        String result = null;
-        if (uri.getScheme().equals("content")) {
-            try (Cursor cursor = ctx.getContentResolver().query(uri, null, null, null, null)) {
-                if (cursor != null && cursor.moveToFirst()) {
-                    result = cursor.getString(cursor.getColumnIndex(OpenableColumns.DISPLAY_NAME));
-                }
-            }
-        }
-        if (result == null) {
-            result = uri.getPath();
-            int cut = result.lastIndexOf('/');
-            if (cut != -1) {
-                result = result.substring(cut + 1);
-            }
-        }
-        return result;
+        Cursor c = ctx.getContentResolver().query(uri, null, null, null, null);
+        if(c == null) return uri.getLastPathSegment(); // idk myself but it happens on asus file manager
+        c.moveToFirst();
+        int columnIndex = c.getColumnIndex(OpenableColumns.DISPLAY_NAME);
+        if(columnIndex == -1) return uri.getLastPathSegment();
+        String fileName = c.getString(columnIndex);
+        c.close();
+        return fileName;
     }
 
     /** Swap the main fragment with another */

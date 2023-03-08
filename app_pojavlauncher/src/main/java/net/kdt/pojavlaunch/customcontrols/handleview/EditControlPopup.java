@@ -8,6 +8,7 @@ import static net.kdt.pojavlaunch.Tools.currentDisplayMetrics;
 import android.animation.ObjectAnimator;
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.graphics.Color;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
@@ -101,7 +102,8 @@ public class EditControlPopup {
 
         mColorSelector = new ColorSelector(context, parent, null);
         mColorSelector.getRootView().setElevation(11);
-        mColorSelector.getRootView().setX(-context.getResources().getDimensionPixelOffset(R.dimen._230sdp));
+        mColorSelector.getRootView().setTranslationZ(11);
+        mColorSelector.getRootView().setX(-context.getResources().getDimensionPixelOffset(R.dimen._280sdp));
 
         mEditPopupAnimator = ObjectAnimator.ofFloat(mScrollView, "x", 0).setDuration(1000);
         mColorEditorAnimator = ObjectAnimator.ofFloat(mColorSelector.getRootView(), "x", 0).setDuration(1000);
@@ -110,7 +112,8 @@ public class EditControlPopup {
         mColorEditorAnimator.setInterpolator(decelerate);
 
         mScrollView.setElevation(10);
-        mScrollView.setX(-context.getResources().getDimensionPixelOffset(R.dimen._230sdp));
+        mScrollView.setTranslationZ(10);
+        mScrollView.setX(-context.getResources().getDimensionPixelOffset(R.dimen._280sdp));
 
         bindLayout();
         loadAdapter();
@@ -166,8 +169,7 @@ public class EditControlPopup {
         }
 
         mDisplayingColor = true;
-        if(color != -1)
-            mColorSelector.show(color);
+        mColorSelector.show(color == -1 ? Color.WHITE : color);
     }
 
     /** Slide out the layout */

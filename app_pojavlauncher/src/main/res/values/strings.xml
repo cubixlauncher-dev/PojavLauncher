@@ -52,7 +52,7 @@
     <string name="mcl_tab_news">News</string>
     <string name="mcl_tab_console">Development console</string>
     <string name="mcl_tab_crash">Crash log</string>
-    
+
     <!-- MCLauncherActivity: Account status -->
     <string name="mcl_account_connected">Connected</string>
     <string name="mcl_account_local">Local</string>
@@ -171,13 +171,13 @@
     <string name="import_control_verifying_file">File is being verified, please wait and try again…</string>
     <string name="import_control_invalid_name">Invalid name or file already exists</string>
     <string name="import_control_done">Importation done</string>
-<!--
+    <!--
     <string name="control_more3"></string>
     <string name="control_more4"></string>
 -->
     <string name="customctrl_edit">Editing %s</string>
     <string name="customctrl_remove">Remove %s?</string>
-    
+
     <string name="customctrl_keyname">Keycode</string>
     <string name="customctrl_toggle">Toggleable</string>
     <string name="customctrl_size">Size</string>
@@ -190,7 +190,7 @@
     <string name="customctrl_corner_radius">Corner radius</string>
     <string name="customctrl_stroke_width">Stroke width</string>
     <string name="customctrl_stroke_color">Stroke color</string>
-    
+
     <string name="customctrl_dynamicpos">Manual Dynamic position</string>
     <string name="customctrl_dynamicpos_x">Dynamic X</string>
     <string name="customctrl_dynamicpos_y">Dynamic Y</string>
@@ -231,6 +231,8 @@
     <string name="dl_library_sha_pass">Library %s is fine and usable</string>
     <string name="mcl_disable_gestures">Disable gestures</string>
     <string name="mcl_disable_gestures_subtitle">Disables gestures, such as hold to break block, and tap to place a block.</string>
+    <string name="mcl_disable_swap_hand">Disable double tap to swap hands</string>
+    <string name="mcl_disable_swap_hand_subtitle">Disables double tap on an hotbar item to swap it in the second hand</string>
     <string name="mcl_setting_title_mousespeed">Mouse Speed</string>
     <string name="mcl_setting_subtitle_mousespeed">Changes the speed of the software mouse</string>
     <string name="customctrl_passthru">Mouse pass-thru</string>
@@ -350,4 +352,8 @@
     <string name="preference_gyro_sample_rate_description">If you have performance issues with the gyroscope controls, increase this</string>
     <string name="main_activity_class_name">git.artdeell.cubix.proprietary.MainActivity</string>
     <string name="microsoft_login_retry_later">Too many requests, please try again later.</string>
+    <string name="storage_required">PojavLauncher requires an attached external storage. Please reconnect your storage and restart the app.</string>
+    <string name="mcl_setting_title_buttonallcaps">Use only capital letters in button labels</string>
+    <string name="mcl_setting_subtitle_buttonallcaps">Disable this if you want to use lowercase letters in your controls</string>
+    <string name="create_profile">Create new profile</string>
 </resources>

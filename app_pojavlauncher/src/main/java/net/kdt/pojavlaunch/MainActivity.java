@@ -86,7 +86,7 @@ public class MainActivity extends BaseActivity implements ControlButtonMenuListe
         initLayout(R.layout.activity_basemain);
         CallbackBridge.addGrabListener(touchpad);
         CallbackBridge.addGrabListener(minecraftGLView);
-        if(LauncherPreferences.PREF_ENALBE_GYRO) mGyroControl = new GyroControl(this);
+        if(LauncherPreferences.PREF_ENABLE_GYRO) mGyroControl = new GyroControl(this);
 
         // Enabling this on TextureView results in a broken white result
         if(PREF_USE_ALTERNATE_SURFACE) getWindow().setBackgroundDrawable(null);
@@ -152,6 +152,7 @@ public class MainActivity extends BaseActivity implements ControlButtonMenuListe
 
             mVersionId = version;
             isInputStackCall = Tools.getVersionInfo(mVersionId).arguments != null;
+            CallbackBridge.nativeSetUseInputStackQueue(isInputStackCall);
 
             Tools.getDisplayMetrics(this);
             windowWidth = Tools.getDisplayFriendlyRes(currentDisplayMetrics.widthPixels, scaleFactor);
@@ -165,11 +166,10 @@ public class MainActivity extends BaseActivity implements ControlButtonMenuListe
                 switch(position) {
                     case 0: dialogForceClose(MainActivity.this); break;
                     case 1: openLogOutput(); break;
-                    case 2: minecraftGLView.togglepointerDebugging(); break;
-                    case 3: dialogSendCustomKey(); break;
-                    case 4: adjustMouseSpeedLive(); break;
-                    case 5: adjustGyroSensitivityLive(); break;
-                    case 6: openCustomControls(); break;
+                    case 2: dialogSendCustomKey(); break;
+                    case 3: adjustMouseSpeedLive(); break;
+                    case 4: adjustGyroSensitivityLive(); break;
+                    case 5: openCustomControls(); break;
                 }
                 drawerLayout.closeDrawers();
             };
@@ -243,9 +243,6 @@ public class MainActivity extends BaseActivity implements ControlButtonMenuListe
         super.onResume();
         mIsResuming = true;
         if(mGyroControl != null) mGyroControl.enable();
-        final int uiOptions = View.SYSTEM_UI_FLAG_HIDE_NAVIGATION;
-        final View decorView = getWindow().getDecorView();
-        decorView.setSystemUiVisibility(uiOptions);
         CallbackBridge.nativeSetWindowAttrib(LwjglGlfwKeycode.GLFW_HOVERED, 1);
     }
 
@@ -517,7 +514,7 @@ public class MainActivity extends BaseActivity implements ControlButtonMenuListe
 
     int tmpGyroSensitivity;
     public void adjustGyroSensitivityLive() {
-        if(!LauncherPreferences.PREF_ENALBE_GYRO) {
+        if(!LauncherPreferences.PREF_ENABLE_GYRO) {
             Toast.makeText(this, R.string.toast_turn_on_gyro, Toast.LENGTH_LONG).show();
             return;
         }
