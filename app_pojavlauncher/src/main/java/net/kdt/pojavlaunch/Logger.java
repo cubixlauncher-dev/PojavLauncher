@@ -18,6 +18,7 @@ public class Logger {
     private final File mLogFile;
     private PrintStream mLogStream;
     private WeakReference<eventLogListener> mLogListenerWeakReference = null;
+    private WeakReference<eventLogListener> mLogListenerSecondary = null;
 
     /* No public construction */
     private Logger(){
@@ -94,12 +95,30 @@ public class Logger {
         this.mLogListenerWeakReference = new WeakReference<>(logListener);
     }
 
+    public void setLogListenerSecondary(eventLogListener logListener){
+        this.mLogListenerSecondary = new WeakReference<>(logListener);
+    }
+
     /** Notifies the event listener, if it exists */
     private void notifyLogListener(String text){
+       notifyPrimary(text);
+       notifySecondary(text);
+    }
+
+    private void notifyPrimary(String text) {
         if(mLogListenerWeakReference == null) return;
         eventLogListener logListener = mLogListenerWeakReference.get();
         if(logListener == null){
             mLogListenerWeakReference = null;
+            return;
+        }
+        logListener.onEventLogged(text);
+    }
+    private void notifySecondary(String text) {
+        if(mLogListenerSecondary == null) return;
+        eventLogListener logListener = mLogListenerSecondary.get();
+        if(logListener == null){
+            mLogListenerSecondary = null;
             return;
         }
         logListener.onEventLogged(text);

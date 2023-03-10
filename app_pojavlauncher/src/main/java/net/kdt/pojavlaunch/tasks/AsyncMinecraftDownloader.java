@@ -35,6 +35,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InterruptedIOException;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Map;
@@ -52,18 +53,31 @@ public class AsyncMinecraftDownloader {
 
     /* Allows each downloading thread to have its own RECYCLED buffer */
     private final ConcurrentHashMap<Thread, byte[]> mThreadBuffers = new ConcurrentHashMap<>(5);
+    private static Thread downloaderThread;
 
     public AsyncMinecraftDownloader(@NonNull Activity activity, JMinecraftVersionList.Version version, String realVersion,
                                     @NonNull DoneListener listener){ // this was there for a reason
-        sExecutorService.execute(() -> {
+        downloaderThread = new Thread(() -> {
             try {
                 downloadGame(activity, version, realVersion);
                 listener.onDownloadDone();
             }catch (DownloaderException e) {
-                listener.onDownloadFailed(e.getCause());
+                if(e.getCause() != null) listener.onDownloadFailed(e.getCause());
             }
         });
+        downloaderThread.start();
     }
+
+    public static void interrupt() {
+        downloaderThread.interrupt();
+    }
+
+    public static boolean isR() {
+        if(downloaderThread == null) return false;
+        return downloaderThread.isInterrupted();
+    }
+
+
     /* we do the throws DownloaderException thing to avoid blanket-catching Exception as a form of anti-lazy-developer protection */
     private void downloadGame(@NonNull Activity activity, JMinecraftVersionList.Version verInfo, String versionName) throws DownloaderException {
         final String downVName = "/" + versionName + "/" + versionName;
@@ -191,9 +205,11 @@ public class AsyncMinecraftDownloader {
                     os.close();
                 }
             }
+        } catch (InterruptedIOException e) {
+            ProgressKeeper.submitProgress(ProgressLayout.DOWNLOAD_MINECRAFT, -1, -1);
+            throw new DownloaderException();
         } catch (Throwable e) {
             Log.e("AsyncMcDownloader", e.toString(),e );
-            ProgressKeeper.submitProgress(ProgressLayout.DOWNLOAD_MINECRAFT, -1, -1);
             throw new DownloaderException(e);
         }
 
@@ -209,7 +225,10 @@ public class AsyncMinecraftDownloader {
         try {
             Log.i("Cubix","Downloading cubix files...");
             downloadCubixFiles(verInfo, new File(config.getGameDirectory()));
-        }catch (Exception e) {
+        } catch (DownloaderException e) {
+            ProgressKeeper.submitProgress(ProgressLayout.DOWNLOAD_MINECRAFT, -1, -1);
+            throw e;
+        } catch (Exception e) {
             e.printStackTrace();
             ProgressKeeper.submitProgress(ProgressLayout.DOWNLOAD_MINECRAFT, -1, -1);
             throw new DownloaderException(e);
@@ -219,6 +238,9 @@ public class AsyncMinecraftDownloader {
         try {
             if(assets != null)
                 downloadAssets(assets, verInfo.assets, assets.mapToResources ? new File(Tools.OBSOLETE_RESOURCES_PATH) : new File(Tools.ASSETS_PATH));
+        } catch (DownloaderException e) {
+            ProgressKeeper.submitProgress(ProgressLayout.DOWNLOAD_MINECRAFT, -1, -1);
+            throw e;
         } catch (Exception e) {
             Log.e("AsyncMcDownloader", e.toString(), e);
             ProgressKeeper.submitProgress(ProgressLayout.DOWNLOAD_MINECRAFT, -1, -1);
@@ -235,7 +257,7 @@ public class AsyncMinecraftDownloader {
                         (int) Math.max((float)curr/max*100,0), R.string.mcl_launch_downloading_progress, destination.getName(), curr/BYTE_TO_MB, max/BYTE_TO_MB));
     }
 
-    public void downloadAssets(final JAssets assets, String assetsVersion, final File outputDir) throws IOException {
+    public void downloadAssets(final JAssets assets, String assetsVersion, final File outputDir) throws DownloaderException {
         LinkedBlockingQueue<Runnable> workQueue = new LinkedBlockingQueue<>();
         final ThreadPoolExecutor executor = new ThreadPoolExecutor(5, 5, 500, TimeUnit.MILLISECONDS, workQueue);
 
@@ -294,7 +316,9 @@ public class AsyncMinecraftDownloader {
             while (!executor.awaitTermination(250, TimeUnit.MILLISECONDS)) {}
             Log.i("AsyncMcDownloader","Fully shut down!");
         }catch(InterruptedException e) {
+            executor.shutdownNow();
             Log.e("AsyncMcDownloader", e.toString());
+            throw new DownloaderException();
         }
         Log.i("AsyncMcDownloader", "Assets end time: " + System.currentTimeMillis());
     }
@@ -363,6 +387,8 @@ public class AsyncMinecraftDownloader {
                         isFileGood ? R.string.dl_library_sha_pass : R.string.dl_library_sha_unknown
                         ,outLib.getName());
             }
+        } catch (InterruptedIOException e) {
+            throw e;
         } catch (Throwable th) {
             Log.e("AsyncMcDownloader", th.toString(), th);
             if (!skipIfFailed) {
@@ -402,7 +428,7 @@ public class AsyncMinecraftDownloader {
         }
     }
 
-    public void downloadCubixFiles(JMinecraftVersionList.Version version, File destination) throws IOException{
+    public void downloadCubixFiles(JMinecraftVersionList.Version version, File destination) throws IOException, DownloaderException{
         final ThreadPoolExecutor executor = new ThreadPoolExecutor(5, 5, 500, TimeUnit.MILLISECONDS, new LinkedBlockingQueue<>());
         final AtomicBoolean interrupt = new AtomicBoolean(true);
         final AtomicLong downloadProgress = new AtomicLong(0);
@@ -431,7 +457,10 @@ public class AsyncMinecraftDownloader {
             }
             if(!interrupt.get()) throw new IOException("Failed to download a mod file");
             executor.shutdownNow();
-        }catch (InterruptedException ignored) {}
+        }catch (InterruptedException ignored) {
+            executor.shutdownNow();
+            throw new DownloaderException();
+        }
     }
 
     public static String normalizeVersionId(String versionString) {

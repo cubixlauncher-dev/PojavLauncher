@@ -46,7 +46,7 @@ import net.kdt.pojavlaunch.value.launcherprofiles.MinecraftProfile;
 import org.lwjgl.glfw.*;
 import android.net.*;
 
-public class MainActivity extends BaseActivity implements ControlButtonMenuListener{
+public class MainActivity extends BaseActivity implements ControlButtonMenuListener, Logger.eventLogListener{
     public static volatile ClipboardManager GLOBAL_CLIPBOARD;
     public static final String INTENT_MINECRAFT_VERSION = "intent_version";
 
@@ -86,6 +86,7 @@ public class MainActivity extends BaseActivity implements ControlButtonMenuListe
         initLayout(R.layout.activity_basemain);
         CallbackBridge.addGrabListener(touchpad);
         CallbackBridge.addGrabListener(minecraftGLView);
+        Logger.getInstance().setLogListenerSecondary(this);
         if(LauncherPreferences.PREF_ENABLE_GYRO) mGyroControl = new GyroControl(this);
 
         // Enabling this on TextureView results in a broken white result
@@ -272,6 +273,7 @@ public class MainActivity extends BaseActivity implements ControlButtonMenuListe
     @Override
     protected void onDestroy() {
         super.onDestroy();
+        Logger.getInstance().setLogListenerSecondary(null);
         CallbackBridge.removeGrabListener(touchpad);
         CallbackBridge.removeGrabListener(minecraftGLView);
     }
@@ -606,5 +608,16 @@ public class MainActivity extends BaseActivity implements ControlButtonMenuListe
     public void onClickedMenu() {
         drawerLayout.openDrawer(navDrawer);
         navDrawer.requestLayout();
+    }
+
+    @Override
+    public void onEventLogged(String text) {
+        if(text.contains("version string") || text.contains("Finished Initialization") || text.contains("CubixChat successfully patched")) {
+            runOnUiThread(()->{
+                View overlay = findViewById(R.id.mainOverlayView);
+                ((ViewGroup)findViewById(R.id.content_frame)).removeView(overlay);
+                Logger.getInstance().setLogListenerSecondary(null);
+            });
+        }
     }
 }

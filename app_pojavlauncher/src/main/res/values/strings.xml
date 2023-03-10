@@ -356,4 +356,5 @@
     <string name="mcl_setting_title_buttonallcaps">Use only capital letters in button labels</string>
     <string name="mcl_setting_subtitle_buttonallcaps">Disable this if you want to use lowercase letters in your controls</string>
     <string name="create_profile">Create new profile</string>
+    <string name="loading_game">Загрузка игры…</string>
 </resources>
