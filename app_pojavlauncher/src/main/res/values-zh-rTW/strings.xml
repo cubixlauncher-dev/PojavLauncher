@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <!-- App name part -->
-    <string name="app_name">PojavLauncher（適用於 Android 的《Minecraft：Java版》）</string>
-    <string name="app_short_name">PojavLauncher</string>
+    <string name="app_name">Cubix Launcher（適用於 Android 的《Minecraft：Java版》）</string>
+    <string name="app_short_name">Cubix Launcher</string>
     <string name="app_motd">在您的設備上啟動《Minecraft：Java版》！</string>
     <!-- Action bar part -->
     <!-- Languages list part -->
@@ -25,7 +25,7 @@
     <string name="alerttitle_install_jre">安裝 Java 運行環境 %s (.tar.xz)</string>
     <string name="alerttitle_installmod">選擇 Mod 安裝器</string>
     <!-- Error messages -->
-    <string name="error_fatal">PojavLauncher 意外崩潰</string>
+    <string name="error_fatal">Cubix Launcher 意外崩潰</string>
     <string name="error_no_version">無版本！</string>
     <string name="error_show_more">顯示細節</string>
     <string name="error_show_less">隱藏細節</string>
@@ -217,7 +217,7 @@
     <string name="pvc_jvmArgs">JVM 參數</string>
     <string name="pvc_title">Per-version 設定</string>
     <string name="storage_warning_title">儲存位置已變更</string>
-    <string name="storage_warning_text"><![CDATA[由於Google在Android 10所加入的儲存規範，我們把遊戲的目錄移動到app的私有資料夾下了。<br />Pojav的新資料夾位於<b>Android/data/%s/files/</b> (可用檔案瀏覽器存取) <br /> 如果有需要移動先前的遊戲檔案，請手動從<b>/games/PojavLauncher</b>將資料複製到新的位置。]]></string>
+    <string name="storage_warning_text"><![CDATA[由於Google在Android 10所加入的儲存規範，我們把遊戲的目錄移動到app的私有資料夾下了。<br />Pojav的新資料夾位於<b>Android/data/%s/files/</b> (可用檔案瀏覽器存取) <br /> 如果有需要移動先前的遊戲檔案，請手動從<b>/games/Cubix Launcher</b>將資料複製到新的位置。]]></string>
     <string name="control_offset_title">控制鍵偏移</string>
     <string name="control_top_offset">頂端偏移: </string>
     <string name="control_right_offset">右偏移: </string>

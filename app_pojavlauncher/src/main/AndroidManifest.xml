@@ -41,7 +41,7 @@
             android:name=".TestStorageActivity"
             android:exported="true"
             android:launchMode="singleTop"
-            android:label="@string/autoram_info_msg">
+            android:label="@string/app_short_name">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <!-- App name part -->
-    <string name="app_name">PojavLauncher (Minecraft: Java Edition for Android)</string>
-    <string name="app_short_name">PojavLauncher</string>
+    <string name="app_name">Cubix Launcher (Minecraft: Java Edition for Android)</string>
+    <string name="app_short_name">Cubix Launcher</string>
     <string name="app_motd">Minecraft: Java Edition をお使いのデバイスで楽しもう</string>
     <!-- Action bar part -->
     <!-- Languages list part -->
@@ -25,7 +25,7 @@
     <string name="alerttitle_install_jre">Java Runtime %s (.tar.xz) をインストールします</string>
     <string name="alerttitle_installmod">Mod インストーラーを選択</string>
     <!-- Error messages -->
-    <string name="error_fatal">PojavLauncher が異常終了しました</string>
+    <string name="error_fatal">Cubix Launcher が異常終了しました</string>
     <string name="error_no_version">バージョンがありません</string>
     <string name="error_show_more">詳細を表示</string>
     <string name="error_show_less">詳細を閉じる</string>
@@ -214,7 +214,7 @@
     <string name="pvc_jvmArgs">JVM 引数</string>
     <string name="pvc_title">バージョン毎の設定</string>
     <string name="storage_warning_title">ストレージの変更</string>
-    <string name="storage_warning_text"><![CDATA[Android 10以降で追加されたGoogleの新しいスコープストレージの適用により、ゲームディレクトリをapp-privateフォルダーに移動する必要があります。<br /> Pojavファイルの新しいフォルダは<b>Android/data/%s/files/</b> (ファイルエクスプローラーでストレージプロバイダーを使用してアクセスすることもできます).<br /> ゲームファイルをコピーする必要がある場合は、<b> games / PojavLauncher</b>の元のフォルダからすべてを手動でコピーしてください。]]></string>
+    <string name="storage_warning_text"><![CDATA[Android 10以降で追加されたGoogleの新しいスコープストレージの適用により、ゲームディレクトリをapp-privateフォルダーに移動する必要があります。<br /> Pojavファイルの新しいフォルダは<b>Android/data/%s/files/</b> (ファイルエクスプローラーでストレージプロバイダーを使用してアクセスすることもできます).<br /> ゲームファイルをコピーする必要がある場合は、<b> games / Cubix Launcher</b>の元のフォルダからすべてを手動でコピーしてください。]]></string>
     <string name="control_offset_title">オフセットを制御する</string>
     <string name="control_top_offset">上辺のオフセット: </string>
     <string name="control_right_offset">右辺のオフセット: </string>

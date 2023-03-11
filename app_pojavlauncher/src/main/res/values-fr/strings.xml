@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <!-- App name part -->
-    <string name="app_name">PojavLauncher (Minecraft: Java Edition pour Android)</string>
-    <string name="app_short_name">PojavLauncher</string>
+    <string name="app_name">Cubix Launcher (Minecraft: Java Edition pour Android)</string>
+    <string name="app_short_name">Cubix Launcher</string>
     <string name="app_motd">Lancez Minecraft: Java Edition sur votre appareil !</string>
     <!-- Action bar part -->
     <!-- Languages list part -->
@@ -25,7 +25,7 @@
     <string name="alerttitle_install_jre">Installer l\'environnement d\'exécution Java %s (.tar.xz)</string>
     <string name="alerttitle_installmod">Sélectionnez un installateur de mods</string>
     <!-- Error messages -->
-    <string name="error_fatal">PojavLauncher a cessé de fonctionner de façon inattendue</string>
+    <string name="error_fatal">Cubix Launcher a cessé de fonctionner de façon inattendue</string>
     <string name="error_no_version">Aucune version !</string>
     <string name="error_show_more">Afficher plus</string>
     <string name="error_show_less">Afficher moins</string>
@@ -222,7 +222,7 @@
     <string name="pvc_jvmArgs">Arguments de la JVM</string>
     <string name="pvc_title">Réglages par version</string>
     <string name="storage_warning_title">Changements liés au stockage</string>
-    <string name="storage_warning_text"><![CDATA[À cause des restrictions imposées par Google sur l\'emplacement de sauvegarde, nous sommes obligés de déplacer le répertoire du jeu dans un répertoire d\'application.<br /> The répertoire est maintenant présent dans <b>Android/data/%s/files/</b> (aussi accessible via l\'explorateur de fichier)<br />Si vous avez besoin de vos anciens fichiers, deplacez les depuis <b>games/PojavLauncher</b> manuellement.]]></string>
+    <string name="storage_warning_text"><![CDATA[À cause des restrictions imposées par Google sur l\'emplacement de sauvegarde, nous sommes obligés de déplacer le répertoire du jeu dans un répertoire d\'application.<br /> The répertoire est maintenant présent dans <b>Android/data/%s/files/</b> (aussi accessible via l\'explorateur de fichier)<br />Si vous avez besoin de vos anciens fichiers, deplacez les depuis <b>games/Cubix Launcher</b> manuellement.]]></string>
     <string name="control_offset_title">Marge sur les contrôles</string>
     <string name="control_top_offset">Marge supérieure: </string>
     <string name="control_right_offset">Marge de droite: </string>

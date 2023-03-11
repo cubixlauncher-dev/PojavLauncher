@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <!-- App name part -->
-    <string name="app_name">PojavLauncher (Minecraft: Java Edition voor Android)</string>
-    <string name="app_short_name">PojavLauncher</string>
+    <string name="app_name">Cubix Launcher (Minecraft: Java Edition voor Android)</string>
+    <string name="app_short_name">Cubix Launcher</string>
     <string name="app_motd">Start Minecraft: Java editie op je apparaat!</string>
     <!-- Action bar part -->
     <!-- Languages list part -->
@@ -24,7 +24,7 @@
     <string name="alerttitle_install_jre">Installeer Java Runtime %s (.tar.xz)</string>
     <string name="alerttitle_installmod">Selecteer een mod installatie</string>
     <!-- Error messages -->
-    <string name="error_fatal">PojavLauncher is onverwacht gecrasht</string>
+    <string name="error_fatal">Cubix Launcher is onverwacht gecrasht</string>
     <string name="error_no_version">Geen versie!</string>
     <string name="error_show_more">Meer weergeven</string>
     <string name="error_show_less">Minder weergeven</string>

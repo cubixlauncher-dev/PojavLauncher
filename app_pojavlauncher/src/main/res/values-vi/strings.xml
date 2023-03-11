@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <!-- App name part -->
-    <string name="app_name">PojavLauncher</string>
-    <string name="app_short_name">PojavLauncher </string>
+    <string name="app_name">Cubix Launcher</string>
+    <string name="app_short_name">Cubix Launcher </string>
     <string name="app_motd">Khởi chạy Minecraft: Java Edition trên thiết bị của bạn! </string>
     <!-- Action bar part -->
     <!-- Languages list part -->
@@ -25,7 +25,7 @@
     <string name="alerttitle_install_jre">Cài đặt Java Runtime %s (.tar.xz)</string>
     <string name="alerttitle_installmod">Chọn một trình cài đặt mod</string>
     <!-- Error messages -->
-    <string name="error_fatal">PojavLauncher đã bất ngờ bị rớt</string>
+    <string name="error_fatal">Cubix Launcher đã bất ngờ bị rớt</string>
     <string name="error_no_version">Không có phiên bản nào!</string>
     <string name="error_show_more">Hiển thị thêm</string>
     <string name="error_show_less">Hiển thị ít hơn</string>
@@ -221,7 +221,7 @@
     <string name="pvc_jvmArgs">Các chỉ số JVM</string>
     <string name="pvc_title">Cài đặt theo từng phiên bản</string>
     <string name="storage_warning_title">Thay đổi về lưu trữ</string>
-    <string name="storage_warning_text"><![CDATA[Vì Google đã bắt buộc sử dụng lưu trữ nội bộ, một tính năng được thêm vào Android 10 trở lên, chúng tôi cần phải chuyển thư mục của trò chơi tới một thư mục riêng tư của ứng dụng.<br /> Thư mục mới của PojavLauncher là <b>Android/data/%s/files/</b> (cũng có thể truy cập được bằng cách sử dụng dịch vụ cung cấp lưu trữ trong trình quản lí tệp của bạn).<br /> Nếu bạn muốn sao chép các tệp trò chơi của bạn, hãy sao chép tất cả từ thư mục <b>games/PojavLauncher</b> một cách thủ công.]]></string>
+    <string name="storage_warning_text"><![CDATA[Vì Google đã bắt buộc sử dụng lưu trữ nội bộ, một tính năng được thêm vào Android 10 trở lên, chúng tôi cần phải chuyển thư mục của trò chơi tới một thư mục riêng tư của ứng dụng.<br /> Thư mục mới của Cubix Launcher là <b>Android/data/%s/files/</b> (cũng có thể truy cập được bằng cách sử dụng dịch vụ cung cấp lưu trữ trong trình quản lí tệp của bạn).<br /> Nếu bạn muốn sao chép các tệp trò chơi của bạn, hãy sao chép tất cả từ thư mục <b>games/Cubix Launcher</b> một cách thủ công.]]></string>
     <string name="control_offset_title">Khoảng bù trừ của bộ điều khiển</string>
     <string name="control_top_offset">Khoảng bù trừ trên: </string>
     <string name="control_right_offset">Khoảng bù trừ phải: </string>

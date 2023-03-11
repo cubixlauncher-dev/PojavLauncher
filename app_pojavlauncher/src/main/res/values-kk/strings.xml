@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <!-- App name part -->
-    <string name="app_name">PojavLauncher (Android-ке арналған Minecraft: Java Edition)</string>
-    <string name="app_short_name">PojavLauncher</string>
+    <string name="app_name">Cubix Launcher (Android-ке арналған Minecraft: Java Edition)</string>
+    <string name="app_short_name">Cubix Launcher</string>
     <string name="app_motd">Minecraft: Java Edition-ді өз құрылғыңызда қосыңыз!</string>
     <!-- Action bar part -->
     <!-- Languages list part -->
@@ -24,7 +24,7 @@
     <string name="alerttitle_install_jre">Java Runtime-ді орнату %s (.tar.xz)</string>
     <string name="alerttitle_installmod">Мод орнатқыш таңдау</string>
     <!-- Error messages -->
-    <string name="error_fatal">PojavLauncher кенет іркілді</string>
+    <string name="error_fatal">Cubix Launcher кенет іркілді</string>
     <string name="error_no_version">Нұсқа жоқ!</string>
     <string name="error_show_more">Көрсету</string>
     <string name="error_show_less">Жасыру</string>

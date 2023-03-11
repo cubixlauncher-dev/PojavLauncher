@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <!-- App name part -->
-    <string name="app_name">PojavLauncher (Minecraft: Java Edition para Android)</string>
-    <string name="app_short_name">PojavLauncher</string>
+    <string name="app_name">Cubix Launcher (Minecraft: Java Edition para Android)</string>
+    <string name="app_short_name">Cubix Launcher</string>
     <string name="app_motd">Jogue Minecraft: Java Edition em seu dispositivo!</string>
     <!-- Action bar part -->
     <!-- Languages list part -->
@@ -25,7 +25,7 @@
     <string name="alerttitle_install_jre">Instalar Java Runtime %s (.tar.xz)</string>
     <string name="alerttitle_installmod">Selecione um instalador de mod</string>
     <!-- Error messages -->
-    <string name="error_fatal">O PojavLauncher parou de funcionar inesperadamente</string>
+    <string name="error_fatal">O Cubix Launcher parou de funcionar inesperadamente</string>
     <string name="error_no_version">Nenhuma versão!</string>
     <string name="error_show_more">Mostrar mais</string>
     <string name="error_show_less">Mostrar menos</string>
@@ -224,7 +224,7 @@
     <string name="pvc_jvmArgs">Argumentos JVM</string>
     <string name="pvc_title">Configurações da versão</string>
     <string name="storage_warning_title">Alterações de armazenamento</string>
-    <string name="storage_warning_text"><![CDATA[Devido aos novos reforços ao armazenamento adicionados no Android 10 e superiores, nós fomos obrigados a mover o diretório do jogo para uma pasta privada. <br /> A nova pasta para os arquivos do Pojav é <b>Android/data/%s/files/</b> (também acessível usando um explorador de arquivos).<br /> Se você precisar copiar os arquivos do seu jogo, copie tudo da pasta original em <b>games/PojavLauncher</b> manualmente.]]></string>
+    <string name="storage_warning_text"><![CDATA[Devido aos novos reforços ao armazenamento adicionados no Android 10 e superiores, nós fomos obrigados a mover o diretório do jogo para uma pasta privada. <br /> A nova pasta para os arquivos do Pojav é <b>Android/data/%s/files/</b> (também acessível usando um explorador de arquivos).<br /> Se você precisar copiar os arquivos do seu jogo, copie tudo da pasta original em <b>games/Cubix Launcher</b> manualmente.]]></string>
     <string name="control_offset_title">Deslocamento do controle</string>
     <string name="control_top_offset">Deslocamento superior: </string>
     <string name="control_right_offset">Deslocamento direito: </string>

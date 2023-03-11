@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <!-- App name part -->
-    <string name="app_name">PojavLauncher (Minecraft: Java Edition skirta Android)</string>
-    <string name="app_short_name">PojavLauncher</string>
+    <string name="app_name">Cubix Launcher (Minecraft: Java Edition skirta Android)</string>
+    <string name="app_short_name">Cubix Launcher</string>
     <string name="app_motd">Paleiskite Minecraft:Java Edition savo įrenginyje!</string>
     <!-- Action bar part -->
     <!-- Languages list part -->
@@ -25,7 +25,7 @@
     <string name="alerttitle_install_jre">Instaliuoti Java Runtime %s (.tar.xz)</string>
     <string name="alerttitle_installmod">Pasirinkite modifikacijų įdiegimui</string>
     <!-- Error messages -->
-    <string name="error_fatal">PojavLauncher netikėtai išsijungė arba užlužo</string>
+    <string name="error_fatal">Cubix Launcher netikėtai išsijungė arba užlužo</string>
     <string name="error_no_version">Nėra versijos!</string>
     <string name="error_show_more">Rodyti daugiau</string>
     <string name="error_show_less">Rodyti mažiau</string>
@@ -170,7 +170,7 @@
     <string name="auto_ram_title">Automatiškas RAM</string>
     <string name="autoram_info_msg">Atmintis pakeista į %d MB</string>
     <string name="mcl_setting_check_libraries">Patikrinti depozitoriumo bibliotekas po atsisiuntimo</string>
-    <string name="mcl_setting_check_libraries_subtitle">Šis nustatymas priverčia PojavLauncher patikrintį depozitoriumo bibliotekos hashą jeigu jis pasiekiamas. Neleidžia blogų atsisiuntimų.</string>
+    <string name="mcl_setting_check_libraries_subtitle">Šis nustatymas priverčia Cubix Launcher patikrintį depozitoriumo bibliotekos hashą jeigu jis pasiekiamas. Neleidžia blogų atsisiuntimų.</string>
     <string name="dl_library_sha_fail">Depozitoriumo biblioteka %s yra sugedusi ir būs persiųsta</string>
     <string name="dl_library_sha_unknown">Depozitoriumo biblioteka %s negali būti patikrinta, privaloma tikėti kad ji gera</string>
     <string name="dl_library_sha_pass">Depozitoriumo biblioteka %s yra gera ir naudojama</string>
