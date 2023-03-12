@@ -7,6 +7,7 @@ import android.hardware.SensorManager;
 import android.os.Bundle;
 
 import androidx.preference.PreferenceCategory;
+import androidx.preference.SwitchPreference;
 
 import net.kdt.pojavlaunch.R;
 import net.kdt.pojavlaunch.prefs.CustomSeekBarPreference;
@@ -52,7 +53,6 @@ public class LauncherPreferenceControlFragment extends LauncherPreferenceFragmen
             mGyroAvailable = ((SensorManager)context.getSystemService(Context.SENSOR_SERVICE)).getDefaultSensor(Sensor.TYPE_GYROSCOPE) != null;
         }
         PreferenceCategory gyroCategory =  (PreferenceCategory) findPreference("gyroCategory");
-        gyroCategory.setVisible(mGyroAvailable);
 
         CustomSeekBarPreference gyroSensitivitySeek = findPreference("gyroSensitivity");
         gyroSensitivitySeek.setRange(25, 300);
@@ -63,6 +63,10 @@ public class LauncherPreferenceControlFragment extends LauncherPreferenceFragmen
         gyroSampleRateSeek.setValue(gyroSampleRate);
         gyroSampleRateSeek.setSuffix(" ms");
         computeVisibility();
+        findPreference("gyroInvertX").setVisible(mGyroAvailable);
+        findPreference("gyroInvertY").setVisible(mGyroAvailable);
+        gyroSensitivitySeek.setVisible(mGyroAvailable);
+        gyroSampleRateSeek.setVisible(mGyroAvailable);
     }
 
     @Override

@@ -1,30 +1,29 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app2="http://schemas.android.com/apk/res-auto">
+    xmlns:app2="http://schemas.android.com/apk/res-auto" >
 
 
     <Preference
         android:title="@string/preference_edit_controls_title"
-        android:summary="@string/preference_edit_controls_summary"
-        app2:icon="@drawable/ic_menu_custom_controls">
+        android:summary="@string/preference_edit_controls_summary">
         <intent android:targetPackage="@string/application_package" android:targetClass="net.kdt.pojavlaunch.CustomControlsActivity" android:action=".CustomControlsActivity"/>
     </Preference>
 
-    <PreferenceCategory
-        android:title="Gestures ">
 
-        <androidx.preference.SwitchPreferenceCompat
+        <CheckBoxPreference
             android:defaultValue="false"
-            android:icon="@drawable/ic_setting_gesture_disable"
+            
             android:key="disableGestures"
             android:summary="@string/mcl_disable_gestures_subtitle"
-            android:title="@string/mcl_disable_gestures" />
+            android:title="@string/mcl_disable_gestures"
+            />
 
-        <androidx.preference.SwitchPreferenceCompat
+        <CheckBoxPreference
             android:defaultValue="false"
             android:key="disableDoubleTap"
             android:summary="@string/mcl_disable_swap_hand_subtitle"
-            android:title="@string/mcl_disable_swap_hand" />
+            android:title="@string/mcl_disable_swap_hand"
+            />
 
         <net.kdt.pojavlaunch.prefs.CustomSeekBarPreference
             android:key="timeLongPressTrigger"
@@ -33,13 +32,8 @@
             app2:showSeekBarValue="true"
             app2:selectable="false"
             app2:seekBarIncrement="10"
-            android:icon="@drawable/ic_setting_gesture_time"
+            
             />
-
-    </PreferenceCategory>
-
-    <PreferenceCategory
-        android:title="Buttons">
 
         <net.kdt.pojavlaunch.prefs.CustomSeekBarPreference
             android:key="buttonscale"
@@ -48,19 +42,14 @@
             app2:showSeekBarValue="true"
             app2:selectable="false"
             app2:seekBarIncrement="5"
-            android:icon="@drawable/ic_setting_control_scale"
+            
             />
-        <SwitchPreference
+        <CheckBoxPreference
             android:key="buttonAllCaps"
             android:defaultValue="true"
             android:title="@string/mcl_setting_title_buttonallcaps"
             android:summary="@string/mcl_setting_subtitle_buttonallcaps"
             />
-
-    </PreferenceCategory>
-
-    <PreferenceCategory
-        android:title="@string/preference_category_virtual_mouse">
 
         <net.kdt.pojavlaunch.prefs.CustomSeekBarPreference
             android:key="mousescale"
@@ -70,29 +59,23 @@
             app2:selectable="false"
             app2:seekBarIncrement="5"
             app2:showSeekBarValue="true"
-            android:icon="@drawable/ic_setting_pointer_scale"
+            
             />
 
         <net.kdt.pojavlaunch.prefs.CustomSeekBarPreference
             android:key="mousespeed"
             android:summary="@string/mcl_setting_subtitle_mousespeed"
             android:title="@string/mcl_setting_title_mousespeed"
-            android:icon="@drawable/ic_setting_mouse_speed"
+            
             app2:selectable="false"
             app2:seekBarIncrement="5"
             app2:showSeekBarValue="true" />
-        <SwitchPreference
+        <CheckBoxPreference
             android:key="mouse_start"
             android:title="@string/preference_mouse_start_title"
             android:summary="@string/preference_mouse_start_description"
             />
-    </PreferenceCategory>
-
-    <PreferenceCategory
-        android:key="gyroCategory"
-        android:title="@string/preference_category_gyro_controls"
-        >
-        <SwitchPreference
+        <CheckBoxPreference
             android:key="enableGyro"
             android:title="@string/preference_enable_gyro_title"
             android:summary="@string/preference_enable_gyro_description"/>
@@ -109,18 +92,13 @@
             android:summary="@string/preference_gyro_sample_rate_description"
             app2:selectable="false"
             app2:showSeekBarValue="true"/>
-        <SwitchPreference
+        <CheckBoxPreference
             android:key="gyroInvertX"
             android:title="@string/preference_gyro_invert_x_axis"
             android:summary="@string/preference_gyro_invert_x_axis_description"/>
-        <SwitchPreference
+        <CheckBoxPreference
             android:key="gyroInvertY"
             android:title="@string/preference_gyro_invert_y_axis"
             android:summary="@string/preference_gyro_invert_y_axis_description"/>
-
-    </PreferenceCategory>
-
-
-
 
 </PreferenceScreen>

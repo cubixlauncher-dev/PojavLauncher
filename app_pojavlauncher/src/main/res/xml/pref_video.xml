@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app2="http://schemas.android.com/apk/res-auto">
+    xmlns:app2="http://schemas.android.com/apk/res-auto"
+    app2:iconSpaceReserved="false">
     <net.kdt.pojavlaunch.prefs.CustomSeekBarPreference
         android:key="allocation"
 
@@ -9,15 +10,14 @@
         app2:showSeekBarValue="true"
         app2:seekBarIncrement="10"
         app2:selectable="false"/>
-    <PreferenceCategory android:title="Video settings" >
 
 
-        <androidx.preference.SwitchPreferenceCompat
+        <CheckBoxPreference
             android:defaultValue="false"
             android:key="ignoreNotch"
             android:summary="@string/mcl_setting_subtitle_ignore_notch"
             android:title="@string/mcl_setting_title_ignore_notch"
-            android:icon="@drawable/ic_setting_hide_notch"
+            
             />
 
         <net.kdt.pojavlaunch.prefs.CustomSeekBarPreference
@@ -27,28 +27,27 @@
             app2:showSeekBarValue="true"
             app2:selectable="false"
             app2:seekBarIncrement="5"
-            android:icon="@drawable/ic_setting_screen_resolution"
+            
             />
 
-        <SwitchPreference
+        <CheckBoxPreference
             android:title="@string/preference_sustained_performance_title"
             android:summary="@string/preference_sustained_performance_description"
             android:key="sustainedPerformance"
             android:defaultValue="false"
             />
 
-        <androidx.preference.SwitchPreferenceCompat
+        <CheckBoxPreference
             android:defaultValue="false"
             android:key="alternate_surface"
             android:summary="@string/mcl_setting_subtitle_use_surface_view"
             android:title="@string/mcl_setting_title_use_surface_view"
             />
 
-        <androidx.preference.SwitchPreferenceCompat
+        <CheckBoxPreference
             android:defaultValue="false"
             android:key="force_vsync"
             android:summary="@string/preference_force_vsync_description"
             android:title="@string/preference_force_vsync_title"
             />
-    </PreferenceCategory>
 </PreferenceScreen>

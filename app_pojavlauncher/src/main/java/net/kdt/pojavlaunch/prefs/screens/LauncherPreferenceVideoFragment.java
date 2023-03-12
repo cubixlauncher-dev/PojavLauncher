@@ -8,6 +8,7 @@ import android.content.SharedPreferences;
 import android.os.Build;
 import android.os.Bundle;
 
+import androidx.preference.CheckBoxPreference;
 import androidx.preference.PreferenceFragmentCompat;
 import androidx.preference.SwitchPreference;
 import androidx.preference.SwitchPreferenceCompat;
@@ -38,7 +39,7 @@ public class LauncherPreferenceVideoFragment extends LauncherPreferenceFragment 
         }
 
         // Sustained performance is only available since Nougat
-        SwitchPreference sustainedPerfSwitch = findPreference("sustainedPerformance");
+        CheckBoxPreference sustainedPerfSwitch = findPreference("sustainedPerformance");
         sustainedPerfSwitch.setVisible(Build.VERSION.SDK_INT >= Build.VERSION_CODES.N);
 
         int maxRAM;
@@ -64,7 +65,7 @@ public class LauncherPreferenceVideoFragment extends LauncherPreferenceFragment 
     }
 
     private void computeVisibility(){
-        SwitchPreferenceCompat preference = findPreference("force_vsync");
+        CheckBoxPreference preference = findPreference("force_vsync");
         preference.setVisible(LauncherPreferences.PREF_USE_ALTERNATE_SURFACE);
     }
 }

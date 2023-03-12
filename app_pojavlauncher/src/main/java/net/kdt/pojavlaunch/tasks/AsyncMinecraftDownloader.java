@@ -453,7 +453,8 @@ public class AsyncMinecraftDownloader {
         executor.shutdown();
         try {
             while (!executor.awaitTermination(150, TimeUnit.MILLISECONDS) && interrupt.get()) {
-                ProgressLayout.setProgress(ProgressLayout.DOWNLOAD_MINECRAFT, (int)(((double)downloadProgress.get() / downloadSize)*100), R.string.mcl_launch_downloading, "mods");
+                long d = downloadProgress.get();
+                ProgressLayout.setProgress(ProgressLayout.DOWNLOAD_MINECRAFT, (int)(((double)d / downloadSize)*100), R.string.mcl_launch_downloading_progress, "mods", d/BYTE_TO_MB, downloadSize/BYTE_TO_MB);
             }
             if(!interrupt.get()) throw new IOException("Failed to download a mod file");
             executor.shutdownNow();
