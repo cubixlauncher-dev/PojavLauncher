@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <!-- App name part -->
-    <string name="app_name">Cubix Launcher (Minecraft: Java Edition dla Androida)</string>
-    <string name="app_short_name">Cubix Launcher</string>
+    <string name="app_name">CubixWorld Mobile (Minecraft: Java Edition dla Androida)</string>
+    <string name="app_short_name">CubixWorld Mobile</string>
     <string name="app_motd">Uruchom Minecraft: Java Edition na swoim urządzeniu!</string>
     <!-- Action bar part -->
     <!-- Languages list part -->
@@ -25,7 +25,7 @@
     <string name="alerttitle_install_jre">Zainstaluj środowisko wykonawcze Java %s (.tar.xz)</string>
     <string name="alerttitle_installmod">Wybierz instalator modyfikacji</string>
     <!-- Error messages -->
-    <string name="error_fatal">Cubix Launcher uległ nieoczekiwanej awarii</string>
+    <string name="error_fatal">CubixWorld Mobile uległ nieoczekiwanej awarii</string>
     <string name="error_no_version">Brak wersji!</string>
     <string name="error_show_more">Pokaż więcej</string>
     <string name="error_show_less">Pokaż mniej</string>
@@ -224,7 +224,7 @@
     <string name="pvc_jvmArgs">Argumenty JVM</string>
     <string name="pvc_title">Ustawienia dla wersji</string>
     <string name="storage_warning_title">Zmiany w przechowywaniu</string>
-    <string name="storage_warning_text"><![CDATA[Ze względu na nowe wymagania Google skupione na pamięci, dodane w systemie Android 10 i wyższych, musimy przenieść katalog gry do prywatnego folderu aplikacji.<br /> Nowy folder Pojav to <b>Android/data/%s/files/</b> (dostępny również poprzez posiadany eksplorator plików).<br /> Jeśli potrzebujesz kopii swoich plików gry, skopiuj wszystko ręcznie z oryginalnego folderu <b>games/Cubix Launcher</b>.]]></string>
+    <string name="storage_warning_text"><![CDATA[Ze względu na nowe wymagania Google skupione na pamięci, dodane w systemie Android 10 i wyższych, musimy przenieść katalog gry do prywatnego folderu aplikacji.<br /> Nowy folder Pojav to <b>Android/data/%s/files/</b> (dostępny również poprzez posiadany eksplorator plików).<br /> Jeśli potrzebujesz kopii swoich plików gry, skopiuj wszystko ręcznie z oryginalnego folderu <b>games/CubixWorld Mobile</b>.]]></string>
     <string name="control_offset_title">Przesunięcie sterowania</string>
     <string name="control_top_offset">Górne przesunięcie: </string>
     <string name="control_right_offset">prawe przesunięcie: </string>

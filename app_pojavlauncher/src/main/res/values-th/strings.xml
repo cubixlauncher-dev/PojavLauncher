@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <!-- App name part -->
-    <string name="app_name">Cubix Launcher (Minecraft: ฉบับ Java สำหรับ Android)</string>
-    <string name="app_short_name">Cubix Launcher</string>
+    <string name="app_name">CubixWorld Mobile (Minecraft: ฉบับ Java สำหรับ Android)</string>
+    <string name="app_short_name">CubixWorld Mobile</string>
     <string name="app_motd">เปิด Minecraft: ฉบับ Java ในอุปกรณ์ของคุณ!</string>
     <!-- Action bar part -->
     <!-- Languages list part -->
@@ -21,7 +21,7 @@
     <!-- AlertDialog title -->
     <string name="alerttitle_installmod">เลือกตัวติดตั้งม็อด</string>
     <!-- Error messages -->
-    <string name="error_fatal">Cubix Launcher ได้ขัดข้องโดยไม่คาดคิด</string>
+    <string name="error_fatal">CubixWorld Mobile ได้ขัดข้องโดยไม่คาดคิด</string>
     <string name="error_no_version">ไม่มีเวอร์ชัน!</string>
     <string name="error_show_more">แสดงเพิ่มเติม</string>
     <string name="error_show_less">แสดงน้อยลง</string>

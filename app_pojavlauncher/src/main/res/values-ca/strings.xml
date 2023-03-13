@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <!-- App name part -->
-    <string name="app_name">Cubix Launcher (Minecraft: Java Edition per Android)</string>
-    <string name="app_short_name">Cubix Launcher</string>
+    <string name="app_name">CubixWorld Mobile (Minecraft: Java Edition per Android)</string>
+    <string name="app_short_name">CubixWorld Mobile</string>
     <string name="app_motd">Juga a Minecraft: edició de Java al teu dispositiu!</string>
     <!-- Action bar part -->
     <!-- Languages list part -->
@@ -24,7 +24,7 @@
     <string name="alerttitle_install_jre">Instala Java Runtime %s (.tar.xz)</string>
     <string name="alerttitle_installmod">Selecciona un mod per afegir</string>
     <!-- Error messages -->
-    <string name="error_fatal">Cubix Launcher s’ha parat inesperadament</string>
+    <string name="error_fatal">CubixWorld Mobile s’ha parat inesperadament</string>
     <string name="error_no_version">Cap versio!</string>
     <string name="error_show_more">Mostra més</string>
     <string name="error_show_less">Mostrar menys</string>

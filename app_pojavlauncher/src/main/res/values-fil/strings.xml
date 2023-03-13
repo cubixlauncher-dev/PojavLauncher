@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <!-- App name part -->
-    <string name="app_name">Cubix Launcher (Minecraft: Java Edition for Android) Translation By Justine Victorino or EnderProJustine</string>
-    <string name="app_short_name">Cubix Launcher</string>
+    <string name="app_name">CubixWorld Mobile (Minecraft: Java Edition for Android) Translation By Justine Victorino or EnderProJustine</string>
+    <string name="app_short_name">CubixWorld Mobile</string>
     <string name="app_motd">Ilunsad ang Minecraft: Java Edition sa iyong aparato!</string>
     <!-- Action bar part -->
     <!-- Languages list part -->
@@ -25,7 +25,7 @@
     <string name="alerttitle_install_jre">I-install ang Java Runtime %s (.tar.xz)</string>
     <string name="alerttitle_installmod">Pumili ng isang installer ng mod</string>
     <!-- Error messages -->
-    <string name="error_fatal">Ang Cubix Launcher ay hindi inaasahang nag-crash</string>
+    <string name="error_fatal">Ang CubixWorld Mobile ay hindi inaasahang nag-crash</string>
     <string name="error_no_version">Walang bersyon!</string>
     <string name="error_show_more">Magpakita ng higit pa</string>
     <string name="error_show_less">Magpakita ng kaunti</string>
@@ -207,7 +207,7 @@
     <string name="compat_11x_playanyway">Subukan pa rin</string>
     <string name="storage_warning_title">Bago sa i-storage</string>
     <string name="storage_warning_text"><![CDATA[Dahil kay Google\'s bagong scoped storage enforcements na nadagdag sa Android 10 pataas, kinailangan namin na i-move
-ang game directory into an app-private folder.<br /> Ang bagong folder para sa Pojav files ay <b>Android/data/%s/files/</b>(pwede rin i-access gamit ang storage provider sa inyong file explorer).<br /> Kapag kailangan mo i-copy ang inyong game files, please i-copy lahat from the original folder at <b>games/Cubix Launcher</b> manually.]]></string>
+ang game directory into an app-private folder.<br /> Ang bagong folder para sa Pojav files ay <b>Android/data/%s/files/</b>(pwede rin i-access gamit ang storage provider sa inyong file explorer).<br /> Kapag kailangan mo i-copy ang inyong game files, please i-copy lahat from the original folder at <b>games/CubixWorld Mobile</b> manually.]]></string>
     <string name="control_offset_title">Offset ng Control</string>
     <string name="preference_mouse_start_title">Mag start ng may virtual mouse on</string>
     <string name="preference_mouse_start_description">Kapag i-gamit ang option na ito ikaw ay ma judge ni Mathias-Boulay</string>

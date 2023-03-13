@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <!-- App name part -->
-    <string name="app_name">Cubix Launcher (Minecraft: Java Edition Androidille)</string>
-    <string name="app_short_name">Cubix Launcher</string>
+    <string name="app_name">CubixWorld Mobile (Minecraft: Java Edition Androidille)</string>
+    <string name="app_short_name">CubixWorld Mobile</string>
     <!-- Action bar part -->
     <!-- Languages list part -->
     <!-- Login strings -->

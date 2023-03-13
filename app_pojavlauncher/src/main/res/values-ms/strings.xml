@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <!-- App name part -->
-    <string name="app_name">Cubix Launcher (Minecraft: Java Edition untuk Android)</string>
-    <string name="app_short_name">Cubix Launcher</string>
+    <string name="app_name">CubixWorld Mobile (Minecraft: Java Edition untuk Android)</string>
+    <string name="app_short_name">CubixWorld Mobile</string>
     <string name="app_motd">Lancarkan Minecraft: Java Edition di dalam peranti anda!</string>
     <!-- Action bar part -->
     <!-- Languages list part -->
@@ -25,7 +25,7 @@
     <string name="alerttitle_install_jre">Pasang Java Runtime %s (.tar.xz)</string>
     <string name="alerttitle_installmod">Pilih sebuah pemasang mod</string>
     <!-- Error messages -->
-    <string name="error_fatal">Cubix Launcher terhenti tanpa diduga</string>
+    <string name="error_fatal">CubixWorld Mobile terhenti tanpa diduga</string>
     <string name="error_no_version">Tiada versi!</string>
     <string name="error_show_more">Tunjuk lebih banyak</string>
     <string name="error_show_less">Tunjuk lebih sedikit</string>
@@ -185,7 +185,7 @@
     <string name="pvc_jvmArgs">Argumen JVM</string>
     <string name="pvc_title">Tetapan per-versi</string>
     <string name="storage_warning_title">Tetapan Storan</string>
-    <string name="storage_warning_text"><![CDATA[Oleh kerana penguatkuasaan penyimpanan skop baru Google yang ditambahkan dalam Android 10 dan yang lebih tinggi, kami diminta untuk memindahkan direktori permainan ke folder peribadi aplikasi. <br/>Folder baru untuk fail Pojav adalah <b>Android/data/%s/files/</b> (juga dapat diakses menggunakan penyedia penyimpanan di penjelajah fail anda).<br/>Sekiranya anda perlu menyalin fail permainan anda, sila salin semuanya dari folder asal di <b>games/Cubix Launcher</b> secara manual.]]></string>
+    <string name="storage_warning_text"><![CDATA[Oleh kerana penguatkuasaan penyimpanan skop baru Google yang ditambahkan dalam Android 10 dan yang lebih tinggi, kami diminta untuk memindahkan direktori permainan ke folder peribadi aplikasi. <br/>Folder baru untuk fail Pojav adalah <b>Android/data/%s/files/</b> (juga dapat diakses menggunakan penyedia penyimpanan di penjelajah fail anda).<br/>Sekiranya anda perlu menyalin fail permainan anda, sila salin semuanya dari folder asal di <b>games/CubixWorld Mobile</b> secara manual.]]></string>
     <string name="preference_misc_title">Tetapan lain-lain</string>
     <string name="gles_hack_none">Jangan mengecilkan tekstur</string>
     <string name="gles_hack_always">Membahagi semua textur dengan 2</string>

@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <!-- App name part -->
-    <string name="app_name">Cubix Launcher (Minecraft: Java Edition για Android)</string>
-    <string name="app_short_name">Cubix Launcher</string>
+    <string name="app_name">CubixWorld Mobile (Minecraft: Java Edition για Android)</string>
+    <string name="app_short_name">CubixWorld Mobile</string>
     <string name="app_motd">Εκκινήστε το Minecraft: Java Edition στη συσκευή σας!</string>
     <!-- Action bar part -->
     <!-- Languages list part -->
@@ -24,7 +24,7 @@
     <string name="alerttitle_install_jre">Εγκατάστησε Java Runtime %s (.tar.xz)</string>
     <string name="alerttitle_installmod">Επιλέξτε ένα πρόγραμμα εγκατάστασης mod</string>
     <!-- Error messages -->
-    <string name="error_fatal">Ο Cubix Launcher κατέρρευσε απροσδόκητα</string>
+    <string name="error_fatal">Ο CubixWorld Mobile κατέρρευσε απροσδόκητα</string>
     <string name="error_no_version">Καμία έκδοση!</string>
     <string name="error_show_more">Εμφάνιση περισσότερων</string>
     <string name="error_show_less">Εμφάνιση λιγότερων</string>

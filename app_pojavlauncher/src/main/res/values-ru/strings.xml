@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <!-- App name part -->
-    <string name="app_name">Cubix Launcher (Minecraft: Java Edition для Android)</string>
-    <string name="app_short_name">Cubix Launcher</string>
+    <string name="app_name">CubixWorld Mobile (Minecraft: Java Edition для Android)</string>
+    <string name="app_short_name">CubixWorld Mobile</string>
     <string name="app_motd">Запустите Minecraft: Java Edition на вашем устройстве!</string>
     <!-- Action bar part -->
     <!-- Languages list part -->
@@ -25,7 +25,7 @@
     <string name="alerttitle_install_jre">Установка Java Runtime %s (.tar.xz)</string>
     <string name="alerttitle_installmod">Выберите установщик мода</string>
     <!-- Error messages -->
-    <string name="error_fatal">Cubix Launcher был остановлен в результате сбоя</string>
+    <string name="error_fatal">CubixWorld Mobile был остановлен в результате сбоя</string>
     <string name="error_no_version">Нет версий!</string>
     <string name="error_show_more">Развернуть</string>
     <string name="error_show_less">Свернуть</string>
@@ -224,7 +224,7 @@
     <string name="pvc_jvmArgs">Аргументы JVM</string>
     <string name="pvc_title">Поверсионные настройки</string>
     <string name="storage_warning_title">Изменения в работе хранилища</string>
-    <string name="storage_warning_text"><![CDATA[Из-за новых ограничений хранилища добавленных компанией Google в Android 10, приложению нужно переместить папку игры во внутреннюю папку приложения.<br /> Новая папка для файлов Pojav - <b>Android/data/%s/files/</b> (также доступна из провайдера хранилища в вашем проводнике).<br /> Если вам необходимо перенести файлы игры, пожалуйста скопируйте их вручную из папки <b>games/Cubix Launcher</b>.]]></string>
+    <string name="storage_warning_text"><![CDATA[Из-за новых ограничений хранилища добавленных компанией Google в Android 10, приложению нужно переместить папку игры во внутреннюю папку приложения.<br /> Новая папка для файлов Pojav - <b>Android/data/%s/files/</b> (также доступна из провайдера хранилища в вашем проводнике).<br /> Если вам необходимо перенести файлы игры, пожалуйста скопируйте их вручную из папки <b>games/CubixWorld Mobile</b>.]]></string>
     <string name="control_offset_title">Смещение управления</string>
     <string name="control_top_offset">Сверху: </string>
     <string name="control_right_offset">справа: </string>

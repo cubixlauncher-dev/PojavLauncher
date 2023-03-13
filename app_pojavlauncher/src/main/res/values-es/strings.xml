@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <!-- App name part -->
-    <string name="app_name">Cubix Launcher (Minecraft: Java Edition para Android)</string>
-    <string name="app_short_name">Cubix Launcher</string>
+    <string name="app_name">CubixWorld Mobile (Minecraft: Java Edition para Android)</string>
+    <string name="app_short_name">CubixWorld Mobile</string>
     <string name="app_motd">¡Juega Minecraft: Java Edition en tu celular!</string>
     <!-- Action bar part -->
     <!-- Languages list part -->
@@ -25,7 +25,7 @@
     <string name="alerttitle_install_jre">Instalar Java Runtime %s (.tar.xz)</string>
     <string name="alerttitle_installmod">Selecciona un instalador de mods</string>
     <!-- Error messages -->
-    <string name="error_fatal">Cubix Launcher se ha detenido inesperadamente</string>
+    <string name="error_fatal">CubixWorld Mobile se ha detenido inesperadamente</string>
     <string name="error_no_version">¡No hay versiones!</string>
     <string name="error_show_more">Mostrar más</string>
     <string name="error_show_less">Mostrar menos</string>
@@ -223,7 +223,7 @@
     <string name="pvc_jvmArgs">Argumentos JVM</string>
     <string name="pvc_title">Configuración para esta versión</string>
     <string name="storage_warning_title">Cambio de almacenamiento</string>
-    <string name="storage_warning_text"><![CDATA[Debido a las nuevas aplicaciones de almacenamiento de Google añadidas en Android 10 o superior, tenemos que mover el directorio del juego a una carpeta privada.<br /> La nueva carpeta para los archivos de Cubix Launcher es <b>Android/data/%s/files/</b> (también accesible usando un proveedor de almacenamiento en su explorador de archivos).<br /> Si necesitas copiar tus archivos del juego, por favor copia todo desde la carpeta original en <b>juegos/Cubix Launcher</b> manualmente.]]></string>
+    <string name="storage_warning_text"><![CDATA[Debido a las nuevas aplicaciones de almacenamiento de Google añadidas en Android 10 o superior, tenemos que mover el directorio del juego a una carpeta privada.<br /> La nueva carpeta para los archivos de CubixWorld Mobile es <b>Android/data/%s/files/</b> (también accesible usando un proveedor de almacenamiento en su explorador de archivos).<br /> Si necesitas copiar tus archivos del juego, por favor copia todo desde la carpeta original en <b>juegos/CubixWorld Mobile</b> manualmente.]]></string>
     <string name="control_offset_title">Desplazamiento de control</string>
     <string name="control_top_offset">Desplazamiento superior: </string>
     <string name="control_right_offset">desplazamiento derecho: </string>

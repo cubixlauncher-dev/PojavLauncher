@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <!-- App name part -->
-    <string name="app_name">Cubix Launcher (Minecraft: Java Edition for Android)</string>
-    <string name="app_short_name">Cubix Launcher</string>
+    <string name="app_name">CubixWorld Mobile (Minecraft: Java Edition for Android)</string>
+    <string name="app_short_name">CubixWorld Mobile</string>
     <string name="app_motd">Launch Minecraft: Java Edition on your device!</string>
     <!-- Action bar part -->
     <!-- Languages list part -->
@@ -25,7 +25,7 @@
     <string name="alerttitle_install_jre">Install Java Runtime %s (.tar.xz)</string>
     <string name="alerttitle_installmod">Choose a mod installer (.jar)</string>
     <!-- Error messages -->
-    <string name="error_fatal">Cubix Launcher has unexpectedly crashed</string>
+    <string name="error_fatal">CubixWorld Mobile has unexpectedly crashed</string>
     <string name="error_no_version">No version!</string>
     <string name="error_show_more">Show more</string>
     <string name="error_show_less">Show less</string>
@@ -218,7 +218,7 @@
     <string name="pvc_jvmArgs">JVM arguments</string>
     <string name="pvc_title">Per-version settings</string>
     <string name="storage_warning_title">Storage changes</string>
-    <string name="storage_warning_text"><![CDATA[Due to Google\'s new scoped storage enforcements added in Android 10 and higher, we are required to move the game directory into an app-private folder.<br /> The new folder for Pojav files is <b>Android/data/%s/files/</b> (also accessible using a storage provider in your file explorer).<br /> If you need to copy your game files, please copy everything from the original folder at <b>games/Cubix Launcher</b> manually.]]></string>
+    <string name="storage_warning_text"><![CDATA[Due to Google\'s new scoped storage enforcements added in Android 10 and higher, we are required to move the game directory into an app-private folder.<br /> The new folder for Pojav files is <b>Android/data/%s/files/</b> (also accessible using a storage provider in your file explorer).<br /> If you need to copy your game files, please copy everything from the original folder at <b>games/CubixWorld Mobile</b> manually.]]></string>
     <string name="profiles_profile_name">Name</string>
     <string name="pedit_renderer">Renderer</string>
 </resources>

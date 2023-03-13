@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <!-- App name part -->
-    <string name="app_name">Cubix Launcher (Android를 위한 Minecraft: Java Edition 구동기)</string>
-    <string name="app_short_name">Cubix Launcher</string>
+    <string name="app_name">CubixWorld Mobile (Android를 위한 Minecraft: Java Edition 구동기)</string>
+    <string name="app_short_name">CubixWorld Mobile</string>
     <string name="app_motd">당신의 기기에서 Minecraft: Java Edition 를 실행하세요!</string>
     <!-- Action bar part -->
     <!-- Languages list part -->
@@ -25,7 +25,7 @@
     <string name="alerttitle_install_jre">Java 런타임 설치 %s (.tar.xz)</string>
     <string name="alerttitle_installmod">모드 설치기를 선택하세요</string>
     <!-- Error messages -->
-    <string name="error_fatal">Cubix Launcher에 예상치 못한 충돌이 발생했습니다</string>
+    <string name="error_fatal">CubixWorld Mobile에 예상치 못한 충돌이 발생했습니다</string>
     <string name="error_no_version">버전이 없습니다!</string>
     <string name="error_show_more">더 보기</string>
     <string name="error_show_less">간략히 보기</string>
@@ -216,7 +216,7 @@
     <string name="pvc_gameDirectory">게임 디렉토리</string>
     <string name="pvc_jvmArgs">JVM 실행 설정</string>
     <string name="pvc_title">버전마다 설정</string>
-    <string name="storage_warning_text"><![CDATA[Android 10 이상에 추가된 Google\의 새로운 스토리지 적용 범위로 인해, 게임 폴더를 내부 저장소 폴더로 이동해야 합니다.<br /> Pojav 파일의 새 폴더는 <b>Android/data/%s/files/</b> 입니다 (파일 탐색기의 콘텐츠 제공자를 사용하여 액세스할 수도 있습니다).<br /> 게임 파일을 복사해야 하는 경우, 원래 폴더인 <b>games/Cubix Launcher</b> 에서 모든 파일을 수동으로 복사하십시오.]]></string>
+    <string name="storage_warning_text"><![CDATA[Android 10 이상에 추가된 Google\의 새로운 스토리지 적용 범위로 인해, 게임 폴더를 내부 저장소 폴더로 이동해야 합니다.<br /> Pojav 파일의 새 폴더는 <b>Android/data/%s/files/</b> 입니다 (파일 탐색기의 콘텐츠 제공자를 사용하여 액세스할 수도 있습니다).<br /> 게임 파일을 복사해야 하는 경우, 원래 폴더인 <b>games/CubixWorld Mobile</b> 에서 모든 파일을 수동으로 복사하십시오.]]></string>
     <string name="control_offset_title">조작 오프셋</string>
     <string name="control_top_offset">상단 시작점: </string>
     <string name="control_right_offset">우측 시작점: </string>

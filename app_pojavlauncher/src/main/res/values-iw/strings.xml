@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <!-- App name part -->
-    <string name="app_name">Cubix Launcher (Minecraft: Java Edition for Android)</string>
-    <string name="app_short_name">Cubix Launcher</string>
+    <string name="app_name">CubixWorld Mobile (Minecraft: Java Edition for Android)</string>
+    <string name="app_short_name">CubixWorld Mobile</string>
     <string name="app_motd">פתח את Minecraft: Java edition במכשירך!</string>
     <!-- Action bar part -->
     <!-- Languages list part -->
@@ -25,7 +25,7 @@
     <string name="alerttitle_install_jre">התקן Java Runtime %s (.tar.xz)</string>
     <string name="alerttitle_installmod">בחר מתקין mod</string>
     <!-- Error messages -->
-    <string name="error_fatal">Cubix Launcher קרס באופן בלתי צפוי</string>
+    <string name="error_fatal">CubixWorld Mobile קרס באופן בלתי צפוי</string>
     <string name="error_no_version">אין גרסה!</string>
     <string name="error_show_more">הצג עוד</string>
     <string name="error_show_less">הצג פחות</string>
@@ -215,7 +215,7 @@
     <string name="pvc_jvmArgs">פרמטרים של JVM</string>
     <string name="pvc_title">הגדרות לפי גירסה</string>
     <string name="storage_warning_title">שינויי אחסון</string>
-    <string name="storage_warning_text"><![CDATA[בשל אכיפות האחסון החדשות של Google שנוספו ב- Android 10 ואילך, עלינו להעביר את ספריית המשחק לתיקייה פרטית לאפליקציות.<br /> התיקיה החדשה לקובצי Pojav היא <b>Android/data/%s/files/</b> (נגיש גם באמצעות ספק אחסון בסייר הקבצים שלך).<br /> אם אתה צריך להעתיק את קבצי המשחק שלך, העתק הכל מהתיקיה המקורית ב <b>games/Cubix Launcher</b> באופן ידני.]]></string>
+    <string name="storage_warning_text"><![CDATA[בשל אכיפות האחסון החדשות של Google שנוספו ב- Android 10 ואילך, עלינו להעביר את ספריית המשחק לתיקייה פרטית לאפליקציות.<br /> התיקיה החדשה לקובצי Pojav היא <b>Android/data/%s/files/</b> (נגיש גם באמצעות ספק אחסון בסייר הקבצים שלך).<br /> אם אתה צריך להעתיק את קבצי המשחק שלך, העתק הכל מהתיקיה המקורית ב <b>games/CubixWorld Mobile</b> באופן ידני.]]></string>
     <string name="preference_mouse_start_title">התחל עם עכבר וירטואלי מופעל</string>
     <string name="preference_mouse_start_description">בעת השימוש באפשרות זו, \"תישפטו\" ע\"י Mathias-Boulay</string>
     <string name="preference_video_title">וידאו ועיבוד</string>

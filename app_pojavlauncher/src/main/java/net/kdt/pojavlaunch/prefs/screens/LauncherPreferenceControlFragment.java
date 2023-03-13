@@ -67,6 +67,7 @@ public class LauncherPreferenceControlFragment extends LauncherPreferenceFragmen
         findPreference("gyroInvertY").setVisible(mGyroAvailable);
         gyroSensitivitySeek.setVisible(mGyroAvailable);
         gyroSampleRateSeek.setVisible(mGyroAvailable);
+        computeVisibility();
     }
 
     @Override

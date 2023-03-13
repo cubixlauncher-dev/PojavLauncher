@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <!-- App name part -->
-    <string name="app_name">Cubix Launcher (Minecraft: Java Edition pro Android)</string>
-    <string name="app_short_name">Cubix Launcher</string>
+    <string name="app_name">CubixWorld Mobile (Minecraft: Java Edition pro Android)</string>
+    <string name="app_short_name">CubixWorld Mobile</string>
     <string name="app_motd">Spusť Minecraft: Java Edici v tvém zařízení!</string>
     <!-- Action bar part -->
     <!-- Languages list part -->
@@ -25,7 +25,7 @@
     <string name="alerttitle_install_jre">Nainstalovat Java Runtime %s (.tar.xz)</string>
     <string name="alerttitle_installmod">Vyber instalatér módu</string>
     <!-- Error messages -->
-    <string name="error_fatal">Cubix Launcher neočekávaně spadl</string>
+    <string name="error_fatal">CubixWorld Mobile neočekávaně spadl</string>
     <string name="error_no_version">Žádná verze!</string>
     <string name="error_show_more">Zobrazit více</string>
     <string name="error_show_less">Zobrazit méně</string>
@@ -223,7 +223,7 @@
     <string name="pvc_jvmArgs">JVM argumenty</string>
     <string name="pvc_title">Nastavení po verzi</string>
     <string name="storage_warning_title">Změny úložiště</string>
-    <string name="storage_warning_text"><![CDATA[Kvůli novému vynucování rozsahového úložiště od Googlu přidanému v Androidu 10 a vyšším, jsme přinuceni přesunout složku hry do privátní složky aplikace.<br /> Nová složka pro soubory Pojavu je <b>Android/data/%s/files/</b> (také přístupná pomocí poskytovatele úložiště v Průzkumníku souborů).<br /> Pokud potřebujete zkopírovat své herní soubory, prosím zkopírujte vše z původní složky na <b>games/Cubix Launcher</b> ručně.]]></string>
+    <string name="storage_warning_text"><![CDATA[Kvůli novému vynucování rozsahového úložiště od Googlu přidanému v Androidu 10 a vyšším, jsme přinuceni přesunout složku hry do privátní složky aplikace.<br /> Nová složka pro soubory Pojavu je <b>Android/data/%s/files/</b> (také přístupná pomocí poskytovatele úložiště v Průzkumníku souborů).<br /> Pokud potřebujete zkopírovat své herní soubory, prosím zkopírujte vše z původní složky na <b>games/CubixWorld Mobile</b> ručně.]]></string>
     <string name="control_offset_title">Odsazení ovládání</string>
     <string name="control_top_offset">Horní odsazení: </string>
     <string name="control_right_offset">pravé odsazení: </string>

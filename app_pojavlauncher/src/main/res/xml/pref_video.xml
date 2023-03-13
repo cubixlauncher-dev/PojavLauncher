@@ -2,7 +2,7 @@
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app2="http://schemas.android.com/apk/res-auto"
     app2:iconSpaceReserved="false">
-    <net.kdt.pojavlaunch.prefs.CustomSeekBarPreference
+    <net.kdt.pojavlaunch.prefs.CustomSeekBarPreference app2:iconSpaceReserved="false"
         android:key="allocation"
 
         android:summary="@string/mcl_memory_allocation_subtitle"
@@ -12,7 +12,7 @@
         app2:selectable="false"/>
 
 
-        <CheckBoxPreference
+        <CheckBoxPreference app2:iconSpaceReserved="false"
             android:defaultValue="false"
             android:key="ignoreNotch"
             android:summary="@string/mcl_setting_subtitle_ignore_notch"
@@ -20,7 +20,7 @@
             
             />
 
-        <net.kdt.pojavlaunch.prefs.CustomSeekBarPreference
+        <net.kdt.pojavlaunch.prefs.CustomSeekBarPreference app2:iconSpaceReserved="false"
             android:key="resolutionRatio"
             android:summary="@string/mcl_setting_subtitle_resolution_scaler"
             android:title="@string/mcl_setting_title_resolution_scaler"
@@ -30,21 +30,21 @@
             
             />
 
-        <CheckBoxPreference
+        <CheckBoxPreference app2:iconSpaceReserved="false"
             android:title="@string/preference_sustained_performance_title"
             android:summary="@string/preference_sustained_performance_description"
             android:key="sustainedPerformance"
             android:defaultValue="false"
             />
 
-        <CheckBoxPreference
+        <CheckBoxPreference app2:iconSpaceReserved="false"
             android:defaultValue="false"
             android:key="alternate_surface"
             android:summary="@string/mcl_setting_subtitle_use_surface_view"
             android:title="@string/mcl_setting_title_use_surface_view"
             />
 
-        <CheckBoxPreference
+        <CheckBoxPreference app2:iconSpaceReserved="false"
             android:defaultValue="false"
             android:key="force_vsync"
             android:summary="@string/preference_force_vsync_description"

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <!-- App name part -->
-    <string name="app_name">Cubix Launcher (Minecraft: Java Edition untuk Android)</string>
+    <string name="app_name">CubixWorld Mobile (Minecraft: Java Edition untuk Android)</string>
     <string name="app_short_name">Peluncur Pojav</string>
     <string name="app_motd">Mainkan Minecraft: Java Edition di perangkat Anda!</string>
     <!-- Action bar part -->
@@ -25,7 +25,7 @@
     <string name="alerttitle_install_jre">Install Runtime Java %s (.tar.xz)</string>
     <string name="alerttitle_installmod">Pilih sebuah instaler mod</string>
     <!-- Error messages -->
-    <string name="error_fatal">Cubix Launcher tiba-tiba crash tanpa diduga</string>
+    <string name="error_fatal">CubixWorld Mobile tiba-tiba crash tanpa diduga</string>
     <string name="error_no_version">Versi tidak ada!</string>
     <string name="error_show_more">Selengkapnya</string>
     <string name="error_show_less">Tampilkan Sedikit</string>
@@ -223,7 +223,7 @@
     <string name="pvc_jvmArgs">Argumen JVM</string>
     <string name="pvc_title">Pengaturan per-versi</string>
     <string name="storage_warning_title">Perubahan penyimpanan</string>
-    <string name="storage_warning_text"><![CDATA[Karena fitur baru "scoped storage" dari Google ditambah di Android 10 dan lebih tinggi, kita butuh memindahkan direktori permainan ke sebuah "app-private" folder.<br /> Folder baru untuk file Pojav berada di <b>Android/data/%s/files/</b> (juga bisa diakses menggunakan provider penyimpanan di file explorer anda).<br /> Jika anda butuh mengkopi file permainan, mohon mengkopi semuanya dari folder original di <b>games/Cubix Launcher</b> secara manual.]]></string>
+    <string name="storage_warning_text"><![CDATA[Karena fitur baru "scoped storage" dari Google ditambah di Android 10 dan lebih tinggi, kita butuh memindahkan direktori permainan ke sebuah "app-private" folder.<br /> Folder baru untuk file Pojav berada di <b>Android/data/%s/files/</b> (juga bisa diakses menggunakan provider penyimpanan di file explorer anda).<br /> Jika anda butuh mengkopi file permainan, mohon mengkopi semuanya dari folder original di <b>games/CubixWorld Mobile</b> secara manual.]]></string>
     <string name="control_offset_title">Kontrol offset</string>
     <string name="control_top_offset">Offset atas: </string>
     <string name="control_right_offset">Offset kanan: </string>

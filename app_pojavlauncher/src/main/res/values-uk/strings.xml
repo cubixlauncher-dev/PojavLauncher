@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <!-- App name part -->
-    <string name="app_name">Cubix Launcher (Minecraft: Java Edition для Android)</string>
-    <string name="app_short_name">Cubix Launcher</string>
+    <string name="app_name">CubixWorld Mobile (Minecraft: Java Edition для Android)</string>
+    <string name="app_short_name">CubixWorld Mobile</string>
     <string name="app_motd">Запустити Minecraft: Java Edition на вашому пристрої!</string>
     <!-- Action bar part -->
     <!-- Languages list part -->
@@ -25,7 +25,7 @@
     <string name="alerttitle_install_jre">Встановити Java Runtime %s (.tar.xz)</string>
     <string name="alerttitle_installmod">Вибрати інсталятор моду</string>
     <!-- Error messages -->
-    <string name="error_fatal">Cubix Launcher був зупинений у результаті збою</string>
+    <string name="error_fatal">CubixWorld Mobile був зупинений у результаті збою</string>
     <string name="error_no_version">Немає версії!</string>
     <string name="error_show_more">Розвернути</string>
     <string name="error_show_less">Звернути</string>
@@ -223,7 +223,7 @@
     <string name="pvc_jvmArgs">Аргументи JVM</string>
     <string name="pvc_title">Налаштування окремої версії</string>
     <string name="storage_warning_title">Зміни сховища</string>
-    <string name="storage_warning_text"><![CDATA[Через нові обсяги зберігання Google, які діють в Android 10 і вище, нам необхідно перемістити гру із теки гри у приватну папку.<br /> Нова папка для файлів Cubix Launcher:<b>Android/data/%s/files/</b> (також можна використовувати сховище у провіднику ваших файлів).<br /> Якщо вам потрібно скопіювати свої ігрові файли, будь ласка, скопіюйте усе з вихідної папки з <b>games/Cubix Launcher</b> вручну.]]></string>
+    <string name="storage_warning_text"><![CDATA[Через нові обсяги зберігання Google, які діють в Android 10 і вище, нам необхідно перемістити гру із теки гри у приватну папку.<br /> Нова папка для файлів CubixWorld Mobile:<b>Android/data/%s/files/</b> (також можна використовувати сховище у провіднику ваших файлів).<br /> Якщо вам потрібно скопіювати свої ігрові файли, будь ласка, скопіюйте усе з вихідної папки з <b>games/CubixWorld Mobile</b> вручну.]]></string>
     <string name="control_offset_title">Зміщення керування</string>
     <string name="control_top_offset">Зверху: </string>
     <string name="control_right_offset">праворуч: </string>

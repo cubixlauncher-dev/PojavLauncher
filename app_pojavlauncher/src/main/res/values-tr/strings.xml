@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <!-- App name part -->
-    <string name="app_name">Cubix Launcher (Android için Minecraft: Java Edition)</string>
-    <string name="app_short_name">Cubix Launcher</string>
+    <string name="app_name">CubixWorld Mobile (Android için Minecraft: Java Edition)</string>
+    <string name="app_short_name">CubixWorld Mobile</string>
     <string name="app_motd">Cihazınızda Minecraft: Java Edition çalıştırın!</string>
     <!-- Action bar part -->
     <!-- Languages list part -->
@@ -25,7 +25,7 @@
     <string name="alerttitle_install_jre">Java Runtime\'ı Kur %s (.tar.xz)</string>
     <string name="alerttitle_installmod">Bir mod yükleyicisi seç</string>
     <!-- Error messages -->
-    <string name="error_fatal">Cubix Launcher beklenmedik bir sebepten dolayı çöktü</string>
+    <string name="error_fatal">CubixWorld Mobile beklenmedik bir sebepten dolayı çöktü</string>
     <string name="error_no_version">Sürüm yok!</string>
     <string name="error_show_more">Daha fazla göster</string>
     <string name="error_show_less">Daha az göster</string>
@@ -224,7 +224,7 @@
     <string name="pvc_jvmArgs">JVM argümanları</string>
     <string name="pvc_title">Sürüm-başına ayarlar</string>
     <string name="storage_warning_title">Depolama değişiklikleri</string>
-    <string name="storage_warning_text"><![CDATA[Google\'ın Android 10 ve sonraki sürümlerde eklenen yeni scoped storage yaptırımları nedeniyle, oyun dizinini app-private klasörüne taşımamız gerekiyor.<br /> Pojav dosyalari için yeni dizin <b>Android/data/%s/files/</b> (Ayrıca dosya yöneticisindeki dosya sağlayıcısından da erişmek mümkün).<br /> Eğer oyun dosyalarınızı kopyalamanız gerekirse, lütfen <b>games/Cubix Launcher</b>\'daki orijinal klasördeki her şeyi manuel olarak kopyalayın.]]></string>
+    <string name="storage_warning_text"><![CDATA[Google\'ın Android 10 ve sonraki sürümlerde eklenen yeni scoped storage yaptırımları nedeniyle, oyun dizinini app-private klasörüne taşımamız gerekiyor.<br /> Pojav dosyalari için yeni dizin <b>Android/data/%s/files/</b> (Ayrıca dosya yöneticisindeki dosya sağlayıcısından da erişmek mümkün).<br /> Eğer oyun dosyalarınızı kopyalamanız gerekirse, lütfen <b>games/CubixWorld Mobile</b>\'daki orijinal klasördeki her şeyi manuel olarak kopyalayın.]]></string>
     <string name="control_offset_title">Kontrol uzaklığı</string>
     <string name="control_top_offset">Üst uzaklık: </string>
     <string name="control_right_offset">Sağ uzaklık: </string>

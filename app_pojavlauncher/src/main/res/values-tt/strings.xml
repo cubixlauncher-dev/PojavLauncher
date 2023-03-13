@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <!-- App name part -->
-    <string name="app_name">Cubix Launcher (Android өчен Minecraft: Java Edition)</string>
-    <string name="app_short_name">Cubix Launcher</string>
+    <string name="app_name">CubixWorld Mobile (Android өчен Minecraft: Java Edition)</string>
+    <string name="app_short_name">CubixWorld Mobile</string>
     <string name="app_motd">Minecraft: Java Edition үзегезнең җайланма кушыгыз!</string>
     <!-- Action bar part -->
     <!-- Languages list part -->
@@ -24,7 +24,7 @@
     <string name="alerttitle_install_jre">Java Runtime уртыртуы %s (.tar.xz)</string>
     <string name="alerttitle_installmod">Мод утырткычын сайлагыз</string>
     <!-- Error messages -->
-    <string name="error_fatal">Cubix Launcher сафтан чыкты</string>
+    <string name="error_fatal">CubixWorld Mobile сафтан чыкты</string>
     <string name="error_no_version">Версия юк!</string>
     <string name="error_show_more">Күбрәк күрсәтү</string>
     <string name="error_show_less">Әзрәк күрсәтү</string>

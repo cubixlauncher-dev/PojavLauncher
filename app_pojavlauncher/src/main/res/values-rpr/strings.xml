@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <!-- App name part -->
-    <string name="app_name">Cubix Launcher (Minecraft: Java Edition для Android)</string>
-    <string name="app_short_name">Cubix Launcher</string>
+    <string name="app_name">CubixWorld Mobile (Minecraft: Java Edition для Android)</string>
+    <string name="app_short_name">CubixWorld Mobile</string>
     <string name="app_motd">Запустите Minecraft: Java Edition на вашемъ устройствѣ!</string>
     <!-- Action bar part -->
     <!-- Languages list part -->
@@ -25,7 +25,7 @@
     <string name="alerttitle_install_jre">Установка Java Runtime %s (.tar.xz)</string>
     <string name="alerttitle_installmod">Выберите установщикъ модификаціи</string>
     <!-- Error messages -->
-    <string name="error_fatal">Cubix Launcher былъ остановленъ въ результатѣ курьёза</string>
+    <string name="error_fatal">CubixWorld Mobile былъ остановленъ въ результатѣ курьёза</string>
     <string name="error_no_version">Нѣтъ версій!</string>
     <string name="error_show_more">Развернуть</string>
     <string name="error_show_less">Свернуть</string>
@@ -196,7 +196,7 @@
     <string name="pvc_jvmArgs">Аргументы JVM</string>
     <string name="pvc_title">Поверсіонныя опціи</string>
     <string name="storage_warning_title">Измѣненія въ работѣ хранилища</string>
-    <string name="storage_warning_text"><![CDATA[Изъ-за новыхъ ограниченій хранилища добавленныхъ компаніей Google въ Android 10, приложенію нужно перемѣстить папку игры во внутреннюю папку приложенія.<br /> Новая папка для файловъ Pojav - <b>Android/data/%s/files/</b> (также доступна изъ провайдера хранилища въ вашемъ проводникѣ).<br /> Если вамъ необходимо перенести файлы игры, пожалуйста скопируйте ихъ вручную изъ папки <b>games/Cubix Launcher</b>.]]></string>
+    <string name="storage_warning_text"><![CDATA[Изъ-за новыхъ ограниченій хранилища добавленныхъ компаніей Google въ Android 10, приложенію нужно перемѣстить папку игры во внутреннюю папку приложенія.<br /> Новая папка для файловъ Pojav - <b>Android/data/%s/files/</b> (также доступна изъ провайдера хранилища въ вашемъ проводникѣ).<br /> Если вамъ необходимо перенести файлы игры, пожалуйста скопируйте ихъ вручную изъ папки <b>games/CubixWorld Mobile</b>.]]></string>
     <string name="profiles_profile_name">Имя</string>
     <string name="pedit_renderer">Визуализаторъ</string>
 </resources>
