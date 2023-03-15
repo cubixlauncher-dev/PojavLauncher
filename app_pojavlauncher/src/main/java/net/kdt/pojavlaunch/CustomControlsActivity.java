@@ -169,8 +169,13 @@ public class CustomControlsActivity extends BaseActivity {
 
 			Button button = dialog.getButton(AlertDialog.BUTTON_POSITIVE);
 			button.setOnClickListener(view -> {
-				if (edit.getText().toString().isEmpty()) {
+				String controlName = edit.getText().toString();
+				if (controlName.isEmpty()) {
 					edit.setError(ctx.getResources().getString(R.string.global_error_field_empty));
+					return;
+				}
+				if (controlName.equals("./default") || controlName.equals("default")) {
+					edit.setError(ctx.getString(R.string.invalid_controls_name));
 					return;
 				}
 
@@ -191,6 +196,7 @@ public class CustomControlsActivity extends BaseActivity {
 				}
 
 			});
+
 		});
 		dialog.show();
 
