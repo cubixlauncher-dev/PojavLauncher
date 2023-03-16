@@ -210,6 +210,8 @@ public class ControlLayout extends FrameLayout {
 		for(ControlInterface button : getButtonChildren()){
 			button.setVisible(isVisible);
 		}
+		View dPadView = findViewById(R.id.analog_controller);
+		if(dPadView != null) dPadView.setVisibility(isVisible ? View.VISIBLE : GONE);
 	}
 
 	public void setModifiable(boolean isModifiable) {
