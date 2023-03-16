@@ -87,6 +87,7 @@
     <string name="mcl_setting_renderer_virgl">virglrenderer (OpenGL ES 3): экспортирует OpenGL 4.3</string>
     <string name="mcl_setting_renderer_vgpu">vgpu (OpenGL ES 3): экспортирует OpenGL 3.0</string>
     <string name="mcl_setting_renderer_vulkan_zink">zink (Vulkan): экспортирует OpenGL 4.6</string>
+    <string name="mcl_setting_renderer_angle">ANGLE - релиз 1.17+, средняя роизводительность</string>
     <string name="mcl_setting_category_veroption">Типы версий, которые будут отображаться в списке версий</string>
     <string name="mcl_setting_veroption_release">Релизы</string>
     <string name="mcl_setting_veroption_snapshot">Снапшоты</string>
@@ -233,7 +234,7 @@
     <string name="preference_control_offset_title">Смещение управления</string>
     <string name="preference_control_offset_description">Устанавливает пользовательское смещение для каждой стороны экрана</string>
     <string name="preference_mouse_start_title">Запуск с виртуальной мышью</string>
-    <string name="preference_mouse_start_description">Mathias-Boulay осудит вас, если вы будете использовать эту опцию</string>
+    <string name="preference_mouse_start_description">Виртуальная мышь включится при запуске игры (Mathias-Boulay осуждает вас, если вы этим пользуетесь)</string>
     <string name="preference_video_title">Видео и визуализатор</string>
     <string name="preference_video_description">Разрешение, тип масштабирования и визуализатор</string>
     <string name="preference_control_title">Настройка управления</string>
@@ -263,4 +264,25 @@
     <string name="arc_capes_title">Плащи Cosmetica</string>
     <string name="arc_capes_desc">Включает плащи от Cosmetica (ранее Arc). Для получения дополнительной информации, пожалуйста, посетите https://cosmetica.cc. Требуется OptiFine.</string>
     <string name="migrated_profile_str">Конфигурация версии %s</string>
+    <string name="global_select">Выбрать</string>
+    <string name="mcl_disable_swap_hand">Отключить двойное нажатие на хотбар для переключения руки</string>
+    <string name="mcl_disable_swap_hand_subtitle">Отключает двойное нажатие для переключения руки</string>
+    <string name="preference_force_vsync_title">V-Sync всегда включен</string>
+    <string name="preference_force_vsync_description">Понижает максимальное количество кадров для достижения повышенной плавности и снижения нагрева</string>
+    <string name="preference_edit_controls_title">Редактировать управление</string>
+    <string name="preference_edit_controls_summary">Настройте схему управления для своих нужд</string>
+    <string name="preference_gyro_invert_x_axis">Инвертировать ось X</string>
+    <string name="preference_gyro_invert_y_axis">Инвертировать ось Y</string>
+    <string name="preference_gyro_invert_x_axis_description">Инвертирует горизонтальную ось</string>
+    <string name="preference_gyro_invert_y_axis_description">Инвертирует вертикальную ось</string>
+    <string name="mcl_setting_title_buttonallcaps">Использовать только заглавные буквы в кнопках</string>
+    <string name="mcl_setting_subtitle_buttonallcaps">Отключите это если вы хотите использовать строчные буквы в управлении</string>
+    <string name="preference_enable_gyro_title">Включить управление гироскопом</string>
+    <string name="preference_enable_gyro_description">Позволяет управлять направлением курсора с помощью поворота телефона</string>
+    <string name="preference_gyro_sensitivity_title">Чувствительность гироскопического управления</string>
+    <string name="preference_gyro_sensitivity_description">Меняет чувствительность гироскопического управления</string>
+    <string name="toast_turn_on_gyro">Включите гироскопическое управление для того чтобы использовать это!</string>
+    <string name="preference_gyro_sample_rate_title">Частота опроса гироскопа</string>
+    <string name="preference_gyro_sample_rate_description">Если у вас есть пробемы с производительностью при использовании гироскопа, увеличьте это</string>
+    <string name="storage_required">CubixWorld Mobile требует наличие внешнего хранилища. Пожалуйста подключите внешнее хранилище и перезапустите приложение.</string>
 </resources>
