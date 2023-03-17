@@ -7,7 +7,7 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.util.AttributeSet;
 import android.util.DisplayMetrics;
-import android.util.Log;
+import android.util.FloatMath;
 import android.util.TypedValue;
 import android.view.MotionEvent;
 import android.view.View;
@@ -39,6 +39,7 @@ public class AnalogControllerView extends View {
     private float heightHalf;
     private float centerCircleRadius;
     private float outerCircleRadius;
+    private float borderRadius;
 
     public AnalogControllerView(Context context) {
         super(context);
@@ -70,11 +71,18 @@ public class AnalogControllerView extends View {
     @Override
     public void draw(Canvas canvas) {
         super.draw(canvas);
-        if(centerCircleRadius == 0) centerCircleRadius = getHeight() / 8f;
-        if(outerCircleRadius == 0) outerCircleRadius = (getHeight() / 2f) - controllerRingPaint.getStrokeWidth();
         canvas.drawCircle(widthHalf, heightHalf, outerCircleRadius, controllerInnerPaint);
         canvas.drawCircle(widthHalf, heightHalf, outerCircleRadius, controllerRingPaint);
-        canvas.drawCircle(innerX, innerY, centerCircleRadius, controllerRingPaint);
+        float adjustedInnerX = innerX;
+        float adjustedInnerY = innerY;
+        float xdiff = (adjustedInnerX - widthHalf);
+        float ydiff = (adjustedInnerY - heightHalf);
+        float abs = (float) Math.sqrt(xdiff * xdiff + ydiff * ydiff);
+        if(abs > borderRadius && abs != 0) {
+            adjustedInnerX = (innerX - widthHalf) * borderRadius / abs + widthHalf;
+            adjustedInnerY = (innerY - widthHalf) * borderRadius / abs + heightHalf;
+        }
+        canvas.drawCircle(adjustedInnerX, adjustedInnerY, centerCircleRadius, controllerRingPaint);
     }
 
     @SuppressLint("ClickableViewAccessibility")
@@ -94,6 +102,7 @@ public class AnalogControllerView extends View {
         whichButtonsPressedNew[BUTTON_W] = innerY < heightHalf - DEADZONE_SIZE ? BUTTON_PRESSED : BUTTON_RELEASED;
         whichButtonsPressedNew[BUTTON_D] = innerX > widthHalf + DEADZONE_SIZE ? BUTTON_PRESSED : BUTTON_RELEASED;
         whichButtonsPressedNew[BUTTON_A] = innerX < widthHalf - DEADZONE_SIZE ? BUTTON_PRESSED : BUTTON_RELEASED;
+        whichButtonsPressedNew[BUTTON_CTRL] = innerY < heightHalf - (DEADZONE_SIZE * 2) ? BUTTON_PRESSED : BUTTON_RELEASED;
         updateButtons();
         invalidate();
         return true;
@@ -108,6 +117,7 @@ public class AnalogControllerView extends View {
         controllerRingPaint.setStrokeWidth(TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 2, metrics));
         outerCircleRadius = (w / 2f) - controllerRingPaint.getStrokeWidth();
         centerCircleRadius = w / 8f;
+        borderRadius = outerCircleRadius - centerCircleRadius;
         widthHalf = w / 2f;
         heightHalf = h / 2f;
         if(innerX == 0) innerX = widthHalf;
