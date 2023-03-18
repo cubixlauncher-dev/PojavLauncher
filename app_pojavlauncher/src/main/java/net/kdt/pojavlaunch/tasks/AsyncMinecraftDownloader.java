@@ -209,6 +209,7 @@ public class AsyncMinecraftDownloader {
             ProgressKeeper.submitProgress(ProgressLayout.DOWNLOAD_MINECRAFT, -1, -1);
             throw new DownloaderException();
         } catch (Throwable e) {
+            ProgressKeeper.submitProgress(ProgressLayout.DOWNLOAD_MINECRAFT, -1, -1);
             Log.e("AsyncMcDownloader", e.toString(),e );
             throw new DownloaderException(e);
         }
