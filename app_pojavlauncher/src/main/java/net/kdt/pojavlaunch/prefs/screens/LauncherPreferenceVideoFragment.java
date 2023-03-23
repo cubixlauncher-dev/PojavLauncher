@@ -7,6 +7,7 @@ import static net.kdt.pojavlaunch.prefs.LauncherPreferences.PREF_NOTCH_SIZE;
 import android.content.SharedPreferences;
 import android.os.Build;
 import android.os.Bundle;
+import android.util.Log;
 
 import androidx.preference.CheckBoxPreference;
 import androidx.preference.PreferenceFragmentCompat;
@@ -25,7 +26,7 @@ public class LauncherPreferenceVideoFragment extends LauncherPreferenceFragment 
     public void onCreatePreferences(Bundle b, String str) {
         int ramAllocation = LauncherPreferences.PREF_RAM_ALLOCATION;
         addPreferencesFromResource(R.xml.pref_video);
-
+        Log.i("PNS", ""+PREF_NOTCH_SIZE);
         //Disable notch checking behavior on android 8.1 and below.
         findPreference("ignoreNotch").setVisible(Build.VERSION.SDK_INT >= Build.VERSION_CODES.P && PREF_NOTCH_SIZE > 0);
 

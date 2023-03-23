@@ -5,9 +5,11 @@ import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
+import android.os.Handler;
+import android.os.Looper;
 import android.util.AttributeSet;
 import android.util.DisplayMetrics;
-import android.util.FloatMath;
+import android.util.Log;
 import android.util.TypedValue;
 import android.view.MotionEvent;
 import android.view.View;
@@ -16,17 +18,19 @@ import androidx.annotation.Nullable;
 
 import org.lwjgl.glfw.CallbackBridge;
 
+
 public class AnalogControllerView extends View {
 
     private final Paint controllerRingPaint = new Paint();
     private final Paint controllerInnerPaint = new Paint();
+    private final Handler wKeyHandler = new Handler(Looper.getMainLooper());
     float innerX, innerY;
 
     private static final int BUTTON_W = 0;
     private static final int BUTTON_A = 1;
     private static final int BUTTON_S = 2;
     private static final int BUTTON_D = 3;
-    private static final int BUTTON_CTRL = 4;
+    private static final int BUTTON_SPRINT_ACTUATOR = 4;
 
     private static final byte BUTTON_PRESSED = 0;
     private static final byte BUTTON_RELEASED = 1;
@@ -102,7 +106,7 @@ public class AnalogControllerView extends View {
         whichButtonsPressedNew[BUTTON_W] = innerY < heightHalf - DEADZONE_SIZE ? BUTTON_PRESSED : BUTTON_RELEASED;
         whichButtonsPressedNew[BUTTON_D] = innerX > widthHalf + DEADZONE_SIZE ? BUTTON_PRESSED : BUTTON_RELEASED;
         whichButtonsPressedNew[BUTTON_A] = innerX < widthHalf - DEADZONE_SIZE ? BUTTON_PRESSED : BUTTON_RELEASED;
-        whichButtonsPressedNew[BUTTON_CTRL] = innerY < heightHalf - (DEADZONE_SIZE * 2) ? BUTTON_PRESSED : BUTTON_RELEASED;
+        whichButtonsPressedNew[BUTTON_SPRINT_ACTUATOR] = innerY < heightHalf - (DEADZONE_SIZE * 2) ? BUTTON_PRESSED : BUTTON_RELEASED;
         updateButtons();
         invalidate();
         return true;
@@ -134,21 +138,39 @@ public class AnalogControllerView extends View {
                 return LwjglGlfwKeycode.GLFW_KEY_S;
             case BUTTON_W:
                 return LwjglGlfwKeycode.GLFW_KEY_W;
-            case BUTTON_CTRL:
-                return LwjglGlfwKeycode.GLFW_KEY_LEFT_CONTROL;
         }
         return -1;
     }
 
     public void updateButtons() {
-        for(int i = 0; i < 5; i++) {
+        for(int i = 0; i < 4; i++) {
             if(whichButtonsPressedNew[i] != whichButtonsPressed[i]) {
                 boolean isDown = whichButtonsPressedNew[i] == BUTTON_PRESSED;
                 int kc = toKeycode(i);
-                CallbackBridge.setModifiers(kc, isDown);
                 CallbackBridge.sendKeyPress(kc, CallbackBridge.getCurrentMods(), isDown);
                 whichButtonsPressed[i] = whichButtonsPressedNew[i];
             }
+        }
+        if(whichButtonsPressedNew[BUTTON_SPRINT_ACTUATOR] != whichButtonsPressed[BUTTON_SPRINT_ACTUATOR]) {
+            boolean isDown = whichButtonsPressedNew[BUTTON_SPRINT_ACTUATOR] == BUTTON_PRESSED;
+            Log.i("SprintActuator", "isDown="+isDown);
+            if(isDown && whichButtonsPressed[BUTTON_W] == BUTTON_PRESSED) {
+                wKeyHandler.postDelayed(new WKeyActuator(false), 150);
+                wKeyHandler.postDelayed(new WKeyActuator(true), 300);
+                wKeyHandler.postDelayed(new WKeyActuator(false), 450);
+                wKeyHandler.postDelayed(new WKeyActuator(true), 600);
+            }
+            whichButtonsPressed[BUTTON_SPRINT_ACTUATOR] = whichButtonsPressedNew[BUTTON_SPRINT_ACTUATOR] ;
+        }
+    }
+    static class WKeyActuator implements Runnable {
+        private final boolean shouldActuate;
+        public WKeyActuator(boolean shouldActuate) {
+            this.shouldActuate = shouldActuate;
+        }
+        @Override
+        public void run() {
+            CallbackBridge.sendKeyPress(LwjglGlfwKeycode.GLFW_KEY_W, CallbackBridge.getCurrentMods(), shouldActuate);
         }
     }
 }
