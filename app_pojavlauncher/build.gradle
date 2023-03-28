@@ -85,11 +85,11 @@ android {
 	    // defaultConfig already set
             // multiDexEnabled = true
            // debuggable = true
-            resValue 'string', 'storageProviderAuthorities', 'net.kdt.pojavlaunch.scoped.gamefolder.cubix'
+            resValue 'string', 'storageProviderAuthorities', 'net.kdt.pojavlaunch.scoped.gamefolder.cubix.rel'
             resValue 'string', 'application_package', 'com.cubix.launcher.rel'
         }
         gplay {
-            resValue 'string', 'storageProviderAuthorities', 'net.kdt.pojavlaunch.scoped.gamefolder.cubix.gp'
+            resValue 'string', 'storageProviderAuthorities', 'net.kdt.pojavlaunch.scoped.gamefolder.cubix'
             resValue 'string', 'application_package', 'com.cubix.launcher'
             initWith release
             signingConfig signingConfigs.googlePlayBuild
