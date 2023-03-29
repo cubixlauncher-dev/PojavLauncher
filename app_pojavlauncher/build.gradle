@@ -89,9 +89,9 @@ android {
             resValue 'string', 'application_package', 'com.cubix.launcher.rel'
         }
         gplay {
+            initWith release
             resValue 'string', 'storageProviderAuthorities', 'net.kdt.pojavlaunch.scoped.gamefolder.cubix'
             resValue 'string', 'application_package', 'com.cubix.launcher'
-            initWith release
             signingConfig signingConfigs.googlePlayBuild
         }
     }
