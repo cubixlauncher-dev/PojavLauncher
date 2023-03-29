@@ -159,6 +159,9 @@ public class AnalogControllerView extends View {
                 wKeyHandler.postDelayed(new WKeyActuator(true), 300);
                 wKeyHandler.postDelayed(new WKeyActuator(false), 450);
                 wKeyHandler.postDelayed(new WKeyActuator(true), 600);
+            }else{
+                wKeyHandler.removeCallbacksAndMessages(null);
+                if(whichButtonsPressed[BUTTON_W] != BUTTON_PRESSED) CallbackBridge.sendKeyPress(LwjglGlfwKeycode.GLFW_KEY_W, CallbackBridge.getCurrentMods(), false);
             }
             whichButtonsPressed[BUTTON_SPRINT_ACTUATOR] = whichButtonsPressedNew[BUTTON_SPRINT_ACTUATOR] ;
         }
