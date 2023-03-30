@@ -36,6 +36,7 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InterruptedIOException;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Map;
@@ -444,11 +445,30 @@ public class AsyncMinecraftDownloader {
             }
         }
         if(version.custom_mods != null) {
+            ArrayList<String> modsThatExist = new ArrayList<>(version.custom_mods.length);
             Arrays.sort(version.custom_mods, comparator);
             for(CubixFileInfo cubixFileInfo : version.custom_mods) {
+                {
+                    String path = cubixFileInfo.path;
+                    int slashIndex = path.lastIndexOf('/');
+                    if(slashIndex != -1) modsThatExist.add(path.substring(slashIndex+1));
+                    else modsThatExist.add(path);
+                }
                 downloadSize += cubixFileInfo.size;
                 cubixFileInfo.setDownloaderData(destination, new AtomicMonitor(downloadProgress), interrupt);
                 executor.execute(cubixFileInfo);
+            }
+            File modsFolder = new File(destination, "mods");
+            if(modsFolder.isDirectory()) {
+                File[] modFiles =  modsFolder.listFiles();
+                if(modFiles != null) for(File mod : modFiles) {
+                    if(mod.isFile() && !modsThatExist.contains(mod.getName())) {
+                        Log.i("ExtraModRemoval", "Found extra mod file: "+mod.getName());
+                        if(!mod.delete()) {
+                            throw new IOException("Failed to delete mod "+mod.getName());
+                        }
+                    }
+                }
             }
         }
         executor.shutdown();
