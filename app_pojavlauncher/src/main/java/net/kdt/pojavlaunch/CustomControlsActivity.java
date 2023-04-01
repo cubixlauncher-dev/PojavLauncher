@@ -71,6 +71,7 @@ public class CustomControlsActivity extends BaseActivity {
 						Tools.showError(this, e);
 					}
 					break;
+				case 6: mControlLayout.toggleJoystick(); break;
 			}
 			mDrawerLayout.closeDrawers();
 		});

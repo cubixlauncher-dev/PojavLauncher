@@ -107,6 +107,7 @@ public class MainActivity extends BaseActivity implements ControlButtonMenuListe
                 case 2 : CustomControlsActivity.load(mControlLayout); break;
                 case 3: CustomControlsActivity.save(true,mControlLayout); break;
                 case 4: CustomControlsActivity.dialogSelectDefaultCtrl(mControlLayout); break;
+                case 5: mControlLayout.toggleJoystick(); break;
             }
         };
 

@@ -13,6 +13,7 @@ public class CustomControls {
     public float scaledAt;
 	public List<ControlData> mControlDataList;
 	public List<ControlDrawerData> mDrawerDataList;
+	public boolean isJoystickEnabled;
 	public CustomControls() {
 		this(new ArrayList<>(), new ArrayList<>());
 	}

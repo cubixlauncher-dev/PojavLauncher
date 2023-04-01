@@ -577,6 +577,7 @@
     }
   ],
   "mDrawerDataList": [],
+  "isJoystickEnabled": "true",
   "scaledAt": 100.0,
   "version": 4
 }

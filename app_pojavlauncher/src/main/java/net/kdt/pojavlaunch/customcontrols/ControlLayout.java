@@ -41,6 +41,8 @@ public class ControlLayout extends FrameLayout {
 	private ControlButtonMenuListener mMenuListener;
 	public ActionRow actionRow = null;
 
+	public static final int CONTROLLER_VIEW_ID = View.generateViewId();
+
 	public ControlLayout(Context ctx) {
 		super(ctx);
 	}
@@ -91,12 +93,43 @@ public class ControlLayout extends FrameLayout {
 			if(mModifiable) drawer.areButtonsVisible = true;
 		}
 
+		processJoystick(mLayout.isJoystickEnabled);
+
 		mLayout.scaledAt = LauncherPreferences.PREF_BUTTONSIZE;
 
 		setModified(false);
 		mButtons = null;
 		getButtonChildren(); // Force refresh
 	} // loadLayout
+
+	public void processJoystick(boolean isJoystickEnabled) {
+		View joystickView = findViewById(CONTROLLER_VIEW_ID);
+		if(isJoystickEnabled) {
+			if(joystickView == null) {
+				int _128dp = (int) Tools.dpToPx(128);
+				int _64dp = (int) Tools.dpToPx(64);
+				FrameLayout.LayoutParams layoutParams = new LayoutParams(_128dp, _128dp);
+				layoutParams.setMarginStart(_64dp);
+				layoutParams.bottomMargin = _64dp;
+				layoutParams.gravity = Gravity.BOTTOM | Gravity.START;
+				AnalogControllerView analogControllerView = new AnalogControllerView(getContext());
+				analogControllerView.setInEditorMode(mModifiable);
+				analogControllerView.setId(CONTROLLER_VIEW_ID);
+				addView(analogControllerView);
+				analogControllerView.post(()-> {
+					analogControllerView.setLayoutParams(layoutParams);
+				});
+			}
+		}else{
+			if(joystickView != null) removeView(joystickView);
+		}
+		mLayout.isJoystickEnabled = isJoystickEnabled;
+	}
+
+	public void toggleJoystick() {
+		processJoystick(!mLayout.isJoystickEnabled);
+		setModified(true);
+	}
 
 	//CONTROL BUTTON
 	public void addControlButton(ControlData controlButton) {
@@ -175,6 +208,8 @@ public class ControlLayout extends FrameLayout {
 		for(ControlInterface button : getButtonChildren()){
 			removeView(button.getControlView());
 		}
+		View controllerView = findViewById(CONTROLLER_VIEW_ID);
+		if(controllerView != null) removeView(controllerView);
 
 		System.gc();
 		//i wanna be sure that all the removed Views will be removed after a reload
@@ -210,7 +245,7 @@ public class ControlLayout extends FrameLayout {
 		for(ControlInterface button : getButtonChildren()){
 			button.setVisible(isVisible);
 		}
-		View dPadView = findViewById(R.id.analog_controller);
+		View dPadView = findViewById(CONTROLLER_VIEW_ID);
 		if(dPadView != null) dPadView.setVisibility(isVisible ? View.VISIBLE : GONE);
 	}
 

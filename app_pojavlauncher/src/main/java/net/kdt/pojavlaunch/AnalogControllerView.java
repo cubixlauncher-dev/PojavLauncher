@@ -45,6 +45,8 @@ public class AnalogControllerView extends View {
     private float outerCircleRadius;
     private float borderRadius;
 
+    private boolean isInEditorMode;
+
     public AnalogControllerView(Context context) {
         super(context);
         init();
@@ -92,6 +94,7 @@ public class AnalogControllerView extends View {
     @SuppressLint("ClickableViewAccessibility")
     @Override
     public boolean onTouchEvent(MotionEvent event) {
+        if(isInEditorMode) return false;
         switch (event.getAction()) {
             case MotionEvent.ACTION_UP:
                 innerX = widthHalf;
@@ -124,8 +127,8 @@ public class AnalogControllerView extends View {
         borderRadius = outerCircleRadius - centerCircleRadius;
         widthHalf = w / 2f;
         heightHalf = h / 2f;
-        if(innerX == 0) innerX = widthHalf;
-        if(innerY == 0) innerY = heightHalf;
+        innerX = widthHalf;
+        innerY = heightHalf;
     }
 
     public int toKeycode(int index) {
@@ -138,32 +141,20 @@ public class AnalogControllerView extends View {
                 return LwjglGlfwKeycode.GLFW_KEY_S;
             case BUTTON_W:
                 return LwjglGlfwKeycode.GLFW_KEY_W;
+            case BUTTON_SPRINT_ACTUATOR:
+                return LwjglGlfwKeycode.GLFW_KEY_COMMA;
         }
         return -1;
     }
 
     public void updateButtons() {
-        for(int i = 0; i < 4; i++) {
+        for(int i = 0; i < 5; i++) {
             if(whichButtonsPressedNew[i] != whichButtonsPressed[i]) {
                 boolean isDown = whichButtonsPressedNew[i] == BUTTON_PRESSED;
                 int kc = toKeycode(i);
                 CallbackBridge.sendKeyPress(kc, CallbackBridge.getCurrentMods(), isDown);
                 whichButtonsPressed[i] = whichButtonsPressedNew[i];
             }
-        }
-        if(whichButtonsPressedNew[BUTTON_SPRINT_ACTUATOR] != whichButtonsPressed[BUTTON_SPRINT_ACTUATOR]) {
-            boolean isDown = whichButtonsPressedNew[BUTTON_SPRINT_ACTUATOR] == BUTTON_PRESSED;
-            Log.i("SprintActuator", "isDown="+isDown);
-            if(isDown && whichButtonsPressed[BUTTON_W] == BUTTON_PRESSED) {
-                wKeyHandler.postDelayed(new WKeyActuator(false), 150);
-                wKeyHandler.postDelayed(new WKeyActuator(true), 300);
-                wKeyHandler.postDelayed(new WKeyActuator(false), 450);
-                wKeyHandler.postDelayed(new WKeyActuator(true), 600);
-            }else{
-                wKeyHandler.removeCallbacksAndMessages(null);
-                if(whichButtonsPressed[BUTTON_W] != BUTTON_PRESSED) CallbackBridge.sendKeyPress(LwjglGlfwKeycode.GLFW_KEY_W, CallbackBridge.getCurrentMods(), false);
-            }
-            whichButtonsPressed[BUTTON_SPRINT_ACTUATOR] = whichButtonsPressedNew[BUTTON_SPRINT_ACTUATOR] ;
         }
     }
     static class WKeyActuator implements Runnable {
@@ -175,5 +166,9 @@ public class AnalogControllerView extends View {
         public void run() {
             CallbackBridge.sendKeyPress(LwjglGlfwKeycode.GLFW_KEY_W, CallbackBridge.getCurrentMods(), shouldActuate);
         }
+    }
+
+    public void setInEditorMode(boolean inEditorMode) {
+        isInEditorMode = inEditorMode;
     }
 }

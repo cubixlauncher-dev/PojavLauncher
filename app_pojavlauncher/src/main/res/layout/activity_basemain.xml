@@ -51,14 +51,6 @@
 				android:layout_height="12dp"
 				android:elevation="10dp"
 				android:layout_gravity="center_horizontal"/>
-			<net.kdt.pojavlaunch.AnalogControllerView
-				android:id="@+id/analog_controller"
-				android:layout_width="128dp"
-				android:layout_height="128dp"
-				android:layout_marginStart="64dp"
-				android:layout_marginBottom="64dp"
-				android:elevation="10dp"
-				android:layout_gravity="bottom|start"/>
 
 		</net.kdt.pojavlaunch.customcontrols.ControlLayout>
 
