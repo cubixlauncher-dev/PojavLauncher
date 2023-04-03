@@ -3,7 +3,6 @@ package net.kdt.pojavlaunch.customcontrols;
 import android.util.*;
 
 import java.lang.ref.WeakReference;
-import java.lang.reflect.Modifier;
 import java.util.*;
 import net.kdt.pojavlaunch.*;
 import net.kdt.pojavlaunch.prefs.LauncherPreferences;
@@ -54,6 +53,7 @@ public class ControlData {
      */
     public String dynamicX, dynamicY;
     public boolean isDynamicBtn, isToggle, passThruEnabled;
+    public boolean joystickHideable;
     
     public static ControlData[] getSpecialButtons(){
         if (SPECIAL_BUTTONS == null) {

@@ -120,8 +120,18 @@ public class ControlLayout extends FrameLayout {
 					analogControllerView.setLayoutParams(layoutParams);
 				});
 			}
+			for(ControlInterface controlInterface : getButtonChildren()) {
+				if(controlInterface.getProperties().joystickHideable) {
+					controlInterface.getControlView().setVisibility(View.GONE);
+				}
+			}
 		}else{
 			if(joystickView != null) removeView(joystickView);
+			for(ControlInterface controlInterface : getButtonChildren()) {
+				if(controlInterface.getProperties().joystickHideable) {
+					controlInterface.getControlView().setVisibility(View.VISIBLE);
+				}
+			}
 		}
 		mLayout.isJoystickEnabled = isJoystickEnabled;
 	}

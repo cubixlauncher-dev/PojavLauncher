@@ -228,17 +228,21 @@ public class CustomControlsActivity extends BaseActivity {
 		// Load before save to make sure control is not error
 		try {
 			ctrlLayout.loadLayout(path);
-			LauncherPreferences.DEFAULT_PREF.edit().putString("defaultCtrl", path).apply();
-			LauncherPreferences.PREF_DEFAULTCTRL_PATH = path;
+			setDefaultControlPath(path);
 		} catch (IOException| JsonSyntaxException exception) {
 			Tools.showError(ctrlLayout.getContext(), exception);
 		}
 	}
 
+	private static void setDefaultControlPath(String path) {
+		LauncherPreferences.DEFAULT_PREF.edit().putString("defaultCtrl", path).apply();
+		LauncherPreferences.PREF_DEFAULTCTRL_PATH = path;
+	}
+
 	private static String doSaveCtrl(String name, final ControlLayout layout) throws Exception {
 		String jsonPath = Tools.CTRLMAP_PATH + "/" + name + ".json";
 		layout.saveLayout(jsonPath);
-
+		setDefaultControlPath(jsonPath);
 		return jsonPath;
 	}
 
