@@ -93,13 +93,13 @@ public class ControlLayout extends FrameLayout {
 			if(mModifiable) drawer.areButtonsVisible = true;
 		}
 
-		processJoystick(mLayout.isJoystickEnabled);
 
 		mLayout.scaledAt = LauncherPreferences.PREF_BUTTONSIZE;
 
 		setModified(false);
 		mButtons = null;
 		getButtonChildren(); // Force refresh
+		processJoystick(mLayout.isJoystickEnabled);
 	} // loadLayout
 
 	public void processJoystick(boolean isJoystickEnabled) {
@@ -252,10 +252,16 @@ public class ControlLayout extends FrameLayout {
 		if (mModifiable) return; // Not using on custom controls activity
 
 		mControlVisible = isVisible;
-		for(ControlInterface button : getButtonChildren()){
-			button.setVisible(isVisible);
-		}
 		View dPadView = findViewById(CONTROLLER_VIEW_ID);
+		for(ControlInterface button : getButtonChildren()){
+			if(isVisible) {
+				if(dPadView != null && button.getProperties().joystickHideable) {
+					button.setVisible(false);
+				}else{
+					button.setVisible(isVisible);
+				}
+			}
+		}
 		if(dPadView != null) dPadView.setVisibility(isVisible ? View.VISIBLE : GONE);
 	}
 
