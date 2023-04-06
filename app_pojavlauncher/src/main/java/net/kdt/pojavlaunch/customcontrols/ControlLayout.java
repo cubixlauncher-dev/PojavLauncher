@@ -254,11 +254,10 @@ public class ControlLayout extends FrameLayout {
 		mControlVisible = isVisible;
 		View dPadView = findViewById(CONTROLLER_VIEW_ID);
 		for(ControlInterface button : getButtonChildren()){
+			button.setVisible(isVisible);
 			if(isVisible) {
-				if(dPadView != null && button.getProperties().joystickHideable) {
+				if (dPadView != null && button.getProperties().joystickHideable) {
 					button.setVisible(false);
-				}else{
-					button.setVisible(isVisible);
 				}
 			}
 		}
