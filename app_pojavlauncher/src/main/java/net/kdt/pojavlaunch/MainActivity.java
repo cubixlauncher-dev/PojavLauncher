@@ -28,6 +28,7 @@ import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.webkit.MimeTypeMap;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -61,7 +62,7 @@ import org.lwjgl.glfw.CallbackBridge;
 import java.io.File;
 import java.io.IOException;
 
-public class MainActivity extends BaseActivity implements ControlButtonMenuListener, Logger.eventLogListener{
+public class MainActivity extends BaseActivity implements ControlButtonMenuListener, Logger.splashListener{
     public static volatile ClipboardManager GLOBAL_CLIPBOARD;
     public static final String INTENT_MINECRAFT_VERSION = "intent_version";
 
@@ -94,7 +95,6 @@ public class MainActivity extends BaseActivity implements ControlButtonMenuListe
         initLayout(R.layout.activity_basemain);
         CallbackBridge.addGrabListener(touchpad);
         CallbackBridge.addGrabListener(minecraftGLView);
-        Logger.getInstance().setLogListenerSecondary(this);
         if(LauncherPreferences.PREF_ENABLE_GYRO) mGyroControl = new GyroControl(this);
 
         // Enabling this on TextureView results in a broken white result
@@ -135,29 +135,15 @@ public class MainActivity extends BaseActivity implements ControlButtonMenuListe
 
         try {
             Logger.begin(new File(Tools.DIR_GAME_HOME, "latestlog.txt").getAbsolutePath());
+            Logger.setSplashListener(this);
             // FIXME: is it safe for multi thread?
             GLOBAL_CLIPBOARD = (ClipboardManager) getSystemService(CLIPBOARD_SERVICE);
             touchCharInput.setCharacterSender(new LwjglCharSender());
 
-<<<<<<< HEAD
-
-            String runtime = LauncherPreferences.PREF_DEFAULT_RUNTIME;
-            if(minecraftProfile.getJavaRuntime() != null) {
-                String runtimeName = minecraftProfile.getJavaRuntime();
-                if(MultiRTUtils.forceReread(runtimeName).versionString != null) {
-                    runtime = runtimeName;
-                }
-            }
             if(minecraftProfile.getRenderer() != null) {
-                Log.i("RdrDebug","__P_renderer="+minecraftProfile.getRenderer());
+                Log.i("RdrDebug", "__P_renderer=" + minecraftProfile.getRenderer());
                 Tools.LOCAL_RENDERER = minecraftProfile.getRenderer();
-=======
-            if(minecraftProfile.pojavRendererName != null) {
-                Log.i("RdrDebug","__P_renderer="+minecraftProfile.pojavRendererName);
-                Tools.LOCAL_RENDERER = minecraftProfile.pojavRendererName;
->>>>>>> 10b3bb24c3cb19b8d1219fcf5604edf257645a5b
             }
-
             setTitle("Minecraft " + minecraftProfile.getVersionName());
 
             // Minecraft 1.13+
@@ -285,7 +271,7 @@ public class MainActivity extends BaseActivity implements ControlButtonMenuListe
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        Logger.getInstance().setLogListenerSecondary(null);
+        Logger.setSplashListener(null);
         CallbackBridge.removeGrabListener(touchpad);
         CallbackBridge.removeGrabListener(minecraftGLView);
     }
@@ -333,34 +319,21 @@ public class MainActivity extends BaseActivity implements ControlButtonMenuListe
         if(Tools.LOCAL_RENDERER == null) {
             Tools.LOCAL_RENDERER = LauncherPreferences.PREF_RENDERER;
         }
-<<<<<<< HEAD
-        Logger.getInstance().appendToLog("--------- beginning with launcher debug");
-        Logger.getInstance().appendToLog("Info: Launcher version: " + "CUBIX-");
-=======
-        MinecraftAccount minecraftAccount = PojavProfile.getCurrentProfileContent(this, null);
         Logger.appendToLog("--------- beginning with launcher debug");
         printLauncherInfo(versionId);
->>>>>>> 10b3bb24c3cb19b8d1219fcf5604edf257645a5b
         if (Tools.LOCAL_RENDERER.equals("vulkan_zink")) {
             checkVulkanZinkIsSupported();
         }
-        JREUtils.redirectAndPrintJRELog();
-<<<<<<< HEAD
 
-        
         CubixAccount account = CubixAccount.getAccount(this);
         if(account == null) throw new RuntimeException("Trying to run a null account");
-        Tools.launchMinecraft(this, CubixAccount.getAccount(this), minecraftProfile, mVersionId);
-=======
-        LauncherProfiles.update();
         int requiredJavaVersion = 8;
         if(version.javaVersion != null) requiredJavaVersion = version.javaVersion.majorVersion;
-        Tools.launchMinecraft(this, minecraftAccount, minecraftProfile, versionId, requiredJavaVersion);
->>>>>>> 10b3bb24c3cb19b8d1219fcf5604edf257645a5b
+        Tools.launchMinecraft(this, account, minecraftProfile, versionId, requiredJavaVersion);
     }
 
     private void printLauncherInfo(String gameVersion) {
-        Logger.appendToLog("Info: Launcher version: " + BuildConfig.VERSION_NAME);
+        Logger.appendToLog("Info: Launcher version: " + "CUBIX-rel");
         Logger.appendToLog("Info: Architecture: " + Architecture.archAsString(Tools.DEVICE_ARCHITECTURE));
         Logger.appendToLog("Info: Device model: " + Build.MANUFACTURER + " " +Build.MODEL);
         Logger.appendToLog("Info: API version: " + Build.VERSION.SDK_INT);
@@ -591,14 +564,13 @@ public class MainActivity extends BaseActivity implements ControlButtonMenuListe
         navDrawer.requestLayout();
     }
 
+
     @Override
-    public void onEventLogged(String text) {
-        if(text.contains("version string") || text.contains("Finished Initialization") || text.contains("CubixChat successfully patched")) {
-            runOnUiThread(()->{
-                View overlay = findViewById(R.id.mainOverlayView);
-                ((ViewGroup)findViewById(R.id.content_frame)).removeView(overlay);
-                Logger.getInstance().setLogListenerSecondary(null);
-            });
-        }
+    public void onSplashEvent() {
+        runOnUiThread(()->{
+            View overlay = findViewById(R.id.mainOverlayView);
+            ((ViewGroup)findViewById(R.id.content_frame)).removeView(overlay);
+            Logger.setSplashListener(null);
+        });
     }
 }

@@ -213,15 +213,8 @@
     <string name="multirt_progress_caching">Pag-cache...</string>
     <string name="multirt_config_setdefault">Itakda ang default</string>
     <string name="multirt_config_setdefault_already">Default</string>
-<<<<<<< HEAD
-    <string name="multirt_config_removeerror_last">Dapat may naka-install sa launcher na isang Java Runtime</string>
-    <string name="multirt_nocompartiblert">Walang mag katugma na Java Runtime. Etong version ay kailangan ng Java %d or bago.</string>
-    <string name="multirt_nojava8rt">Walang mahanap na Java 8. Para magamit ang option na ito, kailangan i-install ang Java 8.</string>
-    <string name="compat_11x_playanyway">Subukan pa rin</string>
-    <string name="storage_warning_title">Bago sa i-storage</string>
     <string name="storage_warning_text"><![CDATA[Dahil kay Google\'s bagong scoped storage enforcements na nadagdag sa Android 10 pataas, kinailangan namin na i-move
 ang game directory into an app-private folder.<br /> Ang bagong folder para sa Pojav files ay <b>Android/data/%s/files/</b>(pwede rin i-access gamit ang storage provider sa inyong file explorer).<br /> Kapag kailangan mo i-copy ang inyong game files, please i-copy lahat from the original folder at <b>games/CubixWorld Mobile</b> manually.]]></string>
-=======
     <string name="multirt_config_removeerror_last">Dapat ay mayroon kang kahit isang Java Runtime na naka-install</string>
     <string name="multirt_nocompartiblert">Walang mahanap na anumang katugmang Java Runtime. Ang bersyon na ito ay nangangailangan ng Java %d o mas bago.</string>
     <string name="multirt_nojava8rt">Hindi mahanap ang Java 8. Upang magamit ang opsyong ito, kailangan mong i-install ang Java 8.</string>
@@ -231,8 +224,6 @@ ang game directory into an app-private folder.<br /> Ang bagong folder para sa P
     <string name="pvc_jvmArgs">Argumento ng JVM</string>
     <string name="pvc_title">Mga setting ng bawat bersyon</string>
     <string name="storage_warning_title">Mga pagbabago sa storage</string>
-    <string name="storage_warning_text"><![CDATA[Dahil sa mga bagong saklaw na pagpapatupad ng storage ng Google na idinagdag sa Android 10 at mas mataas, kinakailangan naming ilipat ang direktoryo ng laro sa isang app-private na folder.<br /> Ang bagong folder para sa mga Pojav file ay <b>Android/data/%s/files/</b> (maa-access din gamit ang storage provider sa iyong file explorer).<br /> Kung kailangan mong kopyahin ang iyong mga file ng laro, mangyaring kopyahin ang lahat mula sa orihinal na folder sa <b>games/PojavLauncher</b> nang manu-mano.]]></string>
->>>>>>> PojavLauncherTeam-v3_openjdk
     <string name="control_offset_title">Offset ng Control</string>
     <string name="control_top_offset">Offset ng taas ng controller: </string>
     <string name="control_right_offset">Offset ng kanang controller: </string>

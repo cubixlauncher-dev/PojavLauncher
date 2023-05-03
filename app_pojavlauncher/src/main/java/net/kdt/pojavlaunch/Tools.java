@@ -150,7 +150,7 @@ public final class Tools {
     }
 
 
-    public static void launchMinecraft(final Activity activity, MinecraftAccount minecraftAccount,
+    public static void launchMinecraft(final Activity activity, CubixAccount minecraftAccount,
                                        ServerModpackConfig minecraftProfile, String versionId, int versionJavaRequirement) throws Throwable {
         int freeDeviceMemory = getFreeDeviceMemory(activity);
         if(LauncherPreferences.PREF_RAM_ALLOCATION > freeDeviceMemory) {
@@ -168,12 +168,7 @@ public final class Tools {
         }
         Runtime runtime = MultiRTUtils.forceReread(Tools.pickRuntime(minecraftProfile, versionJavaRequirement));
         JMinecraftVersionList.Version versionInfo = Tools.getVersionInfo(versionId);
-        
-        String gamedirPath = Tools.getGameDirPath(minecraftProfile);
-        String jvmArgs = minecraftProfile.getJvmArgs();
-        if(jvmArgs != null)
-            LauncherPreferences.PREF_CUSTOM_JAVA_ARGS = jvmArgs;
-        LauncherProfiles.update();
+
         File gamedir = Tools.getGameDirPath(minecraftProfile);
 
 
@@ -206,13 +201,13 @@ public final class Tools {
         javaArgList.addAll(Arrays.asList(launchArgs));
         // ctx.appendlnToLog("full args: "+javaArgList.toString());
         String args = LauncherPreferences.PREF_CUSTOM_JAVA_ARGS;
-        if(Tools.isValidString(minecraftProfile.javaArgs)) args = minecraftProfile.javaArgs;
+        if(minecraftProfile.getJvmArgs() != null) args = minecraftProfile.getJvmArgs();
         FFmpegPlugin.discover(activity);
         JREUtils.launchJavaVM(activity, runtime, gamedir, javaArgList, args);
     }
 
-    public static String getGameDirPath(@NonNull ServerModpackConfig minecraftProfile){
-        return minecraftProfile.getGameDirectory();
+    public static File getGameDirPath(@NonNull ServerModpackConfig minecraftProfile){
+        return new File(minecraftProfile.getGameDirectory());
     }
 
     public static void buildNotificationChannel(Context context){
@@ -892,9 +887,9 @@ public final class Tools {
         return prefixedName.substring(Tools.LAUNCHERPROFILES_RTPREFIX.length());
     }
 
-    public static String getSelectedRuntime(MinecraftProfile minecraftProfile) {
+    public static String getSelectedRuntime(ServerModpackConfig minecraftProfile) {
         String runtime = LauncherPreferences.PREF_DEFAULT_RUNTIME;
-        String profileRuntime = getRuntimeName(minecraftProfile.javaDir);
+        String profileRuntime = minecraftProfile.getJavaRuntime();
         if(profileRuntime != null) {
             if(MultiRTUtils.forceReread(profileRuntime).versionString != null) {
                 runtime = profileRuntime;
@@ -903,14 +898,17 @@ public final class Tools {
         return runtime;
     }
 
-    public static @NonNull String pickRuntime(MinecraftProfile minecraftProfile, int targetJavaVersion) {
+    public static @NonNull String pickRuntime(ServerModpackConfig minecraftProfile, int targetJavaVersion) {
         String runtime = getSelectedRuntime(minecraftProfile);
-        String profileRuntime = getRuntimeName(minecraftProfile.javaDir);
+        String profileRuntime = minecraftProfile.getJavaRuntime();
         Runtime pickedRuntime = MultiRTUtils.read(runtime);
         if(runtime == null || pickedRuntime.javaVersion == 0 || pickedRuntime.javaVersion < targetJavaVersion) {
             String preferredRuntime = MultiRTUtils.getNearestJreName(targetJavaVersion);
             if(preferredRuntime == null) throw new RuntimeException("Failed to autopick runtime!");
-            if(profileRuntime != null) minecraftProfile.javaDir = Tools.LAUNCHERPROFILES_RTPREFIX+preferredRuntime;
+            if(profileRuntime != null) {
+                minecraftProfile.setJavaRuntime(preferredRuntime);
+                minecraftProfile.save();
+            }
             runtime = preferredRuntime;
         }
         return runtime;

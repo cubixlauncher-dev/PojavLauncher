@@ -22,88 +22,10 @@ static JavaVM *stdiois_jvm;
 static int pfd[2];
 static pthread_t logger;
 
-unsigned char is_utf8(const char * string)
-{
-    if(!string)
-        return 0;
-
-    const unsigned char * bytes = (const unsigned char *)string;
-    while(*bytes)
-    {
-        if( (// ASCII
-                // use bytes[0] <= 0x7F to allow ASCII control characters
-                bytes[0] == 0x09 ||
-                bytes[0] == 0x0A ||
-                bytes[0] == 0x0D ||
-                (0x20 <= bytes[0] && bytes[0] <= 0x7E)
-        )
-                ) {
-            bytes += 1;
-            continue;
-        }
-
-        if( (// non-overlong 2-byte
-                (0xC2 <= bytes[0] && bytes[0] <= 0xDF) &&
-                (0x80 <= bytes[1] && bytes[1] <= 0xBF)
-        )
-                ) {
-            bytes += 2;
-            continue;
-        }
-
-        if( (// excluding overlongs
-                    bytes[0] == 0xE0 &&
-                    (0xA0 <= bytes[1] && bytes[1] <= 0xBF) &&
-                    (0x80 <= bytes[2] && bytes[2] <= 0xBF)
-            ) ||
-            (// straight 3-byte
-                    ((0xE1 <= bytes[0] && bytes[0] <= 0xEC) ||
-                     bytes[0] == 0xEE ||
-                     bytes[0] == 0xEF) &&
-                    (0x80 <= bytes[1] && bytes[1] <= 0xBF) &&
-                    (0x80 <= bytes[2] && bytes[2] <= 0xBF)
-            ) ||
-            (// excluding surrogates
-                    bytes[0] == 0xED &&
-                    (0x80 <= bytes[1] && bytes[1] <= 0x9F) &&
-                    (0x80 <= bytes[2] && bytes[2] <= 0xBF)
-            )
-                ) {
-            bytes += 3;
-            continue;
-        }
-
-        if( (// planes 1-3
-                    bytes[0] == 0xF0 &&
-                    (0x90 <= bytes[1] && bytes[1] <= 0xBF) &&
-                    (0x80 <= bytes[2] && bytes[2] <= 0xBF) &&
-                    (0x80 <= bytes[3] && bytes[3] <= 0xBF)
-            ) ||
-            (// planes 4-15
-                    (0xF1 <= bytes[0] && bytes[0] <= 0xF3) &&
-                    (0x80 <= bytes[1] && bytes[1] <= 0xBF) &&
-                    (0x80 <= bytes[2] && bytes[2] <= 0xBF) &&
-                    (0x80 <= bytes[3] && bytes[3] <= 0xBF)
-            ) ||
-            (// plane 16
-                    bytes[0] == 0xF4 &&
-                    (0x80 <= bytes[1] && bytes[1] <= 0x8F) &&
-                    (0x80 <= bytes[2] && bytes[2] <= 0xBF) &&
-                    (0x80 <= bytes[3] && bytes[3] <= 0xBF)
-            )
-                ) {
-            bytes += 4;
-            continue;
-        }
-
-        return 0;
-    }
-
-    return 1;
-}
-
 static jmethodID logger_onEventLogged;
+static jmethodID logger_onSplashEvent;
 static volatile jobject logListener = NULL;
+static volatile jobject splashListener = NULL;
 static int latestlog_fd = -1;
 
 static bool recordBuffer(char* buf, ssize_t len) {
@@ -121,6 +43,8 @@ JNIEXPORT jint JNI_OnLoad(JavaVM* vm, __attribute((unused)) void* reserved) {
     (*vm)->GetEnv(vm, (void**)&env, JNI_VERSION_1_4);
     jclass eventLogListener = (*env)->FindClass(env, "net/kdt/pojavlaunch/Logger$eventLogListener");
     logger_onEventLogged = (*env)->GetMethodID(env, eventLogListener, "onEventLogged", "(Ljava/lang/String;)V");
+    jclass splashListenerClass = (*env)->FindClass(env, "net/kdt/pojavlaunch/Logger$splashListener");
+    logger_onSplashEvent = (*env)->GetMethodID(env, splashListenerClass, "onSplashEvent", "()V");
     return JNI_VERSION_1_4;
 }
 
@@ -139,6 +63,9 @@ static void *logger_thread() {
             writeString = (*env)->NewStringUTF(env, buf);
             (*env)->CallVoidMethod(env, logListener, logger_onEventLogged, writeString);
             (*env)->DeleteLocalRef(env, writeString);
+        }
+        if(splashListener != NULL && (strstr(buf, "version string") || strstr(buf, "Finished Initialization") || strstr(buf, "CubixChat successfully patched"))) {
+            (*env)->CallVoidMethod(env, splashListener, logger_onSplashEvent);
         }
     }
     (*stdiois_jvm)->DetachCurrentThread(stdiois_jvm);
@@ -224,6 +151,17 @@ Java_net_kdt_pojavlaunch_Logger_setLogListener(JNIEnv *env, __attribute((unused)
         logListener = NULL;
     }else{
         logListener = (*env)->NewGlobalRef(env, log_listener);
+    }
+    if(logListenerLocal != NULL) (*env)->DeleteGlobalRef(env, logListenerLocal);
+}
+
+JNIEXPORT void JNICALL
+Java_net_kdt_pojavlaunch_Logger_setSplashListener(JNIEnv *env, jclass clazz, jobject log_listener) {
+    jobject logListenerLocal = splashListener;
+    if(log_listener == NULL) {
+        splashListener = NULL;
+    }else{
+        splashListener = (*env)->NewGlobalRef(env, log_listener);
     }
     if(logListenerLocal != NULL) (*env)->DeleteGlobalRef(env, logListenerLocal);
 }

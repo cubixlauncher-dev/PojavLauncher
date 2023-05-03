@@ -231,11 +231,7 @@
     <string name="pvc_jvmArgs">JVM argumenty</string>
     <string name="pvc_title">Nastavení ku verzím</string>
     <string name="storage_warning_title">Změny úložiště</string>
-<<<<<<< HEAD
     <string name="storage_warning_text"><![CDATA[Kvůli novému vynucování rozsahového úložiště od Googlu přidanému v Androidu 10 a vyšším, jsme přinuceni přesunout složku hry do privátní složky aplikace.<br /> Nová složka pro soubory Pojavu je <b>Android/data/%s/files/</b> (také přístupná pomocí poskytovatele úložiště v Průzkumníku souborů).<br /> Pokud potřebujete zkopírovat své herní soubory, prosím zkopírujte vše z původní složky na <b>games/CubixWorld Mobile</b> ručně.]]></string>
-=======
-    <string name="storage_warning_text"><![CDATA[Díky novému vynucování rozsahového úložístě Googlu, přidaném v Androidě 10 a výše, jsme přinuceni přesunout herní složku do privátní složky aplikace.<br />Ta nová složka souborů Pojavu je <b>Android/data/%s/files/</b> (též přístupná z výběru poskytovatele úložiště ve vašem prohlížeči souborů.<br /> Potřebujete-li zkopírovat svých souborů hry, prosíme zkopírujte vše z originální složky <b>games/PojavLauncher</b> manuálně.]]></string>
->>>>>>> PojavLauncherTeam-v3_openjdk
     <string name="control_offset_title">Odsazení ovládání</string>
     <string name="control_top_offset">Horní odsazení: </string>
     <string name="control_right_offset">pravé odsazení: </string>

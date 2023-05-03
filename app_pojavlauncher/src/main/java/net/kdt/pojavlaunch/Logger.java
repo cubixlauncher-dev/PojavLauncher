@@ -18,6 +18,11 @@ public class Logger {
         void onEventLogged(String text);
     }
 
+    public interface splashListener {
+        void onSplashEvent();
+    }
+
     /** Link a log listener to the logger */
     public static native void setLogListener(eventLogListener logListener);
+    public static native void setSplashListener(splashListener logListener);
 }

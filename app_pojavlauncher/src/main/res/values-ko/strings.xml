@@ -25,11 +25,8 @@
     <string name="alerttitle_install_jre">Java 런타임 설치 %s (.tar.xz)</string>
     <string name="alerttitle_installmod">모드 설치기를 선택하세요</string>
     <!-- Error messages -->
-<<<<<<< HEAD
+
     <string name="error_fatal">CubixWorld Mobile에 예상치 못한 충돌이 발생했습니다</string>
-=======
-    <string name="error_fatal">PojavLauncher에 예기치 못한 충돌이 발생했어요</string>
->>>>>>> PojavLauncherTeam-v3_openjdk
     <string name="error_no_version">버전이 없습니다!</string>
     <string name="error_show_more">더 보기</string>
     <string name="error_show_less">간략히 보기</string>
