@@ -1,16 +1,13 @@
 package net.kdt.pojavlaunch;
 
 import static net.kdt.pojavlaunch.Architecture.archAsString;
-import static net.kdt.pojavlaunch.Tools.NATIVE_LIB_DIR;
 
 import android.app.Activity;
-import android.content.Context;
 import android.content.res.AssetManager;
 import android.util.Log;
 
 import net.kdt.pojavlaunch.multirt.MultiRTUtils;
 import net.kdt.pojavlaunch.multirt.Runtime;
-import net.kdt.pojavlaunch.prefs.LauncherPreferences;
 import net.kdt.pojavlaunch.value.launcherprofiles.LauncherProfiles;
 import net.kdt.pojavlaunch.value.launcherprofiles.MinecraftProfile;
 
@@ -61,8 +58,10 @@ public class JRE17Util {
         if (config.getJavaRuntime() != null)
             selectedRuntime = config.getJavaRuntime();
 
-        Runtime runtime = selectedRuntime != null ? MultiRTUtils.read(selectedRuntime) : MultiRTUtils.read(LauncherPreferences.PREF_DEFAULT_RUNTIME);
-        if (runtime.javaVersion >= versionInfo.javaVersion.majorVersion) return true;
+        Runtime runtime = MultiRTUtils.read(selectedRuntime);
+        if (runtime.javaVersion >= versionInfo.javaVersion.majorVersion) {
+            return true;
+        }
 
         String appropriateRuntime = MultiRTUtils.getNearestJreName(versionInfo.javaVersion.majorVersion);
         if (appropriateRuntime != null) {
