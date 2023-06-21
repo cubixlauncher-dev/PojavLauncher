@@ -134,7 +134,9 @@ public class MainActivity extends BaseActivity implements ControlButtonMenuListe
         drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
 
         try {
-            Logger.begin(new File(Tools.DIR_GAME_HOME, "latestlog.txt").getAbsolutePath());
+            File latestlogFile = new File(Tools.DIR_GAME_HOME, "latestlog.txt");
+            latestlogFile.createNewFile(); //result ignored because it does not matter
+            Logger.begin(latestlogFile.getAbsolutePath()); // removed O_CREAT in function because for some reason its often broken
             Logger.setSplashListener(this);
             // FIXME: is it safe for multi thread?
             GLOBAL_CLIPBOARD = (ClipboardManager) getSystemService(CLIPBOARD_SERVICE);

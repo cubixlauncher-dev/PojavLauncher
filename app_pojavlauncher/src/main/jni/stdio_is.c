@@ -55,11 +55,12 @@ static void *logger_thread() {
     ssize_t  rsize;
     char buf[2050];
     while((rsize = read(pfd[0], buf, sizeof(buf)-1)) > 0) {
+        bool shouldRecordString = recordBuffer(buf, rsize); //record with newline into latestlog
         if(buf[rsize-1]=='\n') {
-            rsize=rsize-1;
+            rsize=rsize-1; //truncate
         }
         buf[rsize]=0x00;
-        if(recordBuffer(buf, rsize) && logListener != NULL) {
+        if(shouldRecordString && logListener != NULL) {
             writeString = (*env)->NewStringUTF(env, buf);
             (*env)->CallVoidMethod(env, logListener, logger_onEventLogged, writeString);
             (*env)->DeleteLocalRef(env, writeString);
@@ -92,7 +93,7 @@ Java_net_kdt_pojavlaunch_Logger_begin(JNIEnv *env, __attribute((unused)) jclass 
 
     /* open latestlog.txt for writing */
     const char* logFilePath = (*env)->GetStringUTFChars(env, logPath, NULL);
-    latestlog_fd = open(logFilePath, O_WRONLY | O_TRUNC | O_CREAT | O_NOATIME, 666);
+    latestlog_fd = open(logFilePath, O_WRONLY | O_TRUNC);
     if(latestlog_fd == -1) {
         latestlog_fd = 0;
         (*env)->ThrowNew(env, ioeClass, strerror(errno));
