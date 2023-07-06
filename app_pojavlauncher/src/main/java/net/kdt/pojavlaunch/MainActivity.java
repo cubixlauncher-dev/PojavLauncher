@@ -61,6 +61,7 @@ import org.lwjgl.glfw.CallbackBridge;
 
 import java.io.File;
 import java.io.IOException;
+import java.net.URLEncoder;
 
 public class MainActivity extends BaseActivity implements ControlButtonMenuListener, Logger.splashListener{
     public static volatile ClipboardManager GLOBAL_CLIPBOARD;
@@ -128,6 +129,19 @@ public class MainActivity extends BaseActivity implements ControlButtonMenuListe
     protected void initLayout(int resId) {
         setContentView(resId);
         bindValues();
+        findViewById(R.id.main_coinsButton).setOnClickListener((v)->{
+            Context context = v.getContext();
+            try {
+                CubixAccount account = CubixAccount.getAccount(context);
+                if(account == null) return;
+                Intent intent = new Intent(Intent.ACTION_VIEW);
+                intent.setData(Uri.parse("https://cubixworld.net/cabinet_mob?login="+ URLEncoder.encode(account.username, "UTF-8")
+                        +"&token="+URLEncoder.encode(account.cubixToken, "UTF-8")));
+                context.startActivity(intent);
+            }catch(Exception e) {
+                Tools.showError(context, e);
+            }
+        });
         mControlLayout.setMenuListener(this);
 
         mDrawerPullButton.setOnClickListener(v -> onClickedMenu());
