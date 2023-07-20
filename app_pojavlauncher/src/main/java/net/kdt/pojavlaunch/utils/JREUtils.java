@@ -174,6 +174,7 @@ public class JREUtils {
         envMap.put("HOME", Tools.DIR_GAME_HOME);
         envMap.put("TMPDIR", activity.getCacheDir().getAbsolutePath());
         envMap.put("LIBGL_MIPMAP", "3");
+        envMap.put("LIBGL_NOERROR", "1");
 
         // On certain GLES drivers, overloading default functions shader hack fails, so disable it
         envMap.put("LIBGL_NOINTOVLHACK", "1");
