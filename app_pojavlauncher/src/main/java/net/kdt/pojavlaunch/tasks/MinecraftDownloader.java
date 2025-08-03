@@ -432,7 +432,9 @@ public class MinecraftDownloader {
                 long size = DownloadUtils.getContentLength(info.url);
                 if(size == 0) continue;
             }
-            File path = new File(mConfig.getGameDirectory(), info.path.substring(1));
+            String subdirPath = info.path;
+            if(subdirPath.startsWith("/")) subdirPath = "." + subdirPath;
+            File path = new File(mConfig.getGameDirectory(), subdirPath);
             scheduleDownload(path,
                     DownloadMirror.DOWNLOAD_CLASS_LIBRARIES,
                     info.url,
