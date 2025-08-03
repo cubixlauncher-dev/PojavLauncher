@@ -1,4 +1,5 @@
 package org.lwjgl.glfw;
+import java.nio.ByteBuffer;
 import java.util.*;
 
 public class CallbackBridge {
@@ -18,6 +19,8 @@ public class CallbackBridge {
     public static final int ANDROID_TYPE_GRAB_STATE = 0;
     
     public static final boolean INPUT_DEBUG_ENABLED;
+
+    public static boolean sGamepadDirectEnabled;
     
     // TODO send grab state event to Android
     
@@ -40,6 +43,11 @@ public class CallbackBridge {
     }
 
 
+    public static void enableGamepadDirectInput() {
+        if(sGamepadDirectEnabled) return;
+        sGamepadDirectEnabled = nativeEnableGamepadDirectInput();
+    }
+
     public static void sendData(int type, String data) {
         nativeSendData(false, type, data);
     }
@@ -47,5 +55,8 @@ public class CallbackBridge {
     public static native boolean nativeSetInputReady(boolean ready);
     public static native String nativeClipboard(int action, byte[] copy);
     public static native void nativeSetGrabbing(boolean grab);
+    public static native ByteBuffer nativeCreateGamepadButtonBuffer();
+    public static native ByteBuffer nativeCreateGamepadAxisBuffer();
+    private static native boolean nativeEnableGamepadDirectInput();
 }
 

@@ -4,6 +4,8 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
 
+import git.artdeell.mojo.R;
+
 public class MissingStorageActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {

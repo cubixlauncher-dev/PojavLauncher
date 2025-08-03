@@ -4,8 +4,10 @@ import static net.kdt.pojavlaunch.Architecture.ARCH_X86;
 import static net.kdt.pojavlaunch.Architecture.is64BitsDevice;
 import static net.kdt.pojavlaunch.Tools.LOCAL_RENDERER;
 import static net.kdt.pojavlaunch.Tools.NATIVE_LIB_DIR;
-import static net.kdt.pojavlaunch.Tools.currentDisplayMetrics;
+import static net.kdt.pojavlaunch.Tools.shareLog;
 import static net.kdt.pojavlaunch.prefs.LauncherPreferences.PREF_DUMP_SHADERS;
+import static net.kdt.pojavlaunch.prefs.LauncherPreferences.PREF_VSYNC_IN_ZINK;
+import static net.kdt.pojavlaunch.prefs.LauncherPreferences.PREF_ZINK_PREFER_SYSTEM_DRIVER;
 
 import android.app.*;
 import android.content.*;
@@ -14,22 +16,21 @@ import android.system.*;
 import android.util.*;
 import android.widget.Toast;
 
+import androidx.appcompat.app.AppCompatActivity;
+
 import com.oracle.dalvik.*;
 import java.io.*;
 import java.util.*;
 import net.kdt.pojavlaunch.*;
 import net.kdt.pojavlaunch.extra.ExtraConstants;
 import net.kdt.pojavlaunch.extra.ExtraCore;
+import net.kdt.pojavlaunch.lifecycle.LifecycleAwareAlertDialog;
 import net.kdt.pojavlaunch.multirt.MultiRTUtils;
 import net.kdt.pojavlaunch.multirt.Runtime;
 import net.kdt.pojavlaunch.plugins.FFmpegPlugin;
 import net.kdt.pojavlaunch.prefs.*;
-import org.lwjgl.glfw.*;
 
-import javax.microedition.khronos.egl.EGL10;
-import javax.microedition.khronos.egl.EGLConfig;
-import javax.microedition.khronos.egl.EGLContext;
-import javax.microedition.khronos.egl.EGLDisplay;
+import git.artdeell.mojo.R;
 
 public class JREUtils {
     private JREUtils() {}
@@ -103,7 +104,8 @@ public class JREUtils {
             public void run() {
                 try {
                     if (logcatPb == null) {
-                        logcatPb = new ProcessBuilder().command("logcat", /* "-G", "1mb", */ "-v", "brief", "-s", "jrelog:I", "LIBGL:I", "NativeInput").redirectErrorStream(true);
+                        // No filtering by tag anymore as that relied on incorrect log levels set in log.h
+                        logcatPb = new ProcessBuilder().command("logcat", /* "-G", "1mb", */ "-v", "brief", "-s", "jrelog", "LIBGL", "NativeInput").redirectErrorStream(true);
                     }
 
                     Log.i("jrelog-logcat","Clearing logcat");
@@ -172,8 +174,11 @@ public class JREUtils {
         envMap.put("POJAV_NATIVEDIR", NATIVE_LIB_DIR);
         envMap.put("JAVA_HOME", jreHome);
         envMap.put("HOME", Tools.DIR_GAME_HOME);
-        envMap.put("TMPDIR", activity.getCacheDir().getAbsolutePath());
+        envMap.put("TMPDIR", Tools.DIR_CACHE.getAbsolutePath());
         envMap.put("LIBGL_MIPMAP", "3");
+        envMap.put("LIBGL_NOERROR", "1");
+
+        // Prevent OptiFine (and other error-reporting stuff in Minecraft) from balooning the log
         envMap.put("LIBGL_NOERROR", "1");
 
         // On certain GLES drivers, overloading default functions shader hack fails, so disable it
@@ -184,6 +189,10 @@ public class JREUtils {
 
         if(PREF_DUMP_SHADERS)
             envMap.put("LIBGL_VGPU_DUMP", "1");
+        if(PREF_VSYNC_IN_ZINK)
+            envMap.put("POJAV_VSYNC_IN_ZINK", "1");
+        if(Tools.deviceHasHangingLinker())
+            envMap.put("POJAV_EMUI_ITERATOR_MITIGATE", "1");
 
 
         // The OPEN GL version is changed according
@@ -191,35 +200,27 @@ public class JREUtils {
 
         envMap.put("FORCE_VSYNC", String.valueOf(LauncherPreferences.PREF_FORCE_VSYNC));
 
-        envMap.put("MESA_GLSL_CACHE_DIR", activity.getCacheDir().getAbsolutePath());
-        if (LOCAL_RENDERER != null) {
-            envMap.put("MESA_GL_VERSION_OVERRIDE", LOCAL_RENDERER.equals("opengles3_virgl")?"4.3":"4.6");
-            envMap.put("MESA_GLSL_VERSION_OVERRIDE", LOCAL_RENDERER.equals("opengles3_virgl")?"430":"460");
-        }
+        envMap.put("MESA_GLSL_CACHE_DIR", Tools.DIR_CACHE.getAbsolutePath());
         envMap.put("force_glsl_extensions_warn", "true");
         envMap.put("allow_higher_compat_version", "true");
         envMap.put("allow_glsl_extension_directive_midshader", "true");
         envMap.put("MESA_LOADER_DRIVER_OVERRIDE", "zink");
-        envMap.put("VTEST_SOCKET_NAME", activity.getCacheDir().getAbsolutePath() + "/.virgl_test");
+        envMap.put("VTEST_SOCKET_NAME", new File(Tools.DIR_CACHE, ".virgl_test").getAbsolutePath());
 
         envMap.put("LD_LIBRARY_PATH", LD_LIBRARY_PATH);
         envMap.put("PATH", jreHome + "/bin:" + Os.getenv("PATH"));
         if(FFmpegPlugin.isAvailable) {
-            envMap.put("PATH", FFmpegPlugin.libraryPath+":"+envMap.get("PATH"));
+            envMap.put("POJAV_FFMPEG_PATH", FFmpegPlugin.executablePath);
         }
 
-        envMap.put("REGAL_GL_VENDOR", "Android");
-        envMap.put("REGAL_GL_RENDERER", "Regal");
-        envMap.put("REGAL_GL_VERSION", "4.5");
         if(LOCAL_RENDERER != null) {
-            envMap.put("POJAV_RENDERER", LOCAL_RENDERER);
-            if(LOCAL_RENDERER.equals("opengles3_desktopgl_angle_vulkan")) {
+            envMap.put("MOJO_RENDERER", LOCAL_RENDERER);
+            if(LOCAL_RENDERER.equals("opengles3_ltw")) {
                 envMap.put("LIBGL_ES", "3");
-                envMap.put("POJAVEXEC_EGL","libEGL_angle.so"); // Use ANGLE EGL
+                envMap.put("POJAVEXEC_EGL","libltw.so"); // Use ANGLE EGL
             }
         }
-        envMap.put("AWTSTUB_WIDTH", Integer.toString(CallbackBridge.windowWidth > 0 ? CallbackBridge.windowWidth : CallbackBridge.physicalWidth));
-        envMap.put("AWTSTUB_HEIGHT", Integer.toString(CallbackBridge.windowHeight > 0 ? CallbackBridge.windowHeight : CallbackBridge.physicalHeight));
+        if(LauncherPreferences.PREF_BIG_CORE_AFFINITY) envMap.put("POJAV_BIG_CORE_AFFINITY", "1");
 
         File customEnvFile = new File(Tools.DIR_GAME_HOME, "custom_env.txt");
         if (customEnvFile.exists() && customEnvFile.isFile()) {
@@ -232,8 +233,10 @@ public class JREUtils {
             }
             reader.close();
         }
+
+        GLInfoUtils.GLInfo info = GLInfoUtils.getGlInfo();
         if(!envMap.containsKey("LIBGL_ES") && LOCAL_RENDERER != null) {
-            int glesMajor = getDetectedVersion();
+            int glesMajor = info.glesMajorVersion;
             Log.i("glesDetect","GLES version detected: "+glesMajor);
 
             if (glesMajor < 3) {
@@ -247,6 +250,11 @@ public class JREUtils {
                 envMap.put("LIBGL_ES", "3");
             }
         }
+
+        if(info.isAdreno() && !PREF_ZINK_PREFER_SYSTEM_DRIVER) {
+            envMap.put("POJAV_LOAD_TURNIP", "1");
+        }
+
         for (Map.Entry<String, String> env : envMap.entrySet()) {
             Logger.appendToLog("Added custom env: " + env.getKey() + "=" + env.getValue());
             try {
@@ -265,7 +273,7 @@ public class JREUtils {
         // return ldLibraryPath;
     }
 
-    public static int launchJavaVM(final Activity activity, final Runtime runtime, File gameDirectory, final List<String> JVMArgs, final String userArgsString) throws Throwable {
+    public static void launchJavaVM(final AppCompatActivity activity, final Runtime runtime, File gameDirectory, final List<String> JVMArgs, final String userArgsString) throws Throwable {
         String runtimeHome = MultiRTUtils.getRuntimeHome(runtime.name).getAbsolutePath();
 
         JREUtils.relocateLibPath(runtime, runtimeHome);
@@ -281,34 +289,49 @@ public class JREUtils {
         purgeArg(userArgs,"-d32");
         purgeArg(userArgs,"-d64");
         purgeArg(userArgs, "-Xint");
+        purgeArg(userArgs, "-XX:+UseTransparentHugePages");
+        purgeArg(userArgs, "-XX:+UseLargePagesInMetaspace");
+        purgeArg(userArgs, "-XX:+UseLargePages");
         purgeArg(userArgs, "-Dorg.lwjgl.opengl.libname");
+        // Don't let the user specify a custom Freetype library (as the user is unlikely to specify a version compiled for Android)
+        purgeArg(userArgs, "-Dorg.lwjgl.freetype.libname");
+        // Overridden by us to specify the exact number of cores that the android system has
+        purgeArg(userArgs, "-XX:ActiveProcessorCount");
 
         //Add automatically generated args
         userArgs.add("-Xms" + LauncherPreferences.PREF_RAM_ALLOCATION + "M");
         userArgs.add("-Xmx" + LauncherPreferences.PREF_RAM_ALLOCATION + "M");
         if(LOCAL_RENDERER != null) userArgs.add("-Dorg.lwjgl.opengl.libname=" + graphicsLib);
 
+        // Force LWJGL to use the Freetype library intended for it, instead of using the one
+        // that we ship with Java (since it may be older than what's needed)
+        userArgs.add("-Dorg.lwjgl.freetype.libname="+ NATIVE_LIB_DIR+"/libfreetype.so");
+
+        // Some phones are not using the right number of cores, fix that
+        userArgs.add("-XX:ActiveProcessorCount=" + java.lang.Runtime.getRuntime().availableProcessors());
+        // Disable Sodium's LWJGL check to prevent a crash
+        userArgs.add("-Dsodium.checks.issue2561=false");
+        
         userArgs.addAll(JVMArgs);
         activity.runOnUiThread(() -> Toast.makeText(activity, activity.getString(R.string.autoram_info_msg,LauncherPreferences.PREF_RAM_ALLOCATION), Toast.LENGTH_SHORT).show());
         System.out.println(JVMArgs);
 
         initJavaRuntime(runtimeHome);
-        setupExitTrap(activity.getApplication());
+        JREUtils.setupExitMethod(activity.getApplication());
+        JREUtils.initializeHooks();
         chdir(gameDirectory == null ? Tools.DIR_GAME_NEW : gameDirectory.getAbsolutePath());
         userArgs.add(0,"java"); //argv[0] is the program name according to C standard.
 
         final int exitCode = VMLauncher.launchJVM(userArgs.toArray(new String[0]));
         Logger.appendToLog("Java Exit code: " + exitCode);
         if (exitCode != 0) {
-            activity.runOnUiThread(() -> {
-                AlertDialog.Builder dialog = new AlertDialog.Builder(activity);
-                dialog.setMessage(activity.getString(R.string.mcn_exit_title, exitCode));
+            LifecycleAwareAlertDialog.DialogCreator dialogCreator = (dialog, builder)->
+                    builder.setMessage(activity.getString(R.string.mcn_exit_title, exitCode))
+                    .setPositiveButton(R.string.main_share_logs, (dialogInterface, which)-> shareLog(activity));
 
-                dialog.setPositiveButton(android.R.string.ok, (p1, p2) -> MainActivity.fullyExit());
-                dialog.show();
-            });
+            LifecycleAwareAlertDialog.haltOnDialog(activity.getLifecycle(), activity, dialogCreator);
         }
-        return exitCode;
+        Tools.fullyExit();
     }
 
     /**
@@ -324,7 +347,8 @@ public class JREUtils {
 
         ArrayList<String> overridableArguments = new ArrayList<>(Arrays.asList(
                 "-Djava.home=" + runtimeHome,
-                "-Djava.io.tmpdir=" + ctx.getCacheDir().getAbsolutePath(),
+                "-Djava.io.tmpdir=" + Tools.DIR_CACHE.getAbsolutePath(),
+                "-Djna.boot.library.path=" + NATIVE_LIB_DIR,
                 "-Duser.home=" + Tools.DIR_GAME_HOME,
                 "-Duser.language=" + System.getProperty("user.language"),
                 "-Dos.name=Linux",
@@ -333,22 +357,23 @@ public class JREUtils {
                 "-Dpojav.path.private.account=" + Tools.DIR_ACCOUNT_NEW,
                 "-Duser.timezone=" + TimeZone.getDefault().getID(),
 
+                "-Dorg.lwjgl.vulkan.libname=libvulkan.so",
                 //LWJGL 3 DEBUG FLAGS
                 //"-Dorg.lwjgl.util.Debug=true",
                 //"-Dorg.lwjgl.util.DebugFunctions=true",
                 //"-Dorg.lwjgl.util.DebugLoader=true",
                 // GLFW Stub width height
-                "-Dglfwstub.windowWidth=" + Tools.getDisplayFriendlyRes(currentDisplayMetrics.widthPixels, LauncherPreferences.PREF_SCALE_FACTOR/100F),
-                "-Dglfwstub.windowHeight=" + Tools.getDisplayFriendlyRes(currentDisplayMetrics.heightPixels, LauncherPreferences.PREF_SCALE_FACTOR/100F),
                 "-Dglfwstub.initEgl=false",
                 "-Dext.net.resolvPath=" +resolvFile,
                 "-Dlog4j2.formatMsgNoLookups=true", //Log4j RCE mitigation
 
                 "-Dnet.minecraft.clientmodname=" + Tools.APP_NAME,
-                "-Dfml.earlyprogresswindow=false" //Forge 1.14+ workaround
+                "-Dfml.earlyprogresswindow=false", //Forge 1.14+ workaround
+                "-Dloader.disable_forked_guis=true",
+                "-Djdk.lang.Process.launchMechanism=FORK" // Default is POSIX_SPAWN which requires starting jspawnhelper, which doesn't work on Android
         ));
         if(LauncherPreferences.PREF_ARC_CAPES) {
-            overridableArguments.add("-javaagent:"+new File(Tools.DIR_DATA,"arc_dns_injector.jar").getAbsolutePath()+"=23.95.137.176");
+            overridableArguments.add("-javaagent:"+new File(Tools.DIR_DATA,"arc_dns_injector/arc_dns_injector.jar").getAbsolutePath()+"=23.95.137.176");
         }
         List<String> additionalArguments = new ArrayList<>();
         for(String arg : overridableArguments) {
@@ -439,9 +464,8 @@ public class JREUtils {
             case "opengles2_5":
             case "opengles3":
                 renderLibrary = "libgl4es_114.so"; break;
-            case "opengles3_virgl":
-            case "vulkan_zink": renderLibrary = "libOSMesa_8.so"; break;
-            case "opengles3_desktopgl_angle_vulkan" : renderLibrary = "libtinywrapper.so"; break;
+            case "vulkan_zink": renderLibrary = "libOSMesa.so"; break;
+            case "opengles3_ltw" : renderLibrary = "libltw.so"; break;
             default:
                 Log.w("RENDER_LIBRARY", "No renderer selected, defaulting to opengles2");
                 renderLibrary = "libgl4es_114.so";
@@ -488,74 +512,20 @@ public class JREUtils {
     }
 
     public static int getDetectedVersion() {
-        /*
-         * Get all the device configurations and check the EGL_RENDERABLE_TYPE attribute
-         * to determine the highest ES version supported by any config. The
-         * EGL_KHR_create_context extension is required to check for ES3 support; if the
-         * extension is not present this test will fail to detect ES3 support. This
-         * effectively makes the extension mandatory for ES3-capable devices.
-         */
-        EGL10 egl = (EGL10) EGLContext.getEGL();
-        EGLDisplay display = egl.eglGetDisplay(EGL10.EGL_DEFAULT_DISPLAY);
-        int[] numConfigs = new int[1];
-        if (egl.eglInitialize(display, null)) {
-            try {
-                boolean checkES3 = hasExtension(egl.eglQueryString(display, EGL10.EGL_EXTENSIONS),
-                        "EGL_KHR_create_context");
-                if (egl.eglGetConfigs(display, null, 0, numConfigs)) {
-                    EGLConfig[] configs = new EGLConfig[numConfigs[0]];
-                    if (egl.eglGetConfigs(display, configs, numConfigs[0], numConfigs)) {
-                        int highestEsVersion = 0;
-                        int[] value = new int[1];
-                        for (int i = 0; i < numConfigs[0]; i++) {
-                            if (egl.eglGetConfigAttrib(display, configs[i],
-                                    EGL10.EGL_RENDERABLE_TYPE, value)) {
-                                if (checkES3 && ((value[0] & EGL_OPENGL_ES3_BIT_KHR) ==
-                                        EGL_OPENGL_ES3_BIT_KHR)) {
-                                    if (highestEsVersion < 3) highestEsVersion = 3;
-                                } else if ((value[0] & EGL_OPENGL_ES2_BIT) == EGL_OPENGL_ES2_BIT) {
-                                    if (highestEsVersion < 2) highestEsVersion = 2;
-                                } else if ((value[0] & EGL_OPENGL_ES_BIT) == EGL_OPENGL_ES_BIT) {
-                                    if (highestEsVersion < 1) highestEsVersion = 1;
-                                }
-                            } else {
-                                Log.w("glesDetect", "Getting config attribute with "
-                                        + "EGL10#eglGetConfigAttrib failed "
-                                        + "(" + i + "/" + numConfigs[0] + "): "
-                                        + egl.eglGetError());
-                            }
-                        }
-                        return highestEsVersion;
-                    } else {
-                        Log.e("glesDetect", "Getting configs with EGL10#eglGetConfigs failed: "
-                                + egl.eglGetError());
-                        return -1;
-                    }
-                } else {
-                    Log.e("glesDetect", "Getting number of configs with EGL10#eglGetConfigs failed: "
-                            + egl.eglGetError());
-                    return -2;
-                }
-            } finally {
-                egl.eglTerminate(display);
-            }
-        } else {
-            Log.e("glesDetect", "Couldn't initialize EGL.");
-            return -3;
-        }
+        return GLInfoUtils.getGlInfo().glesMajorVersion;
     }
     public static native int chdir(String path);
     public static native boolean dlopen(String libPath);
     public static native void setLdLibraryPath(String ldLibraryPath);
     public static native void setupBridgeWindow(Object surface);
     public static native void releaseBridgeWindow();
-    public static native void setupExitTrap(Context context);
+    public static native void initializeHooks();
+    public static native void setupExitMethod(Context context);
     // Obtain AWT screen pixels to render on Android SurfaceView
     public static native int[] renderAWTScreenFrame(/* Object canvas, int width, int height */);
     static {
+        System.loadLibrary("exithook");
         System.loadLibrary("pojavexec");
         System.loadLibrary("pojavexec_awt");
-        dlopen("libxhook.so");
-        System.loadLibrary("istdio");
     }
 }

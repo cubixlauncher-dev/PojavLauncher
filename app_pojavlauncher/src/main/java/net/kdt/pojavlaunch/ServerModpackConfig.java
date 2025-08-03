@@ -3,6 +3,8 @@ package net.kdt.pojavlaunch;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
+import net.kdt.pojavlaunch.prefs.LauncherPreferences;
+
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
@@ -43,8 +45,8 @@ public class ServerModpackConfig {
         }
         return new ServerModpackConfig(properties, homeGameDirectory, configFile, versionName);
     }
-    public @NonNull String getGameDirectory() {
-        return homeGameDirectory.getAbsolutePath();
+    public @NonNull File getGameDirectory() {
+        return homeGameDirectory;
     }
     public @Nullable String getJavaRuntime() {
         String args = properties.getProperty("javaRuntime");
@@ -67,18 +69,18 @@ public class ServerModpackConfig {
     public @NonNull String getVersionName() {
         return versionName;
     }
-    public @Nullable String getControlFile() {
+    public @NonNull String getControlFile() {
         String args = properties.getProperty("controlFile");
-        if(args != null && args.isEmpty()) return null;
+        if(!Tools.isValidString(args)) return LauncherPreferences.PREF_DEFAULTCTRL_PATH;
         return args;
     }
     public void setControlFile(String controlFile) {
         properties.setProperty("controlFile", controlFile);
         save();
     }
-    public @Nullable String getJvmArgs() {
+    public @NonNull String getJvmArgs() {
         String args = properties.getProperty("jvmArgs");
-        if(args != null && args.isEmpty()) return null;
+        if(!Tools.isValidString(args)) return LauncherPreferences.PREF_CUSTOM_JAVA_ARGS;
         return args;
     }
     public void setJvmArgs(String args) {

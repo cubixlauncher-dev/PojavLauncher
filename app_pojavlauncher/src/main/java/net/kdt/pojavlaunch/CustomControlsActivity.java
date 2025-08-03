@@ -1,46 +1,42 @@
 package net.kdt.pojavlaunch;
 
-import android.app.Activity;
-import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
 import android.provider.DocumentsContract;
 import android.view.View;
 import android.widget.ArrayAdapter;
-import android.widget.Button;
-import android.widget.EditText;
 import android.widget.ListView;
-import android.widget.Toast;
 
-import androidx.appcompat.app.AlertDialog;
+import androidx.activity.result.ActivityResultLauncher;
 import androidx.drawerlayout.widget.DrawerLayout;
-
-import com.google.gson.JsonSyntaxException;
-import com.kdt.pickafile.FileListView;
-import com.kdt.pickafile.FileSelectedListener;
 
 import net.kdt.pojavlaunch.customcontrols.ControlData;
 import net.kdt.pojavlaunch.customcontrols.ControlDrawerData;
+import net.kdt.pojavlaunch.customcontrols.ControlJoystickData;
 import net.kdt.pojavlaunch.customcontrols.ControlLayout;
+import net.kdt.pojavlaunch.customcontrols.EditorExitable;
 import net.kdt.pojavlaunch.prefs.LauncherPreferences;
+import net.kdt.pojavlaunch.utils.CropperUtils;
 
-import java.io.File;
 import java.io.IOException;
 
+import git.artdeell.mojo.R;
 
-public class CustomControlsActivity extends BaseActivity {
+
+public class CustomControlsActivity extends BaseActivity implements EditorExitable, CropperUtils.CropperReceiver {
 	private DrawerLayout mDrawerLayout;
 	private ListView mDrawerNavigationView;
 	private ControlLayout mControlLayout;
-
-	public boolean isModified = false;
-	private static String sSelectedName = "new_control";
+	private CropperUtils.CropperReceiver mCropperReceiver;
+	private ActivityResultLauncher<?> mCropperLauncher;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+
+		mCropperLauncher = CropperUtils.registerCropper(this, this);
 
 		setContentView(R.layout.activity_custom_controls);
 
@@ -57,13 +53,13 @@ public class CustomControlsActivity extends BaseActivity {
 			switch(position) {
 				case 0: mControlLayout.addControlButton(new ControlData("New")); break;
 				case 1: mControlLayout.addDrawer(new ControlDrawerData()); break;
-				//case 2: mControlLayout.addJoystickButton(new ControlData()); break;
-				case 2: load(mControlLayout); break;
-				case 3: save(false, mControlLayout); break;
-				case 4: dialogSelectDefaultCtrl(mControlLayout); break;
-				case 5: // Saving the currently shown control
+				case 2: mControlLayout.addJoystickButton(new ControlJoystickData()); break;
+				case 3: mControlLayout.openLoadDialog(); break;
+				case 4: mControlLayout.openSaveDialog(this); break;
+				case 5: mControlLayout.openSetDefaultDialog(); break;
+				case 6: // Saving the currently shown control
 					try {
-						Uri contentUri = DocumentsContract.buildDocumentUri(getString(R.string.storageProviderAuthorities), doSaveCtrl(sSelectedName, mControlLayout));
+						Uri contentUri = DocumentsContract.buildDocumentUri(getString(R.string.storageProviderAuthorities), mControlLayout.saveToDirectory(mControlLayout.mLayoutFileName));
 
 						Intent shareIntent = new Intent();
 						shareIntent.setAction(Intent.ACTION_SEND);
@@ -72,165 +68,57 @@ public class CustomControlsActivity extends BaseActivity {
 						shareIntent.setType("application/json");
 						startActivity(shareIntent);
 
-						Intent sendIntent = Intent.createChooser(shareIntent, sSelectedName);
+						Intent sendIntent = Intent.createChooser(shareIntent, mControlLayout.mLayoutFileName);
 						startActivity(sendIntent);
 					}catch (Exception e) {
 						Tools.showError(this, e);
 					}
 					break;
-				case 6: mControlLayout.toggleJoystick(); break;
 			}
 			mDrawerLayout.closeDrawers();
 		});
-		mControlLayout.setActivity(this);
 		mControlLayout.setModifiable(true);
+		try {
+			mControlLayout.loadLayout(LauncherPreferences.PREF_DEFAULTCTRL_PATH);
+		}catch (IOException e) {
+			Tools.showError(this, e);
+		}
+	}
 
-		loadControl(LauncherPreferences.PREF_DEFAULTCTRL_PATH, mControlLayout);
+	public void startCropping(CropperUtils.CropperReceiver cropperReceiver) {
+		mCropperReceiver = cropperReceiver;
+		CropperUtils.startCropper(mCropperLauncher);
 	}
 
 	@Override
 	public void onBackPressed() {
-		if (!isModified) {
-			setResult(Activity.RESULT_OK, new Intent());
-			super.onBackPressed();
-			return;
-		}
-
-		save(true, mControlLayout);
+		mControlLayout.askToExit(this);
 	}
 
-	public static void dialogSelectDefaultCtrl(final ControlLayout layout) {
-		AlertDialog.Builder builder = new AlertDialog.Builder(layout.getContext());
-		builder.setTitle(R.string.customctrl_selectdefault);
-		builder.setPositiveButton(android.R.string.cancel, null);
-
-		final AlertDialog dialog = builder.create();
-		FileListView flv = new FileListView(dialog, "json");
-		flv.lockPathAt(new File(Tools.CTRLMAP_PATH));
-		flv.setFileSelectedListener(new FileSelectedListener(){
-
-			@Override
-			public void onFileSelected(File file, String path) {
-				setDefaultControlJson(path,layout);
-				dialog.dismiss();
-			}
-		});
-		dialog.setView(flv);
-		dialog.show();
+	@Override
+	public void exitEditor() {
+		super.onBackPressed();
 	}
 
-
-	public static void save(final boolean exit, final ControlLayout layout) {
-		final Context ctx = layout.getContext();
-		final EditText edit = new EditText(ctx);
-		edit.setSingleLine();
-		edit.setText(sSelectedName);
-
-		AlertDialog.Builder builder = new AlertDialog.Builder(ctx);
-		builder.setTitle(R.string.global_save);
-		builder.setView(edit);
-		builder.setPositiveButton(android.R.string.ok, null);
-		builder.setNegativeButton(android.R.string.cancel, null);
-		if (exit) {
-			builder.setNeutralButton(R.string.mcn_exit_call, (p1, p2) -> {
-				layout.setModifiable(false);
-				if(ctx instanceof MainActivity) {
-					((MainActivity) ctx).leaveCustomControls();
-				}else{
-					((CustomControlsActivity) ctx).isModified = false;
-					((Activity)ctx).onBackPressed();
-				}
-			});
-		}
-		final AlertDialog dialog = builder.create();
-		dialog.setOnShowListener(dialogInterface -> {
-
-			Button button = dialog.getButton(AlertDialog.BUTTON_POSITIVE);
-			button.setOnClickListener(view -> {
-				String controlName = edit.getText().toString();
-				if (controlName.isEmpty()) {
-					edit.setError(ctx.getResources().getString(R.string.global_error_field_empty));
-					return;
-				}
-				if (controlName.equals("./default") || controlName.equals("default")) {
-					edit.setError(ctx.getString(R.string.invalid_controls_name));
-					return;
-				}
-
-				try {
-					String jsonPath = doSaveCtrl(edit.getText().toString(),layout);
-					Toast.makeText(ctx, ctx.getString(R.string.global_save) + ": " + jsonPath, Toast.LENGTH_SHORT).show();
-
-					dialog.dismiss();
-					if (!exit) return;
-
-					if(ctx instanceof MainActivity) {
-						((MainActivity) ctx).leaveCustomControls();
-					}else{
-						((Activity)ctx).onBackPressed();
-					}
-				} catch (Throwable th) {
-					Tools.showError(ctx, th, exit);
-				}
-
-			});
-
-		});
-		dialog.show();
-
+	@Override
+	public float getAspectRatio() {
+		if(mCropperReceiver != null) return mCropperReceiver.getAspectRatio();
+		return 1f;
 	}
 
-	public static void load(final ControlLayout layout) {
-		AlertDialog.Builder builder = new AlertDialog.Builder(layout.getContext());
-		builder.setTitle(R.string.global_load);
-		builder.setPositiveButton(android.R.string.cancel, null);
-
-		final AlertDialog dialog = builder.create();
-		FileListView flv = new FileListView(dialog, "json");
-		if(Build.VERSION.SDK_INT < 29)flv.listFileAt(new File(Tools.CTRLMAP_PATH));
-		else flv.lockPathAt(new File(Tools.CTRLMAP_PATH));
-		flv.setFileSelectedListener(new FileSelectedListener(){
-
-			@Override
-			public void onFileSelected(File file, String path) {
-				loadControl(path,layout);
-				dialog.dismiss();
-			}
-		});
-		dialog.setView(flv);
-		dialog.show();
+	@Override
+	public int getTargetMaxSide() {
+		if(mCropperReceiver != null) return mCropperReceiver.getTargetMaxSide();
+		return 128;
 	}
 
-	private static void setDefaultControlJson(String path,ControlLayout ctrlLayout) {
-		// Load before save to make sure control is not error
-		try {
-			ctrlLayout.loadLayout(path);
-			setDefaultControlPath(path);
-		} catch (IOException| JsonSyntaxException exception) {
-			Tools.showError(ctrlLayout.getContext(), exception);
-		}
+	@Override
+	public void onCropped(Bitmap contentBitmap) {
+		if(mCropperReceiver != null) mCropperReceiver.onCropped(contentBitmap);
 	}
 
-	private static void setDefaultControlPath(String path) {
-		LauncherPreferences.DEFAULT_PREF.edit().putString("defaultCtrl", path).apply();
-		LauncherPreferences.PREF_DEFAULTCTRL_PATH = path;
-	}
-
-	private static String doSaveCtrl(String name, final ControlLayout layout) throws Exception {
-		String jsonPath = Tools.CTRLMAP_PATH + "/" + name + ".json";
-		layout.saveLayout(jsonPath);
-		setDefaultControlPath(jsonPath);
-		return jsonPath;
-	}
-
-	private static void loadControl(String path,ControlLayout layout) {
-		try {
-			layout.loadLayout(path);
-			sSelectedName = path.replace(Tools.CTRLMAP_PATH, ".");
-			// Remove `.json`
-			sSelectedName = sSelectedName.substring(0, sSelectedName.length() - 5);
-		} catch (Exception e) {
-			Tools.showError(layout.getContext(), e);
-		}
+	@Override
+	public void onFailed(Exception exception) {
+		if(mCropperReceiver != null) mCropperReceiver.onFailed(exception);
 	}
 }

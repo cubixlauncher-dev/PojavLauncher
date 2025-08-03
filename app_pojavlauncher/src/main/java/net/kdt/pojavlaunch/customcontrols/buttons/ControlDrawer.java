@@ -2,13 +2,14 @@ package net.kdt.pojavlaunch.customcontrols.buttons;
 
 import android.annotation.SuppressLint;
 import android.view.MotionEvent;
+import android.view.View;
 import android.view.ViewGroup;
 
 import net.kdt.pojavlaunch.Tools;
 import net.kdt.pojavlaunch.customcontrols.ControlData;
 import net.kdt.pojavlaunch.customcontrols.ControlDrawerData;
 import net.kdt.pojavlaunch.customcontrols.ControlLayout;
-import net.kdt.pojavlaunch.customcontrols.handleview.EditControlPopup;
+import net.kdt.pojavlaunch.customcontrols.handleview.EditControlSideDialog;
 
 import java.util.ArrayList;
 
@@ -40,18 +41,19 @@ public class ControlDrawer extends ControlButton {
 
     public void addButton(ControlSubButton button){
         buttons.add(button);
-        setControlButtonVisibility(button, areButtonsVisible);
         syncButtons();
+        setControlButtonVisibility(button, areButtonsVisible);
     }
 
     private void setControlButtonVisibility(ControlButton button, boolean isVisible){
-        button.setVisible(isVisible);
+        button.getControlView().setVisibility(isVisible ? VISIBLE : GONE);
     }
 
     private void switchButtonVisibility(){
         areButtonsVisible = !areButtonsVisible;
+        int visibility = areButtonsVisible ? VISIBLE : GONE;
         for(ControlButton button : buttons){
-            button.setVisible(areButtonsVisible);
+            button.getControlView().setVisibility(visibility);
         }
     }
 
@@ -59,26 +61,27 @@ public class ControlDrawer extends ControlButton {
     private void alignButtons(){
         if(buttons == null) return;
         if(drawerData.orientation == ControlDrawerData.Orientation.FREE) return;
+        int margin = (int) ControlInterface.getMarginDistance();
 
         for(int i = 0; i < buttons.size(); ++i){
             switch (drawerData.orientation){
                 case RIGHT:
-                    buttons.get(i).setDynamicX(generateDynamicX(getX() + (drawerData.properties.getWidth() + Tools.dpToPx(2))*(i+1) ));
+                    buttons.get(i).setDynamicX(generateDynamicX(getX() + (drawerData.properties.getWidth() + margin)*(i+1) ));
                     buttons.get(i).setDynamicY(generateDynamicY(getY()));
                     break;
 
                 case LEFT:
-                    buttons.get(i).setDynamicX(generateDynamicX(getX() - (drawerData.properties.getWidth() + Tools.dpToPx(2))*(i+1)));
+                    buttons.get(i).setDynamicX(generateDynamicX(getX() - (drawerData.properties.getWidth() + margin)*(i+1)));
                     buttons.get(i).setDynamicY(generateDynamicY(getY()));
                     break;
 
                 case UP:
-                    buttons.get(i).setDynamicY(generateDynamicY(getY() - (drawerData.properties.getHeight() + Tools.dpToPx(2))*(i+1)));
+                    buttons.get(i).setDynamicY(generateDynamicY(getY() - (drawerData.properties.getHeight() + margin)*(i+1)));
                     buttons.get(i).setDynamicX(generateDynamicX(getX()));
                     break;
 
                 case DOWN:
-                    buttons.get(i).setDynamicY(generateDynamicY(getY() + (drawerData.properties.getHeight() + Tools.dpToPx(2))*(i+1)));
+                    buttons.get(i).setDynamicY(generateDynamicY(getY() + (drawerData.properties.getHeight() + margin)*(i+1)));
                     buttons.get(i).setDynamicX(generateDynamicX(getX()));
                     break;
             }
@@ -88,7 +91,7 @@ public class ControlDrawer extends ControlButton {
 
 
     private void resizeButtons(){
-        if (buttons == null) return;
+        if (buttons == null || drawerData.orientation == ControlDrawerData.Orientation.FREE) return;
         for(ControlSubButton subButton : buttons){
             subButton.mProperties.setWidth(mProperties.getWidth());
             subButton.mProperties.setHeight(mProperties.getHeight());
@@ -124,8 +127,13 @@ public class ControlDrawer extends ControlButton {
 
     @Override
     public void setVisible(boolean isVisible) {
-        //TODO replicate changes to his children ?
-        setVisibility(isVisible ? VISIBLE : GONE);
+        int visibility = isVisible ? VISIBLE : GONE;
+        setVisibility(visibility);
+        if(visibility == GONE || areButtonsVisible) {
+            for(ControlSubButton button : buttons){
+                button.getControlView().setVisibility(isVisible ? VISIBLE : (!mProperties.isHideable && getVisibility() == GONE) ? VISIBLE : View.GONE);
+            }
+        }
     }
 
     @SuppressLint("ClickableViewAccessibility")
@@ -175,7 +183,7 @@ public class ControlDrawer extends ControlButton {
     }
 
     @Override
-    public void loadEditValues(EditControlPopup editControlPopup) {
+    public void loadEditValues(EditControlSideDialog editControlPopup) {
         editControlPopup.loadValues(drawerData);
     }
 

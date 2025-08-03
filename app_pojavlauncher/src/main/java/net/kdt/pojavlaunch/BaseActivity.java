@@ -18,8 +18,8 @@ public abstract class BaseActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         LocaleUtils.setLocale(this);
-        Tools.setFullscreen(this, setFullscreen());
-        Tools.updateWindowSize(this);
+        Tools.setInsetsMode(this, setFullscreen(), shouldIgnoreNotch());
+        Tools.getDisplayMetrics(this);
     }
 
     /** @return Whether the activity should be set as a fullscreen one */
@@ -37,16 +37,18 @@ public abstract class BaseActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        if(!Tools.checkStorageRoot(this)) {
-            startActivity(new Intent(this, MissingStorageActivity.class));
-            finish();
-        }
+        Tools.checkStorageInteractive(this);
     }
 
     @Override
     protected void onPostResume() {
         super.onPostResume();
-        Tools.setFullscreen(this, setFullscreen());
-        Tools.ignoreNotch(PREF_IGNORE_NOTCH,this);
+        Tools.setInsetsMode(this, setFullscreen(), shouldIgnoreNotch());
+        Tools.getDisplayMetrics(this);
+    }
+
+    /** @return Whether or not the notch should be ignored */
+    protected boolean shouldIgnoreNotch(){
+        return PREF_IGNORE_NOTCH;
     }
 }

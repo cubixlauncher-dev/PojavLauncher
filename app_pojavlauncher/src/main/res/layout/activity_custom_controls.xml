@@ -5,7 +5,8 @@
 	android:layout_height="match_parent"
 	android:layout_width="match_parent"
 	android:layout_alignParentRight="true"
-	android:id="@+id/customctrl_drawerlayout">
+	android:id="@+id/customctrl_drawerlayout"
+	android:background="@color/background_status_bar">
 
 
 	<androidx.constraintlayout.widget.ConstraintLayout
@@ -15,8 +16,9 @@
 
 		<net.kdt.pojavlaunch.customcontrols.handleview.DrawerPullButton
 			android:id="@+id/drawer_button"
-			android:layout_width="32dp"
-			android:layout_height="16dp"
+			android:layout_width="40dp"
+			android:layout_height="20dp"
+			android:padding="6dp"
 			android:elevation="10dp"
 			app:layout_constraintEnd_toEndOf="parent"
 			app:layout_constraintStart_toStartOf="parent"
@@ -27,6 +29,7 @@
 			android:layout_height="wrap_content"
 			android:layout_alignParentRight="true"
 			android:text="@string/hint_control_mapping"
+			android:textColor="@color/primary_text"
 			app:layout_constraintEnd_toEndOf="parent"
 			app:layout_constraintTop_toTopOf="parent" />
 

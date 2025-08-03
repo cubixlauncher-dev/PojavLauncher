@@ -4,8 +4,6 @@ import android.app.Activity;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Looper;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
@@ -25,6 +23,8 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 
+import git.artdeell.mojo.R;
+
 /**
  * An activity dedicated to importing control files.
  */
@@ -41,7 +41,12 @@ public class ImportControlActivity extends Activity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Tools.initContextConstants(getApplicationContext());
+        if(Tools.checkStorageInteractive(this)) {
+            Tools.initStorageConstants(getApplicationContext());
+        }else {
+            // Return early, no initialization needed.
+            return;
+        }
 
         setContentView(R.layout.activity_import_control);
         mEditText = findViewById(R.id.editText_import_control_file_name);
@@ -63,6 +68,12 @@ public class ImportControlActivity extends Activity {
     @Override
     protected void onPostResume() {
         super.onPostResume();
+        if(!Tools.checkStorageInteractive(this)) {
+            // Don't try to read the file as when this check fails, external storage paths
+            // are no longer valid (likely unmounted).
+            // checkStorageInteractive() will finish this activity for us.
+            return;
+        }
         if(!mHasIntentChanged) return;
         mIsFileVerified = false;
         getUriData();
@@ -89,7 +100,7 @@ public class ImportControlActivity extends Activity {
         }).start();
 
         //Auto show the keyboard
-        new Handler(Looper.getMainLooper()).postDelayed(() -> {
+        Tools.MAIN_HANDLER.postDelayed(() -> {
             InputMethodManager imm = (InputMethodManager) getApplicationContext().getSystemService(INPUT_METHOD_SERVICE);
             imm.toggleSoftInput(InputMethodManager.SHOW_IMPLICIT, 0);
             mEditText.setSelection(mEditText.getText().length());

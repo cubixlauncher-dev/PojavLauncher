@@ -14,10 +14,10 @@ import androidx.annotation.Nullable;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
-import com.kdt.mcgui.ProgressLayout;
-
-import net.kdt.pojavlaunch.progresskeeper.ProgressKeeper;
+import net.kdt.pojavlaunch.prefs.LauncherPreferences;
 import net.kdt.pojavlaunch.tasks.AsyncAssetManager;
+
+import git.artdeell.mojo.R;
 
 public class TestStorageActivity extends Activity {
     private final int REQUEST_STORAGE_REQUEST_CODE = 1;
@@ -63,19 +63,19 @@ public class TestStorageActivity extends Activity {
             startActivity(new Intent(this, MissingStorageActivity.class));
             return;
         }
-        //Only run them once we get a definitive green light to use storage
+        //Initialize constants (implicitly) and preferences after we confirm that we have storage.
+        LauncherPreferences.loadPreferences(this);
         AsyncAssetManager.unpackComponents(this);
         AsyncAssetManager.unpackSingleFiles(this);
         String bootstrapActivityClassName = getString(R.string.main_activity_class_name);
-        Class<?> activityClass = LauncherActivity.class;
+        Class<?> activityClass = null;
         try {
             activityClass = Class.forName(bootstrapActivityClassName);
         }catch (Throwable th) {
-            th.printStackTrace();
+            Tools.showError(this, th, true);
         }
         Intent intent =  new Intent(this, activityClass);
         startActivity(intent);
-        //ProgressKeeper.submitProgress(ProgressLayout.DOWNLOAD_MINECRAFT, 50, R.string.app_short_name);
         finish();
     }
 }

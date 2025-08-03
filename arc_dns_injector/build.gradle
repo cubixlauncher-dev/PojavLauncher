@@ -11,5 +11,4 @@ jar {
         attributes("Manifest-Version": "1.0",
                 "PreMain-Class": "git.artdeell.arcdns.ArcDNSInjectorAgent")
     }
-    destinationDirectory.set(file("../app_pojavlauncher/src/main/assets/"))
 }

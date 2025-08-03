@@ -9,7 +9,7 @@ import android.widget.ExpandableListAdapter;
 import android.widget.TextView;
 
 import net.kdt.pojavlaunch.JMinecraftVersionList;
-import net.kdt.pojavlaunch.R;
+import git.artdeell.mojo.R;
 import net.kdt.pojavlaunch.Tools;
 import net.kdt.pojavlaunch.utils.FilteredSubList;
 
@@ -24,8 +24,11 @@ public class VersionListAdapter extends BaseExpandableListAdapter implements Exp
     private final String[] mGroups;
     private final String[] mInstalledVersions;
     private final List<?>[] mData;
+    private final boolean mHideCustomVersions;
+    private final int mSnapshotListPosition;
 
-    public VersionListAdapter(JMinecraftVersionList.Version[] versionList, Context ctx){
+    public VersionListAdapter(JMinecraftVersionList.Version[] versionList, boolean hideCustomVersions, Context ctx){
+        mHideCustomVersions = hideCustomVersions;
         mLayoutInflater = (LayoutInflater) ctx.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
         List<JMinecraftVersionList.Version> releaseList = new FilteredSubList<>(versionList, item -> item.type.equals("release"));
@@ -35,6 +38,9 @@ public class VersionListAdapter extends BaseExpandableListAdapter implements Exp
 
         // Query installed versions
         mInstalledVersions = new File(Tools.DIR_GAME_NEW + "/versions").list();
+        if(mInstalledVersions != null)
+            Arrays.sort(mInstalledVersions);
+
         if(!areInstalledVersionsAvailable()){
             mGroups = new String[]{
                     ctx.getString(R.string.mcl_setting_veroption_release),
@@ -43,6 +49,7 @@ public class VersionListAdapter extends BaseExpandableListAdapter implements Exp
                     ctx.getString(R.string.mcl_setting_veroption_oldalpha)
             };
             mData = new List[]{ releaseList, snapshotList, betaList, alphaList};
+            mSnapshotListPosition = 1;
         }else{
             mGroups = new String[]{
                     ctx.getString(R.string.mcl_setting_veroption_installed),
@@ -52,6 +59,7 @@ public class VersionListAdapter extends BaseExpandableListAdapter implements Exp
                     ctx.getString(R.string.mcl_setting_veroption_oldalpha)
             };
             mData = new List[]{Arrays.asList(mInstalledVersions), releaseList, snapshotList, betaList, alphaList};
+            mSnapshotListPosition = 2;
         }
     }
 
@@ -116,7 +124,12 @@ public class VersionListAdapter extends BaseExpandableListAdapter implements Exp
         return true;
     }
 
+    public boolean isSnapshotSelected(int groupPosition) {
+        return groupPosition == mSnapshotListPosition;
+    }
+
     private boolean areInstalledVersionsAvailable(){
+        if(mHideCustomVersions) return false;
         return !(mInstalledVersions == null || mInstalledVersions.length == 0);
     }
 

@@ -3,9 +3,12 @@ import android.content.*;
 
 import androidx.annotation.Keep;
 
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.*;
 import net.kdt.pojavlaunch.*;
+
+import git.artdeell.mojo.R;
 
 @Keep
 public class CustomControls {
@@ -13,20 +16,25 @@ public class CustomControls {
     public float scaledAt;
 	public List<ControlData> mControlDataList;
 	public List<ControlDrawerData> mDrawerDataList;
-	public boolean isJoystickEnabled;
+	public List<ControlJoystickData> mJoystickDataList;
+	public transient LayoutBitmaps mLayoutBitmaps;
 	public CustomControls() {
-		this(new ArrayList<>(), new ArrayList<>());
+		this(new ArrayList<>(), new ArrayList<>(), new ArrayList<>());
 	}
 
 
 
-	public CustomControls(List<ControlData> mControlDataList, List<ControlDrawerData> mDrawerDataList) {
+	public CustomControls(List<ControlData> mControlDataList, List<ControlDrawerData> mDrawerDataList, List<ControlJoystickData> mJoystickDataList) {
 		this.mControlDataList = mControlDataList;
 		this.mDrawerDataList = mDrawerDataList;
-        this.scaledAt = 100f;
+		this.mJoystickDataList = mJoystickDataList;
+		this.scaledAt = 100f;
 	}
 	
 	// Generate default control
+	// Here for historical reasons
+	// Just admire it idk
+	@SuppressWarnings("unused")
 	public CustomControls(Context ctx) {
 		this();
 		this.mControlDataList.add(new ControlData(ControlData.getSpecialButtons()[0])); // Keyboard
@@ -52,15 +60,19 @@ public class CustomControls {
 		this.mControlDataList.add(shiftData);
 		this.mControlDataList.add(new ControlData(ctx, R.string.control_jump, new int[]{LwjglGlfwKeycode.GLFW_KEY_SPACE}, "${right} - ${margin} * 2 - ${width}", "${bottom} - ${margin} * 2 - ${height}", true));
 
-		//The default controls are conform to the V2
-		version = 4;
+		//The default controls are conform to the V3
+		version = 8;
 	}
 
-	
 	public void save(String path) throws IOException {
-		//Current version is the V2.5 so the version as to be marked as 4 !
-		version = 4;
-
-		Tools.write(path, Tools.GLOBAL_GSON.toJson(this));
+		//Current version is the V3.2 so the version as to be marked as 8 !
+		version = 8;
+		String jsonControls = Tools.GLOBAL_GSON.toJson(this);
+		try(FileOutputStream fileOutputStream = new FileOutputStream(path)) {
+			LayoutBitmaps.store(fileOutputStream, new LayoutBitmaps.ControlsContainer(
+					jsonControls,
+					mLayoutBitmaps
+			));
+		}
 	}
 }
