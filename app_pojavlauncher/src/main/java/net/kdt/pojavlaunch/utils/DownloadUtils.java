@@ -150,6 +150,7 @@ public class DownloadUtils {
             attempts++;
             downloadFile(downloadFunction);
             fileOkay = verifyFile(outputFile, sha1);
+            if(!fileOkay) Log.w("DownloadUtils", "Sent for retrial: "+outputFile.getName());
         }
         if(!fileOkay) throw new SHA1VerificationException("SHA1 verifcation failed after 5 download attempts. File "+outputFile.getName());
         return result;

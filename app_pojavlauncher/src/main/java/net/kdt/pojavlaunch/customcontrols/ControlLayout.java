@@ -495,13 +495,20 @@ public class ControlLayout extends FrameLayout {
 		@Override
 		public void onClick(View v) {
 			Context context = v.getContext();
-			if (mEditText.getText().toString().isEmpty()) {
+			String name = mEditText.getText().toString();
+			if (name.isEmpty()) {
 				mEditText.setError(context.getString(R.string.global_error_field_empty));
+				return;
+			}
+			if(name.equals("./default") || name.equals("./default_dpad")) {
+				mEditText.setError(context.getString(R.string.control_error_another_name));
 				return;
 			}
 			try {
 				String jsonPath = saveToDirectory(mEditText.getText().toString());
 				Toast.makeText(context, context.getString(R.string.global_save) + ": " + jsonPath, Toast.LENGTH_SHORT).show();
+				LauncherPreferences.DEFAULT_PREF.edit().putString("defaultCtrl", jsonPath).apply();
+				LauncherPreferences.PREF_DEFAULTCTRL_PATH = jsonPath;
 				mDialog.dismiss();
 				if(mListener != null) mListener.exitEditor();
 			} catch (Throwable th) {

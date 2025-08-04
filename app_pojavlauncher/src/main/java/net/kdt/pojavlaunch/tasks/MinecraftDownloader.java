@@ -80,7 +80,9 @@ public class MinecraftDownloader {
             try {
                 downloadGame(activity, version, realVersion);
                 listener.onDownloadDone();
-            }catch (Exception e) {
+            } catch (InterruptedException e) {
+                // Do nothing
+            } catch (Exception e) {
                 listener.onDownloadFailed(e);
             }
             ProgressLayout.clearProgress(ProgressLayout.DOWNLOAD_MINECRAFT);
@@ -142,6 +144,7 @@ public class MinecraftDownloader {
             // Interrupted while waiting, which means that the download was cancelled.
             // Kill all downloading threads immediately, and ignore any exceptions thrown by them
             downloaderPool.shutdownNow();
+            throw e;
         }
     }
 
@@ -425,13 +428,9 @@ public class MinecraftDownloader {
         mSourceJarFile = clientJar;
     }
 
-    private void scheduleCubixFilesDownloads(CubixFileInfo[] fileInfos, boolean checkSizeHead) throws IOException{
+    private void scheduleCubixFilesDownloads(CubixFileInfo[] fileInfos, boolean isConfigFile) throws IOException{
         growDownloadList(fileInfos.length);
         for(CubixFileInfo info : fileInfos) {
-            if(checkSizeHead) {
-                long size = DownloadUtils.getContentLength(info.url);
-                if(size == 0) continue;
-            }
             String subdirPath = info.path;
             if(subdirPath.startsWith("/")) subdirPath = "." + subdirPath;
             File path = new File(mConfig.getGameDirectory(), subdirPath);
@@ -440,7 +439,7 @@ public class MinecraftDownloader {
                     info.url,
                     info.check ? info.sha1 : null,
                     info.size,
-                    false
+                    isConfigFile
             );
         }
     }
