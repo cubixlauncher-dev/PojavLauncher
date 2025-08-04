@@ -78,11 +78,17 @@ public class CustomControlsActivity extends BaseActivity implements EditorExitab
 			mDrawerLayout.closeDrawers();
 		});
 		mControlLayout.setModifiable(true);
-		try {
-			mControlLayout.loadLayout(LauncherPreferences.PREF_DEFAULTCTRL_PATH);
-		}catch (IOException e) {
-			Tools.showError(this, e);
-		}
+	}
+
+	@Override
+	public void onAttachedToWindow() {
+		mControlLayout.post(()->{
+			try {
+				mControlLayout.loadLayout(LauncherPreferences.PREF_DEFAULTCTRL_PATH);
+			}catch (IOException e) {
+				Tools.showError(this, e);
+			}
+		});
 	}
 
 	public void startCropping(CropperUtils.CropperReceiver cropperReceiver) {
