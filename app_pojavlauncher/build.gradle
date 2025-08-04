@@ -7,28 +7,6 @@ plugins {
 
 import de.undercouch.gradle.tasks.download.Download
 
-static def getDate() { return new Date().format('yyyyMMdd') }
-
-static def getDateSeconds() {
-    if (System.getenv("GITHUB_ACTIONS") == "true") {
-        return Integer.parseInt(System.getenv("GITHUB_RUN_NUMBER"))
-    } else {
-        return 172005
-    }
-}
-
-def getVersionName = {
-    def currentBranch = grgit.branch.current()
-    def latestCommit = grgit.log(maxCommits: 1)
-    def dateToday = getDate()
-    if(currentBranch == null || latestCommit == null) {
-        return "LOCAL-${dateToday}"
-    }else {
-        def branchName = currentBranch.getName()
-        def commitAbbreviation = latestCommit.abbreviatedId
-        return "hebe-${dateToday}-${commitAbbreviation}-${branchName}"
-    }
-}
 
 configurations {
     instrumentedClasspath {
@@ -65,8 +43,6 @@ android {
     defaultConfig {
         minSdkVersion 21
         targetSdkVersion 35
-        versionCode getDateSeconds()
-        versionName getVersionName()
         multiDexEnabled true //important
     }
 
