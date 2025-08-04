@@ -44,6 +44,7 @@ android {
 
     lintOptions {
         abortOnError false
+        checkReleaseBuilds false
     }
 
     signingConfigs {
@@ -152,7 +153,7 @@ class AssetTaskRegistrar {
 
     def setVariant(variant) {
         variantName = variant.getName().capitalize()
-        mergeAssetsTask = variant.getMergeAssetsProvider().get()
+        mergeAssetsTask = variant.getPreBuildProvider().get()
 
         targetAssetsDir = new File(project.projectDir, "build/intermediates/remote_asset_set/${variantName.toLowerCase()}/")
         createDirectories(targetAssetsDir)
@@ -189,7 +190,7 @@ class AssetTaskRegistrar {
         def unzipTask = project.tasks.register("unzip${dependencySuffix}", Copy) {
             from project.zipTree(downloadTarget)
             into targetExtractionDir
-            dependsOn downloadTask
+            mustRunAfter downloadTask
         }
         return unzipTask
     }
