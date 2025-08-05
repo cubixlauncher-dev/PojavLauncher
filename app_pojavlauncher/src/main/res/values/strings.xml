@@ -159,7 +159,7 @@
     <string name="multirt_config_add">Добавить новую</string>
     <string name="multirt_title">Менеджер среды выполнения</string>
     <string name="multirt_subtitle">Управление установленными средами выполнения Java.</string>
-    <string name="multirt_progress_caching">Кэширование...</string>
+    <string name="multirt_progress_caching">Кэширование…</string>
     <string name="multirt_config_setdefault">Выбрать</string>
     <string name="multirt_config_setdefault_already">По умолчанию</string>
     <string name="multirt_config_removeerror_last">Должна быть установлена хотя бы одна среда выполнения Java.</string>
@@ -389,7 +389,7 @@
     <string name="bta_installer_available_versions">Поддерживаемые версии BTA</string>
     <string name="bta_installer_untested_versions">Нетестированные версии BTA</string>
     <string name="bta_installer_nightly_versions">Экспериментальные версии BTA</string>
-    <string name="newdl_extracting_native_libraries">Распаковка дополнительных библиотек... (%d/%d)</string>
+    <string name="newdl_extracting_native_libraries">Распаковка дополнительных библиотек… (%d/%d)</string>
     <string name="fabric_dl_cant_read_meta2">Ошибка чтения метаданных Fabric</string>
     <string name="modloader_dl_install_fabric_instance">Установка с Fabric</string>
     <string name="modloader_dl_install_quilt_instance">Установка с Quilt</string>
@@ -403,4 +403,5 @@
     <string name="auth_select_local">Local account</string>
     <string name="instance_dir_missing">Instance is missing</string>
     <string name="control_error_another_name">Выберите другое имя для файла управления</string>
+    <string name="downloader_downloading_file_size">Получение размера файла %s</string>
 </resources>

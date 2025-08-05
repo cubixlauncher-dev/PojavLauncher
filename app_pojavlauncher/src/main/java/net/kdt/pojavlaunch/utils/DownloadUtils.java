@@ -167,6 +167,7 @@ public class DownloadUtils {
             urlConnection.setRequestMethod("HEAD");
             urlConnection.setDoInput(false);
             urlConnection.setDoOutput(false);
+            urlConnection.setReadTimeout(1000);
             urlConnection.connect();
             int responseCode = urlConnection.getResponseCode();
             if(responseCode >= 200 && responseCode <= 299) return urlConnection.getContentLength();

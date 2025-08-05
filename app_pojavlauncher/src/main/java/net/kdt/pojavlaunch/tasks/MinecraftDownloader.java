@@ -299,6 +299,8 @@ public class MinecraftDownloader {
         mTotalFileCount++;
         // Only attempt to check size if we still use the size counter and didn't switch to file counter.
         if(size <= 0 && !mUseFileCounter) {
+            ProgressLayout.setProgress(ProgressLayout.DOWNLOAD_MINECRAFT, 0,
+                    R.string.downloader_downloading_file_size, targetFile.getName());
             size = DownloadMirror.getContentLengthMirrored(downloadClass, url);
         }
         if(size < 0) {

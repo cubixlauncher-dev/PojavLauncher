@@ -276,12 +276,16 @@ public class MainActivity extends BaseActivity implements ControlButtonMenuListe
 
         @Override
         public void onSplashEvent() {
+            mView.post(this::hideSplashScreen);
+            Logger.setSplashListener(null);
+        }
+
+        private void hideSplashScreen() {
             mView.setVisibility(View.GONE);
             ViewParent parent = mView.getParent();
             if(parent instanceof ViewGroup) {
                 ((ViewGroup)parent).removeView(mView);
             }
-            Logger.setSplashListener(null);
         }
     }
 
