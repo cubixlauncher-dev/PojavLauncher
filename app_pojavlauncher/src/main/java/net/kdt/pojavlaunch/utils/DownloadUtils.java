@@ -26,7 +26,7 @@ public class DownloadUtils {
             // System.out.println("Connecting: " + url.toString());
             HttpURLConnection conn = (HttpURLConnection) url.openConnection();
             conn.setRequestProperty("User-Agent", USER_AGENT);
-            conn.setConnectTimeout(10000);
+            conn.setConnectTimeout(5000);
             conn.setDoInput(true);
             conn.connect();
             if (conn.getResponseCode() != HttpURLConnection.HTTP_OK) {
@@ -67,6 +67,7 @@ public class DownloadUtils {
         FileUtils.ensureParentDirectory(outputFile);
 
         HttpURLConnection conn = (HttpURLConnection) new URL(urlInput).openConnection();
+        conn.setReadTimeout(5000);
         InputStream readStr = conn.getInputStream();
         try (FileOutputStream fos = new FileOutputStream(outputFile)) {
             int current;
