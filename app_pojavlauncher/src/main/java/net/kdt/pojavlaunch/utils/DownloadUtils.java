@@ -132,28 +132,34 @@ public class DownloadUtils {
         }
     }
 
-    private static boolean verifyFile(File file, String sha1) {
-        return file.exists() && Tools.compareSHA1(file, sha1);
+    private static boolean verifyFile(File file, String sha1, long size) {
+        boolean sizeFine = size < 1 || file.length() == size;
+        if(sha1 == null) return file.exists() && sizeFine;
+        else return file.exists() && Tools.compareSHA1(file, sha1) && sizeFine;
     }
 
     public static <T> T ensureSha1(File outputFile, @Nullable String sha1, Callable<T> downloadFunction) throws IOException {
+        return ensureSha1(outputFile, sha1, -1, downloadFunction);
+    }
+
+    public static <T> T ensureSha1(File outputFile, @Nullable String sha1, long size, Callable<T> downloadFunction) throws IOException {
         // Skip if needed
-        if(sha1 == null) {
+        if(sha1 == null && size < 0) {
             // If the file exists and we don't know it's SHA1, don't try to redownload it.
             if(outputFile.exists()) return null;
             else return downloadFile(downloadFunction);
         }
 
         int attempts = 0;
-        boolean fileOkay = verifyFile(outputFile, sha1);
+        boolean fileOkay = verifyFile(outputFile, sha1, size);
         T result = null;
         while (attempts < 5 && !fileOkay){
             attempts++;
             downloadFile(downloadFunction);
-            fileOkay = verifyFile(outputFile, sha1);
+            fileOkay = verifyFile(outputFile, sha1, size);
             if(!fileOkay) Log.w("DownloadUtils", "Sent for retrial: "+outputFile.getName());
         }
-        if(!fileOkay) throw new SHA1VerificationException("SHA1 verifcation failed after 5 download attempts. File "+outputFile.getName());
+        if(!fileOkay) throw new SHA1VerificationException("File verifcation failed after 5 download attempts. File "+outputFile.getName());
         return result;
     }
 

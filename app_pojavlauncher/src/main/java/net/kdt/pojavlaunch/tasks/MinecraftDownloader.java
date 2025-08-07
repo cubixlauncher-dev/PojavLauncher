@@ -295,6 +295,11 @@ public class MinecraftDownloader {
 
     private void scheduleDownload(File targetFile, int downloadClass, String url, String sha1,
                                   long size, boolean skipIfFailed) throws IOException {
+        scheduleDownload(targetFile, downloadClass, url, sha1, size, skipIfFailed, true);
+    }
+
+    private void scheduleDownload(File targetFile, int downloadClass, String url, String sha1,
+                                  long size, boolean skipIfFailed, boolean verifyFile) throws IOException {
         FileUtils.ensureParentDirectory(targetFile);
         mTotalFileCount++;
         // Only attempt to check size if we still use the size counter and didn't switch to file counter.
@@ -313,7 +318,7 @@ public class MinecraftDownloader {
             mTotalSize += size;
         }
         mScheduledDownloadTasks.add(
-                new DownloaderTask(targetFile, downloadClass, url, sha1, size, skipIfFailed)
+                new DownloaderTask(targetFile, downloadClass, url, sha1, size, skipIfFailed, verifyFile)
         );
     }
 
@@ -441,7 +446,8 @@ public class MinecraftDownloader {
                     info.url,
                     info.check ? info.sha1 : null,
                     info.size,
-                    isConfigFile
+                    isConfigFile,
+                    info.check
             );
         }
     }
@@ -462,15 +468,17 @@ public class MinecraftDownloader {
         private final boolean mSkipIfFailed;
         private int mLastCurr;
         private final long mDownloadSize;
+        private final boolean mVerifyFile;
 
         DownloaderTask(File targetPath, int downloadClass, String targetUrl, String targetSha1,
-                       long downloadSize, boolean skipIfFailed) {
+                       long downloadSize, boolean skipIfFailed, boolean mVerifyFile) {
             this.mTargetPath = targetPath;
             this.mTargetUrl = targetUrl;
             this.mTargetSha1 = targetSha1;
             this.mDownloadClass = downloadClass;
             this.mDownloadSize = downloadSize;
             this.mSkipIfFailed = skipIfFailed;
+            this.mVerifyFile = mVerifyFile;
         }
 
         private String downloadSha1() throws IOException {
@@ -517,24 +525,27 @@ public class MinecraftDownloader {
         }
 
         private void runCatching() throws Exception {
-            if(mDownloadClass == DownloadMirror.DOWNLOAD_CLASS_LIBRARIES && !Tools.isValidString(mTargetSha1)) {
+            if(mVerifyFile && mDownloadClass == DownloadMirror.DOWNLOAD_CLASS_LIBRARIES && !Tools.isValidString(mTargetSha1)) {
                 // If we're downloading a library, try to get sha1 since it might be available as a file
                 tryGetLibrarySha1();
             }
-            if(Tools.isValidString(mTargetSha1)) {
-                verifyFileSha1();
+            if(!Tools.isValidString(mTargetSha1)) mTargetSha1 = null;
+            if(mVerifyFile && (mTargetSha1 != null || mDownloadSize > 0)) {
+                verifyFileIntegrity();
             }else {
-                mTargetSha1 = null; // Nullify SHA1 as DownloadUtils.ensureSha1 only checks for null,
-                                    // not for string validity
                 if(mTargetPath.exists()) finishWithoutDownloading();
                 else downloadFile();
             }
         }
         
-        private void verifyFileSha1() throws Exception {
-            if(mTargetPath.isFile() && mTargetPath.canRead() && Tools.compareSHA1(mTargetPath, mTargetSha1)) {
+        private void verifyFileIntegrity() throws Exception {
+            boolean valid = mTargetPath.isFile() && mTargetPath.canRead();
+            if(valid) valid = mTargetPath.length() == mDownloadSize;
+            if(valid && Tools.isValidString(mTargetSha1)) valid = Tools.compareSHA1(mTargetPath, mTargetSha1);
+            if(valid) {
                 finishWithoutDownloading();
             } else {
+                Log.i("MinecraftDownloader", "Sent for redownload: "+FileUtils.getFileName(mTargetUrl));
                 // Rely on the download function to throw an IOE in case if the file is not
                 // writable/not a file/etc...
                 downloadFile();
@@ -543,7 +554,7 @@ public class MinecraftDownloader {
         
         private void downloadFile() throws Exception {
             try {
-                DownloadUtils.ensureSha1(mTargetPath, mTargetSha1, () -> {
+                DownloadUtils.ensureSha1(mTargetPath, mTargetSha1, mDownloadSize, () -> {
                     DownloadMirror.downloadFileMirrored(mDownloadClass, mTargetUrl, mTargetPath,
                             getLocalBuffer(), this);
                     return null;
