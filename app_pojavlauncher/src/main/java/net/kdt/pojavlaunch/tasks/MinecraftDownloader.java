@@ -368,7 +368,6 @@ public class MinecraftDownloader {
                 url = (dependentLibrary.url == null
                         ? "https://libraries.minecraft.net/"
                         : dependentLibrary.url.replace("http://","https://")) + libArtifactPath;
-                skipIfFailed = true;
             }
             if(!LauncherPreferences.PREF_CHECK_LIBRARY_SHA) sha1 = null;
             scheduleDownload(new File(Tools.DIR_HOME_LIBRARY, libArtifactPath),
