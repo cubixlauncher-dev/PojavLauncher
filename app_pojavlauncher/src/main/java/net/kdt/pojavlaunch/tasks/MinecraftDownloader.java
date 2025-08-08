@@ -142,9 +142,10 @@ public class MinecraftDownloader {
             }
         }catch (InterruptedException e) {
             // Interrupted while waiting, which means that the download was cancelled.
-            // Kill all downloading threads immediately, and ignore any exceptions thrown by them
-            downloaderPool.shutdownNow();
             throw e;
+        } finally {
+            // Kill all downloading threads immediately, and ignore any exceptions thrown by them.
+            downloaderPool.shutdownNow();
         }
     }
 
