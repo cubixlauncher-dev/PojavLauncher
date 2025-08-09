@@ -97,14 +97,15 @@ import java.util.Locale;
 import java.util.Map;
 
 
+import git.artdeell.mojo.BuildConfig;
 import git.artdeell.mojo.R;
-import top.defaults.checkerboarddrawable.BuildConfig;
 
 @SuppressWarnings("IOStreamConstructor")
 public final class Tools {
     public  static final float BYTE_TO_MB = 1024 * 1024;
     public static final Handler MAIN_HANDLER = new Handler(Looper.getMainLooper());
     public static String APP_NAME = "PojavLauncher";
+    public static String VERSION_CODE = "uninitialized";
 
     public static final Gson GLOBAL_GSON = new GsonBuilder().setPrettyPrinting().create();
 
@@ -135,6 +136,14 @@ public final class Tools {
     public static String CTRLMAP_PATH;
     public static String CTRLDEF_FILE;
     private static RenderersList sCompatibleRenderers;
+
+    static {
+        try {
+            Class.forName("git.artdeell.cubixuishim.VersionInit");
+        }catch (Exception e) {
+            Log.i("Tools", "Failed to init version");
+        }
+    }
 
 
     private static File getPojavStorageRoot(Context ctx) {
@@ -1085,7 +1094,7 @@ public final class Tools {
     }
 
     public static void printLauncherInfo(String gameVersion, String javaArguments) {
-        Logger.appendToLog("Info: Launcher version: " + BuildConfig.VERSION_NAME);
+        Logger.appendToLog("Info: Launcher version: " + Tools.VERSION_CODE);
         Logger.appendToLog("Info: Architecture: " + Architecture.archAsString(DEVICE_ARCHITECTURE));
         Logger.appendToLog("Info: Device model: " + Build.MANUFACTURER + " " +Build.MODEL);
         Logger.appendToLog("Info: API version: " + SDK_INT);
