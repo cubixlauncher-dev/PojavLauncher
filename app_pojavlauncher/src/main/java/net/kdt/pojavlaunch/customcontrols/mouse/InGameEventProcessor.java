@@ -22,11 +22,12 @@ public class InGameEventProcessor implements TouchEventProcessor {
     }
 
     @Override
-    public boolean processTouchEvent(MotionEvent motionEvent) {
+    public boolean processTouchEvent(MotionEvent motionEvent, boolean noGestures) {
+        noGestures |= LauncherPreferences.PREF_DISABLE_GESTURES;
         switch (motionEvent.getActionMasked()) {
             case MotionEvent.ACTION_DOWN:
                 mTracker.startTracking(motionEvent);
-                if(LauncherPreferences.PREF_DISABLE_GESTURES) break;
+                if(noGestures) break;
                 mEventTransitioned = false;
                 checkGestures();
                 break;
@@ -40,7 +41,7 @@ public class InGameEventProcessor implements TouchEventProcessor {
                 CallbackBridge.mouseX += deltaX;
                 CallbackBridge.mouseY += deltaY;
                 CallbackBridge.sendCursorPos(CallbackBridge.mouseX, CallbackBridge.mouseY);
-                if(LauncherPreferences.PREF_DISABLE_GESTURES) break;
+                if(noGestures) break;
                 checkGestures();
                 break;
             case MotionEvent.ACTION_UP:

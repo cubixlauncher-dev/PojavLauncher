@@ -183,6 +183,10 @@ public class MinecraftGLSurface extends View implements GrabListener, DirectGame
     @Override
     @SuppressWarnings("accessibility")
     public boolean onTouchEvent(MotionEvent e) {
+        return handleTouchEvent(e, false);
+    }
+
+    public boolean handleTouchEvent(MotionEvent e, boolean noGestures) {
         // Kinda need to send this back to the layout
         if(((ControlLayout)getParent()).getModifiable()) return false;
 
@@ -203,7 +207,7 @@ public class MinecraftGLSurface extends View implements GrabListener, DirectGame
             return true; //mouse event handled successfully
         }
         if (mIngameProcessor == null || mInGUIProcessor == null) return true;
-        return mCurrentTouchProcessor.processTouchEvent(e);
+        return mCurrentTouchProcessor.processTouchEvent(e, noGestures);
     }
 
     private void createGamepad(View contextView, InputDevice inputDevice) {

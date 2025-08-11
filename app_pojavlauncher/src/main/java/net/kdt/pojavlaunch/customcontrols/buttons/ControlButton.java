@@ -21,6 +21,7 @@ import net.kdt.pojavlaunch.LwjglGlfwKeycode;
 import net.kdt.pojavlaunch.MainActivity;
 import git.artdeell.mojo.R;
 
+import net.kdt.pojavlaunch.MinecraftGLSurface;
 import net.kdt.pojavlaunch.Tools;
 import net.kdt.pojavlaunch.customcontrols.ControlData;
 import net.kdt.pojavlaunch.customcontrols.ControlLayout;
@@ -161,8 +162,9 @@ public class ControlButton extends TextView implements ControlInterface {
             case MotionEvent.ACTION_POINTER_UP: // 6
                 if(properties.passThruEnabled){
                     //Send the event to be taken as a mouse action
-                    View gameSurface = getControlLayoutParent().getGameSurface();
-                    if(gameSurface != null) gameSurface.dispatchTouchEvent(event);
+                    MinecraftGLSurface gameSurface = getControlLayoutParent().getGameSurface();
+                    event.offsetLocation(getX(), getY());
+                    if(gameSurface != null) gameSurface.handleTouchEvent(event, true);
                 }
                 break;
         }

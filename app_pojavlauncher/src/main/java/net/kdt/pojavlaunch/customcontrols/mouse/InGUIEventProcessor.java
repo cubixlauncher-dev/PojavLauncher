@@ -26,8 +26,9 @@ public class InGUIEventProcessor implements TouchEventProcessor {
     }
 
     @Override
-    public boolean processTouchEvent(MotionEvent motionEvent) {
+    public boolean processTouchEvent(MotionEvent motionEvent, boolean noGestures) {
         boolean singleTap = mSingleTapDetector.onTouchEvent(motionEvent);
+        noGestures |= LauncherPreferences.PREF_DISABLE_GESTURES;
 
         switch (motionEvent.getActionMasked()) {
             case MotionEvent.ACTION_DOWN:
@@ -36,7 +37,7 @@ public class InGUIEventProcessor implements TouchEventProcessor {
                     sendTouchCoordinates(motionEvent.getX(), motionEvent.getY());
 
                     // disabled gestures means no scrolling possible, send gesture early
-                    if (LauncherPreferences.PREF_DISABLE_GESTURES) enableMouse();
+                    if (noGestures) enableMouse();
                     else setGestureStart(motionEvent);
                 }
                 break;
@@ -44,7 +45,7 @@ public class InGUIEventProcessor implements TouchEventProcessor {
             case MotionEvent.ACTION_MOVE:
                 int pointerCount = motionEvent.getPointerCount();
                 int pointerIndex = mTracker.trackEvent(motionEvent);
-                if(pointerCount == 1 || LauncherPreferences.PREF_DISABLE_GESTURES) {
+                if(pointerCount == 1 || noGestures) {
                     if(touchpadDisplayed()) {
                         mTouchpad.applyMotionVector(mTracker.getMotionVector());
                     } else {
@@ -68,7 +69,7 @@ public class InGUIEventProcessor implements TouchEventProcessor {
                 mTracker.cancelTracking();
 
                 // Handle single tap on gestures
-                if((!LauncherPreferences.PREF_DISABLE_GESTURES || touchpadDisplayed()) && !mIsMouseDown && singleTap) {
+                if((!noGestures || touchpadDisplayed()) && !mIsMouseDown && singleTap) {
                     CallbackBridge.putMouseEventWithCoords(LwjglGlfwKeycode.GLFW_MOUSE_BUTTON_LEFT, CallbackBridge.mouseX, CallbackBridge.mouseY);
                 }
 
