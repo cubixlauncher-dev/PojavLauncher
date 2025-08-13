@@ -42,7 +42,8 @@ public class AsyncAssetManager {
         String exactJREName = MultiRTUtils.getExactJreName(8);
         if(current_rt_version == null && exactJREName != null && !exactJREName.equals("Internal")/*this clause is for when the internal runtime is goofed*/) return;
         if(rt_version == null) return;
-        if(rt_version.equals(current_rt_version)) return;
+        boolean damaged = current_rt_version != null && hasPackFiles(MultiRTUtils.getRuntimeHome("Internal"));
+        if(rt_version.equals(current_rt_version) && !damaged) return;
 
         // Install the runtime in an async manner, hope for the best
         String finalRt_version = rt_version;
@@ -59,6 +60,18 @@ public class AsyncAssetManager {
             }
         });
     }
+
+    private static boolean hasPackFiles(File dir) {
+        File[] files = dir.listFiles();
+        if(files == null) return false;
+        for(File f : files) {
+            if(f.isDirectory() && hasPackFiles(f)) return true;
+            if(f.getName().endsWith(".pack")) return true;
+        }
+        return false;
+    }
+
+
 
     /** Unpack single files, with no regard to version tracking */
     public static void unpackSingleFiles(Context ctx){
