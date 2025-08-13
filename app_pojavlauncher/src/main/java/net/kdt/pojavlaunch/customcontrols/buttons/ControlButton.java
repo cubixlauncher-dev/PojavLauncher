@@ -163,8 +163,11 @@ public class ControlButton extends TextView implements ControlInterface {
                 if(properties.passThruEnabled){
                     //Send the event to be taken as a mouse action
                     MinecraftGLSurface gameSurface = getControlLayoutParent().getGameSurface();
-                    event.offsetLocation(getX(), getY());
+                    float offX = getX();
+                    float offY = getY();
+                    event.offsetLocation(offX, offY);
                     if(gameSurface != null) gameSurface.handleTouchEvent(event, true);
+                    event.offsetLocation(-offX, -offY);
                 }
                 break;
         }
