@@ -267,14 +267,14 @@ public final class Tools {
         return renderDistance > 7;
     }
 
-    private static boolean isGl4esCompatible(JMinecraftVersionList.Version version) throws Exception{
+    /*private static boolean isGl4esCompatible(JMinecraftVersionList.Version version) throws Exception{
         return DateUtils.dateBefore(DateUtils.getOriginalReleaseDate(version), 2025, 1, 7);
     }
 
     private static boolean isCompatContext(JMinecraftVersionList.Version version) throws Exception{
         // Day before the release date of 21w10a, the first OpenGL 3 Core Minecraft version
         return DateUtils.dateBefore(DateUtils.getOriginalReleaseDate(version), 2021, 3, 9);
-    }
+    }*/
 
     private static boolean showDialog(AppCompatActivity activity, int message) throws InterruptedException {
         LifecycleAwareAlertDialog.DialogCreator dialogCreator = ((alertDialog, dialogBuilder) ->
@@ -507,7 +507,7 @@ public final class Tools {
         }
 
         String userType = "mojang";
-        try {
+        /*try {
             Date creationDate = DateUtils.getOriginalReleaseDate(versionInfo);
             // Minecraft 22w43a which adds chat reporting (and signing) was released on
             // 26th October 2022. So, if the date is not before that (meaning it is equal or higher)
@@ -517,7 +517,7 @@ public final class Tools {
             }
         }catch (ParseException e) {
             Log.e("CheckForProfileKey", "Failed to determine profile creation date, using \"mojang\"", e);
-        }
+        }*/
 
 
         Map<String, String> varArgMap = new ArrayMap<>();

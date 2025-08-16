@@ -44,6 +44,7 @@ public class DateUtils {
      * @param gameVersion the JMinecraftVersionList.Version object
      * @return the game's original release date
      */
+    // NOTE: does not resolve date properly on cubix jsons
     public static Date getOriginalReleaseDate(JMinecraftVersionList.Version gameVersion) throws ParseException {
         if(Tools.isValidString(gameVersion.inheritsFrom)) {
             gameVersion = Tools.getVersionInfo(gameVersion.inheritsFrom, true);
