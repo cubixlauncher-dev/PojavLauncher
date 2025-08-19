@@ -5,6 +5,8 @@ plugins {
 
 }
 
+apply from: rootProject.file('gradle/prefab_bypass.gradle')
+
 import de.undercouch.gradle.tasks.download.Download
 
 
