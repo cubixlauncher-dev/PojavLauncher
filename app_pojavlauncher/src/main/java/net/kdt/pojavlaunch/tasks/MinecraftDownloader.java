@@ -27,9 +27,12 @@ import net.kdt.pojavlaunch.value.DependentLibrary;
 import net.kdt.pojavlaunch.value.MinecraftClientInfo;
 import net.kdt.pojavlaunch.value.MinecraftLibraryArtifact;
 
+import org.apache.commons.io.FilenameUtils;
+
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.ArrayBlockingQueue;
@@ -280,7 +283,10 @@ public class MinecraftDownloader {
 
         if(verInfo.custom_files != null) scheduleCubixFilesDownloads(verInfo.custom_files, true);
 
-        if(verInfo.custom_mods != null) scheduleCubixFilesDownloads(verInfo.custom_mods, false);
+        if(verInfo.custom_mods != null) {
+            validateModsList(verInfo.custom_mods);
+            scheduleCubixFilesDownloads(verInfo.custom_mods, false);
+        }
 
         if(Tools.isValidString(verInfo.inheritsFrom)) {
             JMinecraftVersionList.Version inheritedVersion = AsyncMinecraftDownloader.getListedVersion(verInfo.inheritsFrom);
@@ -433,6 +439,36 @@ public class MinecraftDownloader {
         );
         // Store the path of the JAR to copy it into our new version folder later.
         mSourceJarFile = clientJar;
+    }
+
+    private void innerValidate(File dir, List<String> modFiles) throws IOException{
+        File[] files = dir.listFiles();
+        if(files == null) return;
+        for(File file : files) {
+            if(file.isDirectory()) {
+                innerValidate(file, modFiles);
+                continue;
+            }
+            if(!modFiles.contains(file.getAbsolutePath())) {
+                Log.i("MD", "Delete: "+file.getAbsolutePath());
+                if(!file.delete()) {
+                    throw new IOException("Failed");
+                }
+            }
+        }
+    }
+
+    private void validateModsList(CubixFileInfo[] fileInfos) throws IOException{
+        ArrayList<String> modFiles = new ArrayList<>();
+        modFiles.ensureCapacity(fileInfos.length);
+        for(CubixFileInfo info : fileInfos) {
+            String subdirPath = info.path;
+            if(subdirPath.startsWith("/")) subdirPath = "." + subdirPath;
+            String path = FilenameUtils.normalize(new File(mConfig.getGameDirectory(), subdirPath).getAbsolutePath());
+            modFiles.add(path);
+        }
+        File modsDir = new File(mConfig.getGameDirectory(), "mods").getAbsoluteFile();
+        innerValidate(modsDir, modFiles);
     }
 
     private void scheduleCubixFilesDownloads(CubixFileInfo[] fileInfos, boolean isConfigFile) throws IOException{
