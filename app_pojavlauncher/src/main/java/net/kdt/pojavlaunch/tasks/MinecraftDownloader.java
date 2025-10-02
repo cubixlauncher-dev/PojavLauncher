@@ -15,6 +15,7 @@ import net.kdt.pojavlaunch.JAssets;
 import net.kdt.pojavlaunch.JMinecraftVersionList;
 import git.artdeell.mojo.R;
 
+import net.kdt.pojavlaunch.NewJREUtil;
 import net.kdt.pojavlaunch.ServerModpackConfig;
 import net.kdt.pojavlaunch.Tools;
 import net.kdt.pojavlaunch.mirrors.DownloadMirror;
@@ -268,6 +269,10 @@ public class MinecraftDownloader {
             Log.i("PostParse", "verInfo="+verInfo + " content: "+fileContent +" file: "+versionJsonFile.getAbsolutePath());
         } else {
             throw new IOException("Unable to read Version JSON for version " + versionName);
+        }
+
+        if(activity != null && !NewJREUtil.installNewJreIfNeeded(activity, verInfo, mConfig)){
+            return false;
         }
 
         JAssets assets = downloadAssetsIndex(verInfo);

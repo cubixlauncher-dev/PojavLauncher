@@ -404,4 +404,5 @@
     <string name="instance_dir_missing">Instance is missing</string>
     <string name="control_error_another_name">Выберите другое имя для файла управления</string>
     <string name="downloader_downloading_file_size">Получение размера файла %s</string>
+    <string name="download_java_runtime">Загрузка среды выполнения Java...</string>
 </resources>
