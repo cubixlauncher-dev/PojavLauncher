@@ -36,9 +36,7 @@ import android.view.Window;
 import android.view.WindowInsets;
 import android.view.WindowInsetsController;
 import android.view.WindowManager;
-import android.widget.EditText;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -61,7 +59,6 @@ import net.kdt.pojavlaunch.multirt.MultiRTUtils;
 import net.kdt.pojavlaunch.multirt.Runtime;
 import net.kdt.pojavlaunch.plugins.FFmpegPlugin;
 import net.kdt.pojavlaunch.prefs.LauncherPreferences;
-import net.kdt.pojavlaunch.utils.DateUtils;
 import net.kdt.pojavlaunch.utils.DownloadUtils;
 import net.kdt.pojavlaunch.utils.FileUtils;
 import net.kdt.pojavlaunch.utils.GLInfoUtils;
@@ -88,16 +85,13 @@ import java.lang.ref.WeakReference;
 import java.lang.reflect.Field;
 import java.net.URLConnection;
 import java.nio.charset.StandardCharsets;
-import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
 
-import git.artdeell.mojo.BuildConfig;
 import git.artdeell.mojo.R;
 
 @SuppressWarnings("IOStreamConstructor")
@@ -937,6 +931,10 @@ public final class Tools {
     public static String[] generateLibClasspath(JMinecraftVersionList.Version info) {
         List<String> libDir = new ArrayList<>();
         for (DependentLibrary libItem: info.libraries) {
+            if(libItem.name.startsWith("net.minecraft:client:") || libItem.name.startsWith("net.neoforged:neoforge:")) {
+                Log.i("Tools", "Skip for classpath: "+libItem.name);
+                continue;
+            }
             if(!checkRules(libItem.rules)) continue;
             libDir.add(Tools.DIR_HOME_LIBRARY + "/" + artifactToPath(libItem));
         }
