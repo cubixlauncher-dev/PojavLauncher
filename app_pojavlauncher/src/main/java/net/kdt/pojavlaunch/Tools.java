@@ -113,7 +113,7 @@ public final class Tools {
 
     // New since 3.3.1
     public static String DIR_ACCOUNT_NEW;
-    public static String DIR_GAME_HOME = Environment.getExternalStorageDirectory().getAbsolutePath() + "/games/PojavLauncher";
+    public static String DIR_GAME_HOME = Environment.getExternalStorageDirectory().getAbsolutePath() + "/games/CubixWorld";
     public static String DIR_GAME_NEW;
 
     // New since 3.0.0
@@ -144,7 +144,7 @@ public final class Tools {
         if(SDK_INT >= 29) {
             return ctx.getExternalFilesDir(null);
         }else{
-            return new File(Environment.getExternalStorageDirectory(),"games/PojavLauncher");
+            return new File(Environment.getExternalStorageDirectory(),"games/CubixWorld");
         }
     }
 
@@ -353,7 +353,9 @@ public final class Tools {
 
         List<String> javaArgList = new ArrayList<>();
 
-        getCacioJavaArgs(javaArgList, runtime.javaVersion == 8);
+        if(runtime.javaVersion == 8) {
+            getCacioJavaArgs(javaArgList, true);
+        }
 
         if (versionInfo.logging != null) {
             String configFile = Tools.DIR_DATA + "/security/" + versionInfo.logging.client.file.id.replace("client", "log4j-rce-patch");

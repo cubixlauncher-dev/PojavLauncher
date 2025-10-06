@@ -239,9 +239,6 @@ afterEvaluate {
 
         registrar.onlineJarDependency cacioJarUrl, "caciocavallo", "cacio-shared", "components/caciocavallo"
         registrar.onlineJarDependency cacioJarUrl, "caciocavallo", "cacio-androidnw", "components/caciocavallo"
-
-        registrar.onlineJarDependency cacioJarUrl, "caciocavallo17", "cacio-shared", "components/caciocavallo17"
-        registrar.onlineJarDependency cacioJarUrl, "caciocavallo17", "cacio-tta", "components/caciocavallo17"
     }
 }
 
