@@ -306,6 +306,14 @@ public final class Tools {
         File gamedir = instance.getGameDirectory();
         JMinecraftVersionList.Version versionInfo = Tools.getVersionInfo(versionId);
 
+        if(isValidString(versionInfo.renderer)) {
+            Tools.LOCAL_RENDERER = versionInfo.renderer;
+            Log.i("Tools", "Selected renderer "+Tools.LOCAL_RENDERER+ " from json");
+        } else {
+            Tools.LOCAL_RENDERER = "opengles2";
+            Log.i("Tools", "Selected renderer "+Tools.LOCAL_RENDERER+ " by default");
+        }
+
         // Switch renderer to GL4ES when running a compat context version on LTW
         /*if(isCompatContext(versionInfo) && Tools.LOCAL_RENDERER.equals("opengles3_ltw")) {
             instance.renderer = Tools.LOCAL_RENDERER = "opengles2";
@@ -963,7 +971,7 @@ public final class Tools {
                 }
                 //inheritsVer.inheritsFrom = inheritsVer.id;
                 insertSafety(inheritsVer, customVer,
-                        "assetIndex", "assets", "id",
+                        "assetIndex", "assets", "id", "renderer",
                         "mainClass", "minecraftArguments",
                         "releaseTime", "time", "type"
                 );

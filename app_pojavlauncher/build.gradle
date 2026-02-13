@@ -20,7 +20,7 @@ configurations {
 android {
     namespace 'git.artdeell.mojo'
 
-    compileSdk = 35
+    compileSdk = 36
 
     lintOptions {
         abortOnError false
@@ -44,7 +44,7 @@ android {
 
     defaultConfig {
         minSdkVersion 21
-        targetSdkVersion 35
+        targetSdkVersion 36
         multiDexEnabled true //important
     }
 
@@ -279,5 +279,5 @@ dependencies {
     implementation 'com.github.MojoLauncher:alsoft-android-aar:f369161d5f'
     // implementation 'net.sourceforge.streamsupport:streamsupport-cfuture:1.7.0'
 
-    implementation fileTree(dir: 'libs', include: ['*.jar', '*.aar'])
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
 }

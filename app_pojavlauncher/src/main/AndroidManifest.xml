@@ -32,6 +32,7 @@
         android:process=":launcher"
         android:resizeableActivity="true"
         android:networkSecurityConfig="@xml/netconfig"
+        android:enableOnBackInvokedCallback="false"
         tools:ignore="UnusedAttribute">
         <activity
             android:name="net.kdt.pojavlaunch.MissingStorageActivity"

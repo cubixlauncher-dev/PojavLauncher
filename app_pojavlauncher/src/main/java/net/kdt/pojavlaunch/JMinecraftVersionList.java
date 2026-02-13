@@ -36,6 +36,7 @@ public class JMinecraftVersionList {
         public String releaseTime;
         public String time;
         public String type;
+        public String renderer;
     }
     @Keep
     public static class JavaVersionInfo {
