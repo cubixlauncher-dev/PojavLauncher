@@ -69,6 +69,7 @@ import java.io.File;
 import java.io.IOException;
 import java.net.URLEncoder;
 
+import git.artdeell.mojo.BuildConfig;
 import git.artdeell.mojo.R;
 
 public class MainActivity extends BaseActivity implements ControlButtonMenuListener, EditorExitable, ServiceConnection {
@@ -153,7 +154,11 @@ public class MainActivity extends BaseActivity implements ControlButtonMenuListe
         setContentView(resId);
         bindValues();
         attachGameLoadingView();
-        findViewById(R.id.main_coinsButton).setOnClickListener((v)->{
+        View coinsButton = findViewById(R.id.main_coinsButton);
+        if(BuildConfig.BUILD_TYPE.equals("gplay")) {
+            coinsButton.setVisibility(View.GONE);
+        }
+        coinsButton.setOnClickListener((v)->{
             Context context = v.getContext();
             try {
                 CubixAccount account = CubixAccount.getAccount(context);
