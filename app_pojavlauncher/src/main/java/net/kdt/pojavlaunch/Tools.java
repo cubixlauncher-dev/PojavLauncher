@@ -361,9 +361,7 @@ public final class Tools {
 
         List<String> javaArgList = new ArrayList<>();
 
-        if(runtime.javaVersion == 8) {
-            getCacioJavaArgs(javaArgList, true);
-        }
+        getCacioJavaArgs(javaArgList, runtime.javaVersion == 8);
 
         if (versionInfo.logging != null) {
             String configFile = Tools.DIR_DATA + "/security/" + versionInfo.logging.client.file.id.replace("client", "log4j-rce-patch");
@@ -430,7 +428,23 @@ public final class Tools {
         javaArgList.add("-javaagent:"+Tools.DIR_DATA+"/authlib-injector/authlib-injector.jar="+injectorUrl);
     }
 
-    public static void getCacioJavaArgs(List<String> javaArgList, boolean isJava8) {
+    @NonNull
+    private static StringBuilder createCacioClasspath() {
+        StringBuilder cacioClasspath = new StringBuilder();
+        cacioClasspath.append("-Xbootclasspath/p");
+        File cacioDir = new File(Tools.DIR_GAME_HOME, "caciocavallo");
+        File[] cacioFiles = cacioDir.listFiles();
+        if (cacioFiles != null) {
+            for (File file : cacioFiles) {
+                if (file.getName().endsWith(".jar")) {
+                    cacioClasspath.append(":").append(file.getAbsolutePath());
+                }
+            }
+        }
+        return cacioClasspath;
+    }
+
+    private static boolean getCacioJavaArgs(List<String> javaArgList, boolean isJava8) {
         // Caciocavallo config AWT-enabled version
         javaArgList.add("-Djava.awt.headless=false");
         javaArgList.add("-Dcacio.managed.screensize=" + AWTCanvasView.AWT_CANVAS_WIDTH + "x" + AWTCanvasView.AWT_CANVAS_HEIGHT);
@@ -440,10 +454,18 @@ public final class Tools {
         if (isJava8) {
             javaArgList.add("-Dawt.toolkit=net.java.openjdk.cacio.ctc.CTCToolkit");
             javaArgList.add("-Djava.awt.graphicsenv=net.java.openjdk.cacio.ctc.CTCGraphicsEnvironment");
+            StringBuilder cacioClasspath = createCacioClasspath();
+            javaArgList.add(cacioClasspath.toString());
+            return false;
         } else {
+            File caciocavallo17AgentDir = new File(Tools.DIR_GAME_HOME, "caciocavallo17");
+            File[] cacioJars = caciocavallo17AgentDir.listFiles((file, s) ->s.endsWith(".jar"));
+            if(cacioJars == null || cacioJars.length < 1) {
+                return false;
+            }
+            javaArgList.add("-javaagent:"+cacioJars[0].getAbsolutePath());
             javaArgList.add("-Dawt.toolkit=com.github.caciocavallosilano.cacio.ctc.CTCToolkit");
             javaArgList.add("-Djava.awt.graphicsenv=com.github.caciocavallosilano.cacio.ctc.CTCGraphicsEnvironment");
-            javaArgList.add("-Djava.system.class.loader=com.github.caciocavallosilano.cacio.ctc.CTCPreloadClassLoader");
 
             javaArgList.add("--add-exports=java.desktop/java.awt=ALL-UNNAMED");
             javaArgList.add("--add-exports=java.desktop/java.awt.peer=ALL-UNNAMED");
@@ -460,23 +482,8 @@ public final class Tools {
             javaArgList.add("--add-opens=java.desktop/sun.font=ALL-UNNAMED");
             javaArgList.add("--add-opens=java.desktop/sun.java2d=ALL-UNNAMED");
             javaArgList.add("--add-opens=java.base/java.lang.reflect=ALL-UNNAMED");
-
-            // Opens the java.net package to Arc DNS injector on Java 9+
-            javaArgList.add("--add-opens=java.base/java.net=ALL-UNNAMED");
+            return true;
         }
-
-        StringBuilder cacioClasspath = new StringBuilder();
-        cacioClasspath.append("-Xbootclasspath/").append(isJava8 ? "p" : "a");
-        File cacioDir = new File(DIR_GAME_HOME + "/caciocavallo" + (isJava8 ? "" : "17"));
-        File[] cacioFiles = cacioDir.listFiles();
-        if (cacioFiles != null) {
-            for (File file : cacioFiles) {
-                if (file.getName().endsWith(".jar")) {
-                    cacioClasspath.append(":").append(file.getAbsolutePath());
-                }
-            }
-        }
-        javaArgList.add(cacioClasspath.toString());
     }
 
     public static String[] getMinecraftJVMArgs(String versionName, File gameDir) {

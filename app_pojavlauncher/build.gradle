@@ -203,12 +203,12 @@ class AssetTaskRegistrar {
         }
     }
 
-    def onlineJarDependency(String jarUrl, String jarProject, String dependency, String relativePath) {
+    def onlineJarDependency(String jarUrl, String jarProject, String dependency, String version, String suffix,  String relativePath) {
         File targetDir = assetDestination(relativePath)
         createDirectories targetDir
         def dependencySuffix = "${jarProject}${dependency}${variantName}"
         def downloadTask = project.tasks.register("download${dependencySuffix}", Download) {
-            src String.format(jarUrl, jarProject, dependency)
+            src String.format(jarUrl, jarProject, dependency, version, suffix)
             dest targetDir
             overwrite false
             doLast {
@@ -237,10 +237,12 @@ afterEvaluate {
         registrar.jreRuntimeDependency 8, "components/jre"
 
 
-		def cacioJarUrl = "https://jitpack.io/com/github/MojoLauncher/%1\$s/%2\$s/master-SNAPSHOT/%2\$s-master-SNAPSHOT.jar"
+        def cacioJarUrl = "https://jitpack.io/com/github/MojoLauncher/%1\$s/%2\$s/%3\$s/%2\$s-%3\$s%4\$s.jar"
 
-        registrar.onlineJarDependency cacioJarUrl, "caciocavallo", "cacio-shared", "components/caciocavallo"
-        registrar.onlineJarDependency cacioJarUrl, "caciocavallo", "cacio-androidnw", "components/caciocavallo"
+        registrar.onlineJarDependency cacioJarUrl, "caciocavallo", "cacio-shared", "-01d2dc1d65-1", "", "components/caciocavallo"
+        registrar.onlineJarDependency cacioJarUrl, "caciocavallo", "cacio-androidnw", "-01d2dc1d65-1", "", "components/caciocavallo"
+
+        registrar.onlineJarDependency cacioJarUrl, "caciocavallo17", "cacio-tta", "72a9ab6323", "-jar-with-dependencies", "components/caciocavallo17"
     }
 }
 
